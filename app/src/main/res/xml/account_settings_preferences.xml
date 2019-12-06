@@ -13,7 +13,8 @@
 
     <androidx.preference.PreferenceCategory
         android:key="@string/preferences_sync_category"
-        android:title="@string/preferences_sync_category">
+        android:title="@string/preferences_sync_category"
+        android:layout="@layout/preference_category">
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="true"

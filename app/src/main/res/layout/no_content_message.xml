@@ -22,6 +22,7 @@
             android:drawablePadding="8dp"
             tools:text="@tools:sample/lorem"
             tools:drawableEnd="@drawable/ic_tab_collection"
+            android:fontFamily="@font/metropolis_semibold"
             android:textAppearance="@style/HeaderTextStyle"
             android:textSize="16sp" />
 
@@ -33,7 +34,7 @@
             tools:text="@tools:sample/lorem"
             android:textColor="?primaryText"
             android:textSize="14sp"
-            android:textStyle="normal"
+            android:fontFamily="@font/metropolis_medium"
             android:textAlignment="viewStart"/>
 
 </LinearLayout>

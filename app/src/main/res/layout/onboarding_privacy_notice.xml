@@ -58,6 +58,8 @@
                 android:gravity="center"
                 android:text="@string/onboarding_privacy_notice_read_button"
                 android:textColor="?primaryText"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:letterSpacing=".05"
+                android:fontFamily="@font/metropolis_regular"/>
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

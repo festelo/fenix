@@ -3,7 +3,8 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.preference.Preference
@@ -30,7 +31,9 @@
 
     <androidx.preference.PreferenceCategory
         android:title="@string/preferences_category_general"
-        app:iconSpaceReserved="false">
+        app:iconSpaceReserved="false"
+        tools:ignore="PrivateResource"
+        android:layout="@layout/preference_category" >
         <androidx.preference.Preference
             android:icon="@drawable/ic_search"
             android:key="@string/pref_key_search_settings"
@@ -64,7 +67,8 @@
 
     <androidx.preference.PreferenceCategory
         android:title="@string/preferences_category_privacy_security"
-        app:iconSpaceReserved="false">
+        app:iconSpaceReserved="false"
+        android:layout="@layout/preference_category">
 
         <androidx.preference.Preference
             android:icon="@drawable/ic_private_browsing"
@@ -114,7 +118,8 @@
     <PreferenceCategory
         android:title="@string/preferences_category_advanced"
         app:iconSpaceReserved="false"
-        android:key="@string/pref_key_advanced">
+        android:key="@string/pref_key_advanced"
+        android:layout="@layout/preference_category">
         <androidx.preference.Preference
             android:icon="@drawable/mozac_ic_extensions_black"
             android:key="@string/pref_key_addons"
@@ -123,7 +128,8 @@
 
     <PreferenceCategory
         android:title="@string/developer_tools_category"
-        app:iconSpaceReserved="false">
+        app:iconSpaceReserved="false"
+        android:layout="@layout/preference_category">
         <androidx.preference.SwitchPreference
             android:icon="@drawable/ic_energy"
             android:key="@string/pref_key_remote_debugging"
@@ -133,7 +139,8 @@
 
     <androidx.preference.PreferenceCategory
         android:title="@string/preferences_category_about"
-        app:iconSpaceReserved="false">
+        app:iconSpaceReserved="false"
+        android:layout="@layout/preference_category">
         <androidx.preference.Preference
             android:icon="@drawable/ic_bookmark_outline"
             android:key="@string/pref_key_rate"

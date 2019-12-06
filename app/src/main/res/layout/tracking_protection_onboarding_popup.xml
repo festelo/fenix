@@ -50,10 +50,13 @@
             android:text="@string/etp_onboarding_message_2"
             android:textColor="@color/primary_text_dark_theme"
             android:textSize="16sp"
+            android:fontFamily="@font/metropolis_medium"
+            android:letterSpacing="0.05"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/close_onboarding"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:fontFamily="@font/metropolis_medium" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
