@@ -32,7 +32,6 @@
                 android:text="@string/cfr_message"
                 android:textColor="@color/primary_text_dark_theme"
                 android:textSize="16sp"
-                android:letterSpacing="0.05"
                 android:fontFamily="@font/metropolis_medium"
 
                 app:layout_constraintEnd_toEndOf="parent"
