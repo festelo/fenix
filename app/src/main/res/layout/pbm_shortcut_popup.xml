@@ -33,7 +33,6 @@
                 android:textColor="@color/primary_text_dark_theme"
                 android:textSize="16sp"
                 android:fontFamily="@font/metropolis_medium"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

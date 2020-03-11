@@ -55,8 +55,7 @@
             android:maxLines="4"
             android:text="@string/preferences_account_default_name"
             android:textColor="?primaryText"
-            android:fontFamily="@font/metropolis_bold"
-            android:letterSpacing="0.05" />
+            android:fontFamily="@font/metropolis_bold" />
 
     </RelativeLayout>
 

@@ -32,8 +32,7 @@
     <androidx.preference.PreferenceCategory
         android:title="@string/preferences_category_general"
         app:iconSpaceReserved="false"
-        tools:ignore="PrivateResource"
-        android:layout="@layout/preference_category" >
+        android:layout="@layout/preference_cat_style" >
         <androidx.preference.Preference
             android:icon="@drawable/ic_search"
             android:key="@string/pref_key_search_settings"
@@ -68,7 +67,7 @@
     <androidx.preference.PreferenceCategory
         android:title="@string/preferences_category_privacy_security"
         app:iconSpaceReserved="false"
-        android:layout="@layout/preference_category">
+        android:layout="@layout/preference_cat_style">
 
         <androidx.preference.Preference
             android:icon="@drawable/ic_private_browsing"
@@ -119,7 +118,7 @@
         android:title="@string/preferences_category_advanced"
         app:iconSpaceReserved="false"
         android:key="@string/pref_key_advanced"
-        android:layout="@layout/preference_category">
+        android:layout="@layout/preference_cat_style">
         <androidx.preference.Preference
             android:icon="@drawable/mozac_ic_extensions_black"
             android:key="@string/pref_key_addons"
@@ -129,7 +128,7 @@
     <PreferenceCategory
         android:title="@string/developer_tools_category"
         app:iconSpaceReserved="false"
-        android:layout="@layout/preference_category">
+        android:layout="@layout/preference_cat_style">
         <androidx.preference.SwitchPreference
             android:icon="@drawable/ic_energy"
             android:key="@string/pref_key_remote_debugging"
@@ -140,7 +139,7 @@
     <androidx.preference.PreferenceCategory
         android:title="@string/preferences_category_about"
         app:iconSpaceReserved="false"
-        android:layout="@layout/preference_category">
+        android:layout="@layout/preference_cat_style">
         <androidx.preference.Preference
             android:icon="@drawable/ic_bookmark_outline"
             android:key="@string/pref_key_rate"
