@@ -61,14 +61,14 @@ class IntentReceiverActivity : Activity() {
             components.analytics.metrics.track(Event.OpenedLink(Event.OpenedLink.Mode.PRIVATE))
             intent.putExtra(HomeActivity.PRIVATE_BROWSING_MODE, true)
             listOf(
-                components.intentProcessors.privateCustomTabIntentProcessor,
+                //components.intentProcessors.privateCustomTabIntentProcessor,
                 components.intentProcessors.privateIntentProcessor
             )
         } else {
             components.analytics.metrics.track(Event.OpenedLink(Event.OpenedLink.Mode.NORMAL))
             intent.putExtra(HomeActivity.PRIVATE_BROWSING_MODE, false)
             listOf(
-                components.intentProcessors.customTabIntentProcessor,
+                //components.intentProcessors.customTabIntentProcessor,
                 components.intentProcessors.intentProcessor
             )
         }
