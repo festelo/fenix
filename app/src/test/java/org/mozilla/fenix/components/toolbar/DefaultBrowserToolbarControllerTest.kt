@@ -20,7 +20,6 @@ import io.mockk.verify
 import io.mockk.verifyOrder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
@@ -28,6 +27,10 @@ import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import mozilla.components.browser.session.Session
 import mozilla.components.browser.session.SessionManager
+import mozilla.components.browser.state.state.BrowserState
+import mozilla.components.browser.state.state.ReaderState
+import mozilla.components.browser.state.state.createTab
+import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.concept.engine.EngineView
 import mozilla.components.feature.search.SearchUseCases
 import mozilla.components.feature.session.SessionUseCases
@@ -40,11 +43,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.fenix.HomeActivity
 import org.mozilla.fenix.R
-import org.mozilla.fenix.TestApplication
 import org.mozilla.fenix.browser.BrowserAnimator
 import org.mozilla.fenix.browser.BrowserFragment
 import org.mozilla.fenix.browser.BrowserFragmentDirections
-import org.mozilla.fenix.browser.browsingmode.BrowsingModeManager
+import org.mozilla.fenix.browser.readermode.ReaderModeController
 import org.mozilla.fenix.collections.SaveCollectionStep
 import org.mozilla.fenix.components.Analytics
 import org.mozilla.fenix.components.FenixSnackbar
@@ -56,27 +58,22 @@ import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.nav
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.ext.toTab
+import org.mozilla.fenix.helpers.FenixRobolectricTestRunner
 import org.mozilla.fenix.home.Tab
 import org.mozilla.fenix.settings.deletebrowsingdata.deleteAndQuit
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
-@UseExperimental(ObsoleteCoroutinesApi::class)
-@RunWith(RobolectricTestRunner::class)
-@Config(application = TestApplication::class)
+@RunWith(FenixRobolectricTestRunner::class)
 class DefaultBrowserToolbarControllerTest {
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
     private var swipeRefreshLayout: SwipeRefreshLayout = mockk(relaxed = true)
     private var activity: HomeActivity = mockk(relaxed = true)
     private var analytics: Analytics = mockk(relaxed = true)
-    private val browsingModeManager: BrowsingModeManager = mockk(relaxed = true)
     private var navController: NavController = mockk(relaxed = true)
     private var findInPageLauncher: () -> Unit = mockk(relaxed = true)
     private val engineView: EngineView = mockk(relaxed = true)
     private val currentSession: Session = mockk(relaxed = true)
-    private val getSupportUrl: () -> String = { "https://supportUrl.org" }
     private val openInFenixIntent: Intent = mockk(relaxed = true)
     private val currentSessionAsTab: Tab = mockk(relaxed = true)
     private val metrics: MetricController = mockk(relaxed = true)
@@ -87,6 +84,13 @@ class DefaultBrowserToolbarControllerTest {
     private val snackbar = mockk<FenixSnackbar>(relaxed = true)
     private val tabCollectionStorage = mockk<TabCollectionStorage>(relaxed = true)
     private val topSiteStorage = mockk<TopSiteStorage>(relaxed = true)
+    private val readerModeController = mockk<ReaderModeController>(relaxed = true)
+    private val store: BrowserStore = BrowserStore(initialState = BrowserState(
+        listOf(
+            createTab("https://www.mozilla.org", id = "reader-inactive-tab"),
+            createTab("https://www.mozilla.org", id = "reader-active-tab", readerState = ReaderState(active = true))
+        ))
+    )
 
     private lateinit var controller: DefaultBrowserToolbarController
 
@@ -97,21 +101,19 @@ class DefaultBrowserToolbarControllerTest {
         controller = DefaultBrowserToolbarController(
             activity = activity,
             navController = navController,
-            browsingModeManager = browsingModeManager,
             findInPageLauncher = findInPageLauncher,
             engineView = engineView,
             browserAnimator = browserAnimator,
             customTabSession = null,
-            getSupportUrl = getSupportUrl,
             openInFenixIntent = openInFenixIntent,
             scope = scope,
             swipeRefresh = swipeRefreshLayout,
             tabCollectionStorage = tabCollectionStorage,
             topSiteStorage = topSiteStorage,
             bookmarkTapped = mockk(),
-            readerModeController = mockk(),
+            readerModeController = readerModeController,
             sessionManager = mockk(),
-            store = mockk()
+            sharedViewModel = mockk()
         )
 
         mockkStatic(
@@ -129,6 +131,7 @@ class DefaultBrowserToolbarControllerTest {
         every { activity.components.useCases.sessionUseCases } returns sessionUseCases
         every { activity.components.useCases.searchUseCases } returns searchUseCases
         every { activity.components.core.sessionManager.selectedSession } returns currentSession
+        every { activity.components.core.store } returns store
 
         val onComplete = slot<() -> Unit>()
         every { browserAnimator.captureEngineViewAndDrawStatically(capture(onComplete)) } answers { onComplete.captured.invoke() }
@@ -191,12 +194,10 @@ class DefaultBrowserToolbarControllerTest {
         controller = DefaultBrowserToolbarController(
             activity = activity,
             navController = navController,
-            browsingModeManager = browsingModeManager,
             findInPageLauncher = findInPageLauncher,
             engineView = engineView,
             browserAnimator = browserAnimator,
             customTabSession = null,
-            getSupportUrl = getSupportUrl,
             openInFenixIntent = openInFenixIntent,
             scope = this,
             swipeRefresh = swipeRefreshLayout,
@@ -205,7 +206,7 @@ class DefaultBrowserToolbarControllerTest {
             bookmarkTapped = mockk(),
             readerModeController = mockk(),
             sessionManager = mockk(),
-            store = mockk()
+            sharedViewModel = mockk()
         )
 
         controller.handleBrowserMenuDismissed(itemList)
@@ -223,10 +224,10 @@ class DefaultBrowserToolbarControllerTest {
 
         verify { metrics.track(Event.SearchBarTapped(Event.SearchBarTapped.Source.BROWSER)) }
         verify {
-                val directions = BrowserFragmentDirections.actionBrowserFragmentToSearchFragment(
-                    sessionId = "1"
-                )
-                navController.nav(R.id.browserFragment, directions)
+            val directions = BrowserFragmentDirections.actionBrowserFragmentToSearchFragment(
+                sessionId = "1"
+            )
+            navController.nav(R.id.browserFragment, directions)
         }
     }
 
@@ -343,12 +344,10 @@ class DefaultBrowserToolbarControllerTest {
         controller = DefaultBrowserToolbarController(
             activity = activity,
             navController = navController,
-            browsingModeManager = browsingModeManager,
             findInPageLauncher = findInPageLauncher,
             engineView = engineView,
             browserAnimator = browserAnimator,
             customTabSession = null,
-            getSupportUrl = getSupportUrl,
             openInFenixIntent = openInFenixIntent,
             scope = this,
             swipeRefresh = swipeRefreshLayout,
@@ -357,7 +356,7 @@ class DefaultBrowserToolbarControllerTest {
             bookmarkTapped = mockk(),
             readerModeController = mockk(),
             sessionManager = mockk(),
-            store = mockk()
+            sharedViewModel = mockk()
         )
         controller.ioScope = this
 
@@ -407,14 +406,27 @@ class DefaultBrowserToolbarControllerTest {
     }
 
     @Test
-    fun handleToolbarReportIssuePress() {
+    fun handleToolbarReportIssuePressInNormalMode() {
         val tabsUseCases: TabsUseCases = mockk(relaxed = true)
         val addTabUseCase: TabsUseCases.AddNewTabUseCase = mockk(relaxed = true)
 
+        val browserStore =
+            BrowserStore(
+                BrowserState(
+                    tabs = listOf(
+                        createTab(
+                            url = "https://mozilla.org",
+                            private = false,
+                            id = "tab1"
+                        )
+                    ),
+                    selectedTabId = "tab1"
+                )
+            )
+
         val item = ToolbarMenu.Item.ReportIssue
 
-        every { currentSession.id } returns "1"
-        every { currentSession.url } returns "https://mozilla.org"
+        every { activity.components.core.store } returns browserStore
         every { activity.components.useCases.tabsUseCases } returns tabsUseCases
         every { tabsUseCases.addTab } returns addTabUseCase
 
@@ -433,6 +445,45 @@ class DefaultBrowserToolbarControllerTest {
     }
 
     @Test
+    fun handleToolbarReportIssuePressInPrivateMode() {
+        val tabsUseCases: TabsUseCases = mockk(relaxed = true)
+        val addPrivateTabUseCase: TabsUseCases.AddNewPrivateTabUseCase = mockk(relaxed = true)
+
+        val browserStore =
+            BrowserStore(
+                BrowserState(
+                    tabs = listOf(
+                        createTab(
+                            url = "https://mozilla.org",
+                            private = true,
+                            id = "tab1"
+                        )
+                    ),
+                    selectedTabId = "tab1"
+                )
+            )
+
+        val item = ToolbarMenu.Item.ReportIssue
+
+        every { activity.components.core.store } returns browserStore
+        every { activity.components.useCases.tabsUseCases } returns tabsUseCases
+        every { tabsUseCases.addPrivateTab } returns addPrivateTabUseCase
+
+        controller.handleToolbarItemInteraction(item)
+
+        verify { metrics.track(Event.BrowserMenuItemTapped(Event.BrowserMenuItemTapped.Item.REPORT_SITE_ISSUE)) }
+        verify {
+            // Hardcoded URL because this function modifies the URL with an apply
+            addPrivateTabUseCase.invoke(
+                String.format(
+                    BrowserFragment.REPORT_SITE_ISSUE_URL,
+                    "https://mozilla.org"
+                )
+            )
+        }
+    }
+
+    @Test
     fun handleToolbarSaveToCollectionPressWhenAtLeastOneCollectionExists() {
         val item = ToolbarMenu.Item.SaveToCollection
         val cachedTabCollections: List<TabCollection> = mockk(relaxed = true)
@@ -441,13 +492,19 @@ class DefaultBrowserToolbarControllerTest {
 
         controller.handleToolbarItemInteraction(item)
 
-        verify { metrics.track(
-            Event.BrowserMenuItemTapped(Event.BrowserMenuItemTapped.Item.SAVE_TO_COLLECTION)) }
-        verify { metrics.track(
-            Event.CollectionSaveButtonPressed(DefaultBrowserToolbarController.TELEMETRY_BROWSER_IDENTIFIER)) }
+        verify {
+            metrics.track(
+                Event.BrowserMenuItemTapped(Event.BrowserMenuItemTapped.Item.SAVE_TO_COLLECTION)
+            )
+        }
+        verify {
+            metrics.track(
+                Event.CollectionSaveButtonPressed(DefaultBrowserToolbarController.TELEMETRY_BROWSER_IDENTIFIER)
+            )
+        }
         verify {
             val directions =
-                BrowserFragmentDirections.actionBrowserFragmentToCreateCollectionFragment(
+                BrowserFragmentDirections.actionGlobalCollectionCreationFragment(
                     previousFragmentId = R.id.browserFragment,
                     saveCollectionStep = SaveCollectionStep.SelectCollection,
                     tabIds = arrayOf(currentSession.id),
@@ -467,11 +524,16 @@ class DefaultBrowserToolbarControllerTest {
         controller.handleToolbarItemInteraction(item)
 
         verify { metrics.track(Event.BrowserMenuItemTapped(Event.BrowserMenuItemTapped.Item.SAVE_TO_COLLECTION)) }
-        verify { metrics.track(Event.CollectionSaveButtonPressed(
-            DefaultBrowserToolbarController.TELEMETRY_BROWSER_IDENTIFIER)) }
+        verify {
+            metrics.track(
+                Event.CollectionSaveButtonPressed(
+                    DefaultBrowserToolbarController.TELEMETRY_BROWSER_IDENTIFIER
+                )
+            )
+        }
         verify {
             val directions =
-                BrowserFragmentDirections.actionBrowserFragmentToCreateCollectionFragment(
+                BrowserFragmentDirections.actionGlobalCollectionCreationFragment(
                     previousFragmentId = R.id.browserFragment,
                     saveCollectionStep = SaveCollectionStep.NameCollection,
                     tabIds = arrayOf(currentSession.id),
@@ -486,12 +548,10 @@ class DefaultBrowserToolbarControllerTest {
         controller = DefaultBrowserToolbarController(
             activity = activity,
             navController = navController,
-            browsingModeManager = browsingModeManager,
             findInPageLauncher = findInPageLauncher,
             engineView = engineView,
             browserAnimator = browserAnimator,
             customTabSession = currentSession,
-            getSupportUrl = getSupportUrl,
             openInFenixIntent = openInFenixIntent,
             scope = scope,
             swipeRefresh = swipeRefreshLayout,
@@ -500,7 +560,7 @@ class DefaultBrowserToolbarControllerTest {
             bookmarkTapped = mockk(),
             readerModeController = mockk(),
             sessionManager = mockk(),
-            store = mockk()
+            sharedViewModel = mockk()
         )
 
         val sessionManager: SessionManager = mockk(relaxed = true)
@@ -527,12 +587,10 @@ class DefaultBrowserToolbarControllerTest {
         controller = DefaultBrowserToolbarController(
             activity = activity,
             navController = navController,
-            browsingModeManager = browsingModeManager,
             findInPageLauncher = findInPageLauncher,
             engineView = engineView,
             browserAnimator = browserAnimator,
             customTabSession = null,
-            getSupportUrl = getSupportUrl,
             openInFenixIntent = openInFenixIntent,
             scope = testScope,
             swipeRefresh = swipeRefreshLayout,
@@ -541,11 +599,24 @@ class DefaultBrowserToolbarControllerTest {
             bookmarkTapped = mockk(),
             readerModeController = mockk(),
             sessionManager = mockk(),
-            store = mockk()
+            sharedViewModel = mockk()
         )
 
         controller.handleToolbarItemInteraction(item)
 
         verify { deleteAndQuit(activity, testScope, null) }
+    }
+
+    @Test
+    fun handleToolbarReaderModePress() {
+        val item = ToolbarMenu.Item.ReaderMode(false)
+
+        every { currentSession.id } returns "reader-inactive-tab"
+        controller.handleToolbarItemInteraction(item)
+        verify { readerModeController.showReaderView() }
+
+        every { currentSession.id } returns "reader-active-tab"
+        controller.handleToolbarItemInteraction(item)
+        verify { readerModeController.hideReaderView() }
     }
 }

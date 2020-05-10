@@ -56,6 +56,8 @@ fi
 JAVA_BIN="/usr/bin/java"
 PATH_TEST="./automation/taskcluster/androidTest"
 FLANK_BIN="/builds/worker/test-tools/flank.jar"
+ARTIFACT_DIR="/builds/worker/artifacts"
+RESULTS_DIR="${ARTIFACT_DIR}/results"
 
 echo
 echo "ACTIVATE SERVICE ACCT"
@@ -79,7 +81,7 @@ elif [[ "${device_type}" == "x86-start-test" ]]; then
 elif [[ "${device_type}" == "arm-start-test" ]]; then
     flank_template="${PATH_TEST}/flank-armeabi-v7a-start-test.yml"
 else
-    echo "NOT FOUND"
+    echo "FAILURE: flank config file not found!"
     exitcode=1
 fi
 
@@ -95,22 +97,23 @@ function failure_check() {
     echo
     echo
     if [[ $exitcode -ne 0 ]]; then
-        echo "ERROR: UI test run failed, please check above URL"
+        echo "FAILURE: UI test run failed, please check above URL"
     else
-	echo "All UI test(s) have passed!"
+	      echo "All UI test(s) have passed!"
     fi
-
-    echo
-    echo "COPY ARTIFACTS"
-    echo
-    cp -r ./results /builds/worker/artifacts
 
     echo
     echo "RESULTS"
     echo
-    ls -la ./results
-    echo
-    echo
+
+    mkdir -p /builds/worker/artifacts/github
+    chmod +x $PATH_TEST/parse-ui-test.py
+    $PATH_TEST/parse-ui-test.py \
+        --exit-code "${exitcode}" \
+        --log flank.log \
+        --results "${RESULTS_DIR}" \
+        --output-md "${ARTIFACT_DIR}/github/customCheckRunText.md" \
+	--device-type "${device_type}"
 }
 
 echo
@@ -123,7 +126,16 @@ echo
 echo
 echo "EXECUTE TEST(S)"
 echo
-$JAVA_BIN -jar $FLANK_BIN android run --config=$flank_template --max-test-shards=$num_shards --app=$APK_APP --test=$APK_TEST --project=$GOOGLE_PROJECT
+# Note that if --local-results-dir is "results", timestamped sub-directory will
+# contain the results. For any other value, the directory itself will have the results.
+$JAVA_BIN -jar $FLANK_BIN android run \
+	--config=$flank_template \
+	--max-test-shards=$num_shards \
+	--app=$APK_APP --test=$APK_TEST \
+	--local-result-dir="${RESULTS_DIR}" \
+	--project=$GOOGLE_PROJECT \
+	| tee flank.log
+
 exitcode=$?
 failure_check
 

@@ -148,7 +148,7 @@ class AddSearchEngineFragment : Fragment(), CompoundButton.OnCheckedChangeListen
         custom_search_engine_name_field.error = ""
         custom_search_engine_search_string_field.error = ""
 
-        val name = edit_engine_name.text?.toString() ?: ""
+        val name = edit_engine_name.text?.toString()?.trim() ?: ""
         val searchString = edit_search_string.text?.toString() ?: ""
 
         var hasError = false
@@ -208,7 +208,10 @@ class AddSearchEngineFragment : Fragment(), CompoundButton.OnCheckedChangeListen
                         .getString(R.string.search_add_custom_engine_success_message, name)
 
                     view?.also {
-                        FenixSnackbar.make(it, FenixSnackbar.LENGTH_SHORT)
+                        FenixSnackbar.make(view = it,
+                            duration = FenixSnackbar.LENGTH_SHORT,
+                            isDisplayedWithBrowserToolbar = false
+                        )
                             .setText(successMessage)
                             .show()
                     }

@@ -8,6 +8,7 @@ import android.view.View
 import mozilla.components.feature.tab.collections.Tab
 import mozilla.components.feature.tab.collections.TabCollection
 import mozilla.components.feature.top.sites.TopSite
+import org.mozilla.fenix.components.tips.Tip
 
 /**
  * Interface for collection related actions in the [SessionControlInteractor].
@@ -92,6 +93,23 @@ interface OnboardingInteractor {
      * Hides the onboarding and navigates to Settings. Called when a user clicks on the "Open settings" button.
      */
     fun onOpenSettingsClicked()
+
+    /**
+     * Opens a custom tab to what's new url. Called when a user clicks on the "Get answers here" link.
+     */
+    fun onWhatsNewGetAnswersClicked()
+
+    /**
+     * Opens a custom tab to privacy notice url. Called when a user clicks on the "read our privacy notice" button.
+     */
+    fun onReadPrivacyNoticeClicked()
+}
+
+interface TipInteractor {
+    /**
+     * Dismisses the tip view adapter
+     */
+    fun onCloseTip(tip: Tip)
 }
 
 /**
@@ -195,7 +213,7 @@ interface TopSiteInteractor {
 @SuppressWarnings("TooManyFunctions")
 class SessionControlInteractor(
     private val controller: SessionControlController
-) : CollectionInteractor, OnboardingInteractor, TabSessionInteractor, TopSiteInteractor {
+) : CollectionInteractor, OnboardingInteractor, TabSessionInteractor, TopSiteInteractor, TipInteractor {
     override fun onCloseTab(sessionId: String) {
         controller.handleCloseTab(sessionId)
     }
@@ -276,11 +294,23 @@ class SessionControlInteractor(
         controller.handleOpenSettingsClicked()
     }
 
+    override fun onWhatsNewGetAnswersClicked() {
+        controller.handleWhatsNewGetAnswersClicked()
+    }
+
+    override fun onReadPrivacyNoticeClicked() {
+        controller.handleReadPrivacyNoticeClicked()
+    }
+
     override fun onToggleCollectionExpanded(collection: TabCollection, expand: Boolean) {
         controller.handleToggleCollectionExpanded(collection, expand)
     }
 
     override fun onOpenNewTabClicked() {
         controller.handleonOpenNewTabClicked()
+    }
+
+    override fun onCloseTip(tip: Tip) {
+        controller.handleCloseTip(tip)
     }
 }

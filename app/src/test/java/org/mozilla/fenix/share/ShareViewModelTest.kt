@@ -30,18 +30,15 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mozilla.fenix.TestApplication
 import org.mozilla.fenix.ext.application
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.isOnline
 import org.mozilla.fenix.share.ShareViewModel.Companion.RECENT_APPS_LIMIT
 import org.mozilla.fenix.share.listadapters.AppShareOption
 import org.mozilla.fenix.share.listadapters.SyncShareOption
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
+import org.mozilla.fenix.helpers.FenixRobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-@Config(application = TestApplication::class)
+@RunWith(FenixRobolectricTestRunner::class)
 @ExperimentalCoroutinesApi
 class ShareViewModelTest {
 
@@ -89,7 +86,7 @@ class ShareViewModelTest {
 
         val recentAppOptions = ArrayList<RecentApp>()
         val appEntity: RecentApp = mockk()
-        every { appEntity.packageName } returns "Package"
+        every { appEntity.activityName } returns "Activity"
         recentAppOptions.add(appEntity)
         val storage: RecentAppsStorage = mockk(relaxed = true)
         viewModel.recentAppsStorage = storage

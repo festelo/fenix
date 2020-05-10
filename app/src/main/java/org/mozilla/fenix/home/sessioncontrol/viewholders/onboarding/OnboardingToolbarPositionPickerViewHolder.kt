@@ -6,27 +6,34 @@ package org.mozilla.fenix.home.sessioncontrol.viewholders.onboarding
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.onboarding_toolbar_position_picker.view.*
+import kotlinx.android.synthetic.main.onboarding_toolbar_position_picker.view.toolbar_bottom_image
+import kotlinx.android.synthetic.main.onboarding_toolbar_position_picker.view.toolbar_bottom_radio_button
+import kotlinx.android.synthetic.main.onboarding_toolbar_position_picker.view.toolbar_top_image
+import kotlinx.android.synthetic.main.onboarding_toolbar_position_picker.view.toolbar_top_radio_button
 import org.mozilla.fenix.R
 import org.mozilla.fenix.ext.asActivity
 import org.mozilla.fenix.ext.settings
+import org.mozilla.fenix.onboarding.OnboardingRadioButton
 
 class OnboardingToolbarPositionPickerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     init {
         val radioTopToolbar = view.toolbar_top_radio_button
         val radioBottomToolbar = view.toolbar_bottom_radio_button
+        val radio: OnboardingRadioButton
 
         radioTopToolbar.addToRadioGroup(radioBottomToolbar)
-        radioBottomToolbar.addToRadioGroup(radioTopToolbar)
+        radioTopToolbar.addIllustration(view.toolbar_top_image)
 
-        with(view.context.settings()) {
-            val radio = when {
-                this.shouldUseBottomToolbar -> radioBottomToolbar
-                else -> radioTopToolbar
-            }
-            radio.isChecked = true
+        radioBottomToolbar.addToRadioGroup(radioTopToolbar)
+        radioBottomToolbar.addIllustration(view.toolbar_bottom_image)
+
+        radio = if (view.context.settings().shouldUseBottomToolbar) {
+            radioBottomToolbar
+        } else {
+            radioTopToolbar
         }
+        radio.updateRadioValue(true)
 
         radioBottomToolbar.onClickListener {
             itemView.context.asActivity()?.recreate()

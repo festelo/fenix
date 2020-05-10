@@ -2,11 +2,13 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="crash_reporter_close_tab_button_horizontal_margin">26dp</dimen>
     <dimen name="crash_reporter_close_tab_button_bottom_margin">24dp</dimen>
     <dimen name="glyph_button_height">48dp</dimen>
     <dimen name="glyph_button_width">48dp</dimen>
+    <dimen name="mozac_browser_menu_width_min" tools:ignore="UnusedResources">250dp</dimen>
+    <dimen name="mozac_browser_menu_width_max" tools:ignore="UnusedResources">314dp</dimen>
     <dimen name="mozac_browser_menu_corner_radius">8dp</dimen>
     <dimen name="toolbar_elevation">7dp</dimen>
     <dimen name="library_item_height">56dp</dimen>
@@ -37,8 +39,9 @@
     <dimen name="context_menu_height">48dp</dimen>
     <dimen name="context_menu_x_offset">8dp</dimen>
     <dimen name="tp_onboarding_width">256dp</dimen>
-    <dimen name="tp_onboarding_x_offset">-4dp</dimen>
     <dimen name="tp_onboarding_triangle_height">16dp</dimen>
+    <dimen name="tp_onboarding_triangle_width">16dp</dimen>
+    <dimen name="tp_onboarding_triangle_margin_start">16dp</dimen>
 
     <dimen name="tab_counter_box_width_height">24dp</dimen>
 
@@ -64,6 +67,9 @@
 
     <!-- ETP Onboarding Popup -->
     <dimen name="etp_onboarding_popup_width">256dp</dimen>
+
+    <!-- Edit  Fragment  -->
+    <dimen name="bookmark_edit_text_height">48dp</dimen>
 
     <!-- Search Fragment -->
     <dimen name="search_fragment_clipboard_item_height">56dp</dimen>
@@ -106,11 +112,12 @@
     <dimen name="locale_item_subtitle_size">12sp</dimen>
 
     <!--Migration Activity-->
-    <dimen name="migration_margin_horizontal_large">24dp</dimen>
+    <dimen name="migration_margin_horizontal_large">20dp</dimen>
     <dimen name="migration_margin">16dp</dimen>
     <dimen name="migration_firefox_logo_size">48dp</dimen>
-    <dimen name="migration_description_text_size">16sp</dimen>
+    <dimen name="migration_default_text_size">16sp</dimen>
     <dimen name="migration_welcome_title_text_size">20sp</dimen>
+    <dimen name="migration_button_text_size">14sp</dimen>
     <dimen name="migration_progress_size">24dp</dimen>
     <dimen name="migration_progress_margin">8dp</dimen>
     <dimen name="migration_progress_margin_start">4dp</dimen>
@@ -131,5 +138,17 @@
     <!--  Onboarding  -->
     <dimen name="onboarding_dual_pane_radio_button_translation_x">-7dp</dimen>
     <dimen name="onboarding_dual_pane_radio_button_translation_y">-8dp</dimen>
+
+    <!-- Addon Details Fragment -->
+    <dimen name="addon_details_rating_view_margin_start">6dp</dimen>
+    <dimen name="addon_details_rating_view_margin_end">6dp</dimen>
+
+    <!-- Tabs Tray -->
+    <dimen name="tab_tray_divider_margin_start">124dp</dimen>
+    <dimen name="tab_tray_divider_margin_end">0dp</dimen>
+
+    <!-- Saved Logins Fragment -->
+    <dimen name="saved_logins_sort_menu_dropdown_chevron_icon_margin_start">10dp</dimen>
+    <dimen name="saved_logins_sort_menu_dropdown_chevron_icon_size">12dp</dimen>
 
 </resources>

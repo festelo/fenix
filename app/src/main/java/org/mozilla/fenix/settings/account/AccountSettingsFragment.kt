@@ -34,6 +34,7 @@ import mozilla.components.service.fxa.manager.SyncEnginesStorage
 import mozilla.components.service.fxa.sync.SyncReason
 import mozilla.components.service.fxa.sync.SyncStatusObserver
 import mozilla.components.service.fxa.sync.getLastSynced
+import mozilla.components.support.ktx.android.util.dpToPx
 import org.mozilla.fenix.R
 import org.mozilla.fenix.components.FenixSnackbar
 import org.mozilla.fenix.components.StoreProvider
@@ -41,6 +42,7 @@ import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.getPreferenceKey
 import org.mozilla.fenix.ext.requireComponents
+import org.mozilla.fenix.ext.secure
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.ext.showToolbar
 
@@ -53,13 +55,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
     // Navigate away from this fragment when we encounter auth problems or logout events.
     private val accountStateObserver = object : AccountObserver {
         override fun onAuthenticationProblems() {
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 findNavController().popBackStack()
             }
         }
 
         override fun onLoggedOut() {
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 findNavController().popBackStack()
 
                 // Remove the device name when we log out.
@@ -157,12 +159,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
             }
             setOnBindEditTextListener { editText ->
                 editText.filters = arrayOf(InputFilter.LengthFilter(DEVICE_NAME_MAX_LENGTH))
+                editText.minHeight = DEVICE_NAME_EDIT_TEXT_MIN_HEIGHT_DP.dpToPx(resources.displayMetrics)
             }
         }
 
         // Make sure out sync engine checkboxes are up-to-date and disabled if currently syncing
         updateSyncEngineStates()
-        setCwtsDisabledWhileSyncing(accountManager.isSyncActive())
+        setDisabledWhileSyncing(accountManager.isSyncActive())
 
         val historyNameKey = getPreferenceKey(R.string.pref_key_sync_history)
         findPreference<CheckBoxPreference>(historyNameKey)?.apply {
@@ -238,13 +241,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
                     startActivity(intent)
                 }
                 create()
-            }.show()
+            }.show().secure(activity)
             it.settings().incrementShowLoginsSecureWarningSyncCount()
         }
     }
 
     private fun updateSyncEngineStates() {
-        val syncEnginesStatus = SyncEnginesStorage(context!!).getStatus()
+        val syncEnginesStatus = SyncEnginesStorage(requireContext()).getStatus()
         val bookmarksNameKey = getPreferenceKey(R.string.pref_key_sync_bookmarks)
         findPreference<CheckBoxPreference>(bookmarksNameKey)?.apply {
             isEnabled = syncEnginesStatus.containsKey(SyncEngine.Bookmarks)
@@ -263,7 +266,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun syncNow() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             requireComponents.analytics.metrics.track(Event.SyncAccountSyncNow)
             // Trigger a sync.
             requireComponents.backgroundServices.accountManager.syncNowAsync(SyncReason.User)
@@ -282,7 +285,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
             return false
         }
         // This may fail, and we'll have a disparity in the UI until `updateDeviceName` is called.
-        lifecycleScope.launch(Main) {
+        viewLifecycleOwner.lifecycleScope.launch(Main) {
             context?.let {
                 accountManager.authenticatedAccount()
                     ?.deviceConstellation()
@@ -310,33 +313,41 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
     private fun getChangeListenerForDeviceName(): Preference.OnPreferenceChangeListener {
         return Preference.OnPreferenceChangeListener { _, newValue ->
             accountSettingsInteractor.onChangeDeviceName(newValue as String) {
-                FenixSnackbar.make(view!!, FenixSnackbar.LENGTH_LONG)
+                FenixSnackbar.make(
+                    view = requireView(),
+                    duration = FenixSnackbar.LENGTH_LONG,
+                    isDisplayedWithBrowserToolbar = false
+                )
                     .setText(getString(R.string.empty_device_name_error))
                     .show()
             }
         }
     }
 
-    private fun setCwtsDisabledWhileSyncing(isSyncing: Boolean) {
+    private fun setDisabledWhileSyncing(isSyncing: Boolean) {
         findPreference<PreferenceCategory>(
             getPreferenceKey(R.string.preferences_sync_category)
+        )?.isEnabled = !isSyncing
+
+        findPreference<EditTextPreference>(
+            getPreferenceKey(R.string.pref_key_sync_device_name)
         )?.isEnabled = !isSyncing
     }
 
     private val syncStatusObserver = object : SyncStatusObserver {
         override fun onStarted() {
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 val pref = findPreference<Preference>(getPreferenceKey(R.string.pref_key_sync_now))
                 view?.announceForAccessibility(getString(R.string.sync_syncing_in_progress))
                 pref?.title = getString(R.string.sync_syncing_in_progress)
                 pref?.isEnabled = false
-                setCwtsDisabledWhileSyncing(true)
+                setDisabledWhileSyncing(true)
             }
         }
 
         // Sync stopped successfully.
         override fun onIdle() {
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 val pref = findPreference<Preference>(getPreferenceKey(R.string.pref_key_sync_now))
                 pref?.let {
                     pref.title = getString(R.string.preferences_sync_now)
@@ -347,13 +358,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
                 }
                 // Make sure out sync engine checkboxes are up-to-date.
                 updateSyncEngineStates()
-                setCwtsDisabledWhileSyncing(false)
+                setDisabledWhileSyncing(false)
             }
         }
 
         // Sync stopped after encountering a problem.
         override fun onError(error: Exception?) {
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 val pref = findPreference<Preference>(getPreferenceKey(R.string.pref_key_sync_now))
                 pref?.let {
                     pref.title = getString(R.string.preferences_sync_now)
@@ -410,5 +421,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
 
     companion object {
         private const val DEVICE_NAME_MAX_LENGTH = 128
+        private const val DEVICE_NAME_EDIT_TEXT_MIN_HEIGHT_DP = 48
     }
 }

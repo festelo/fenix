@@ -136,14 +136,24 @@ class DeleteBrowsingDataFragment : Fragment(R.layout.fragment_delete_browsing_da
 
         updateItemCounts()
 
-        FenixSnackbar.makeWithToolbarPadding(requireView(), FenixSnackbar.LENGTH_SHORT)
+        FenixSnackbar.make(
+            view = requireView(),
+            duration = FenixSnackbar.LENGTH_SHORT,
+            isDisplayedWithBrowserToolbar = true
+        )
             .setText(resources.getString(R.string.preferences_delete_browsing_data_snackbar))
             .show()
 
         if (popAfter) viewLifecycleOwner.lifecycleScope.launch(
             Dispatchers.Main
         ) {
-            returnToDeletionOrigin()
+
+            findNavController().apply {
+                // If the user deletes all open tabs we need to make sure we remove
+                // the BrowserFragment from the backstack.
+                popBackStack(R.id.homeFragment, false)
+                navigate(DeleteBrowsingDataFragmentDirections.actionGlobalSettingsFragment())
+            }
         }
     }
 
@@ -200,7 +210,7 @@ class DeleteBrowsingDataFragment : Fragment(R.layout.fragment_delete_browsing_da
     }
 
     private fun getCheckboxes(): List<DeleteBrowsingDataItem> {
-        val fragmentView = view!!
+        val fragmentView = requireView()
         return listOf(
             fragmentView.open_tabs_item,
             fragmentView.browsing_data_item,
@@ -208,11 +218,6 @@ class DeleteBrowsingDataFragment : Fragment(R.layout.fragment_delete_browsing_da
             fragmentView.cached_files_item,
             fragmentView.site_permissions_item
         )
-    }
-
-    private fun returnToDeletionOrigin() {
-        val directions = DeleteBrowsingDataFragmentDirections.actionDeleteBrowsingDataFragmentToSettingsFragment()
-        findNavController().navigate(directions)
     }
 
     companion object {

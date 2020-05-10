@@ -100,6 +100,7 @@ class DefaultQuickSettingsController(
                     val newPermissions = permissions.toggle(featureToggled).also {
                         handlePermissionsChange(it)
                     }
+                    sitePermissions = newPermissions
 
                     quickSettingsStore.dispatch(
                         WebsitePermissionAction.TogglePermission(
@@ -208,7 +209,7 @@ class DefaultQuickSettingsController(
      */
     private fun navigateToManagePhoneFeature(phoneFeature: PhoneFeature) {
         val directions = QuickSettingsSheetDialogFragmentDirections
-            .actionQuickSettingsSheetDialogFragmentToSitePermissionsManagePhoneFeature(phoneFeature.id)
+            .actionGlobalSitePermissionsManagePhoneFeature(phoneFeature.id)
         navController.navigate(directions)
     }
 }

@@ -73,7 +73,8 @@ class TrackingProtectionPanelDialogFragment : AppCompatDialogFragment(), UserInt
                     args.url,
                     args.trackingProtectionEnabled,
                     listTrackers = listOf(),
-                    mode = TrackingProtectionState.Mode.Normal
+                    mode = TrackingProtectionState.Mode.Normal,
+                    lastAccessedCategory = ""
                 )
             )
         }
@@ -143,8 +144,7 @@ class TrackingProtectionPanelDialogFragment : AppCompatDialogFragment(), UserInt
         requireContext().metrics.track(Event.TrackingProtectionSettingsPanel)
         nav(
             R.id.trackingProtectionPanelDialogFragment,
-            TrackingProtectionPanelDialogFragmentDirections
-                .actionTrackingProtectionPanelDialogFragmentToTrackingProtectionFragment()
+            TrackingProtectionPanelDialogFragmentDirections.actionGlobalTrackingProtectionFragment()
         )
     }
 

@@ -18,17 +18,13 @@ import org.mozilla.fenix.settings.PhoneFeature
 @SuppressWarnings("TooManyFunctions")
 class SitePermissionsFragment : PreferenceFragmentCompat() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        showToolbar(getString(R.string.preferences_site_permissions))
-    }
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.site_permissions_preferences, rootKey)
     }
 
     override fun onResume() {
         super.onResume()
+        showToolbar(getString(R.string.preferences_site_permissions))
         setupPreferences()
     }
 
@@ -43,7 +39,7 @@ class SitePermissionsFragment : PreferenceFragmentCompat() {
 
         exceptionsCategory.onPreferenceClickListener = OnPreferenceClickListener {
             val directions = SitePermissionsFragmentDirections.actionSitePermissionsToExceptions()
-            Navigation.findNavController(view!!).navigate(directions)
+            Navigation.findNavController(requireView()).navigate(directions)
             true
         }
     }
@@ -61,10 +57,17 @@ class SitePermissionsFragment : PreferenceFragmentCompat() {
         val settings = context.settings()
 
         val summary = phoneFeature.getActionLabel(context, settings = settings)
+        // Remove autoplaySummary after https://bugzilla.mozilla.org/show_bug.cgi?id=1621825 is fixed
+        val autoplaySummary =
+            if (summary == context.getString(R.string.preference_option_autoplay_allowed2)) {
+                context.getString(R.string.preference_option_autoplay_allowed_wifi_only2)
+            } else {
+                null
+            }
         val preferenceKey = phoneFeature.getPreferenceKey(context)
 
         val cameraPhoneFeatures: Preference = requireNotNull(findPreference(preferenceKey))
-        cameraPhoneFeatures.summary = summary
+        cameraPhoneFeatures.summary = autoplaySummary ?: summary
 
         cameraPhoneFeatures.onPreferenceClickListener = OnPreferenceClickListener {
             navigateToPhoneFeature(phoneFeature)
@@ -75,6 +78,6 @@ class SitePermissionsFragment : PreferenceFragmentCompat() {
     private fun navigateToPhoneFeature(phoneFeature: PhoneFeature) {
         val directions = SitePermissionsFragmentDirections
             .actionSitePermissionsToManagePhoneFeatures(phoneFeature.id)
-        Navigation.findNavController(view!!).navigate(directions)
+        Navigation.findNavController(requireView()).navigate(directions)
     }
 }

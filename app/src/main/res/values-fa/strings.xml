@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_2">پیش نمایش خصوصی Firefox</string>
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_3">پیش نمایش Firefox (خصوصی)</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_5">خصوصی %s</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_4">%s (خصوصی)</string>
     <!-- Home Fragment -->
     <!-- Content description (not visible, for screen readers etc.): "Three dot" menu button. -->
     <string name="content_description_menu">گزینه‌های بیشتر</string>
@@ -18,12 +18,12 @@
     <!-- No Open Tabs Message Description -->
     <string name="no_open_tabs_description">زبانه های باز شما در اینجا نشان داده می شود.</string>
 
+    <!-- About content. The first parameter is the name of the application. (For example: Fenix) -->
+    <string name="about_content">%1$s توسط موزیلا تولید شده است.</string>
+
     <!-- Private Browsing -->
     <!-- Title for private session option -->
     <string name="private_browsing_title">شما در یک جلسه خصوصی هستید</string>
-    <!-- Explanation for private browsing displayed to users on home view when they first enable private mode
-        The first parameter is the name of the app defined in app_name (for example: Fenix) -->
-    <string name="private_browsing_placeholder_description">%1$sجست‌وجوها و تاریخچه مرور شما را هنگام خروج از برنامه یا بستن تمام پنجره‌ها و زبانه‌های ناشناس پاک می‌کند. در حالی که اینکار شما را در وب‌سایت‌ها یا فراهم‌کنندهٔ اینترنت شما ناشناس نمی‌کند، این کار مخفی کردن فعالیت‌های آنلاین شما را برای هرکس دیگری که از این رایانه استفاده می‌کند را ساده‌تر می‌کند.</string>
     <string name="private_browsing_common_myths">اسطوره های رایج در مورد مرور خصوصی</string>
     <!-- Delete session button to erase your history in a private session -->
     <string name="private_browsing_delete_session">حذف جلسه</string>
@@ -42,6 +42,9 @@
     <!-- Shortcut action to open new private tab -->
     <string name="home_screen_shortcut_open_new_private_tab_2">زبانه خصوصی جدید</string>
 
+    <!-- Heading for the Top Sites block -->
+    <string name="home_screen_top_sites_heading">سایت‌های برتر</string>
+
     <!-- Browser Fragment -->
     <!-- Content description (not visible, for screen readers etc.): Navigate to open tabs -->
     <string name="browser_tabs_button">زبانه‌های باز</string>
@@ -58,7 +61,7 @@
     <!-- Content description (not visible, for screen readers etc.): Un-bookmark the current page -->
     <string name="browser_menu_edit_bookmark">ویرایش نشانک</string>
     <!-- Browser menu button that opens the addon manager -->
-    <string name="browser_menu_addon_manager">مدیریت افزودنی‌ها</string>
+    <string name="browser_menu_add_ons">افزونه‌ها</string>
     <!-- Text displayed when there are no add-ons to be shown -->
     <string name="no_add_ons">هیچ افزودنی در اینجا وجود ندارد</string>
     <!-- Browser menu button that sends a user to help articles -->
@@ -68,7 +71,7 @@
     <!-- Browser menu button that opens the settings menu -->
     <string name="browser_menu_settings">تنظیمات</string>
     <!-- Browser menu button that opens a user's library -->
-    <string name="browser_menu_your_library">کتابخانه شما</string>
+    <string name="browser_menu_library">کتابخانه</string>
     <!-- Browser menu toggle that requests a desktop site -->
     <string name="browser_menu_desktop_site">سایت دسک تاپ</string>
     <!-- Browser menu toggle that adds a shortcut to the site on the device home screen. -->
@@ -82,7 +85,7 @@
     <!-- Browser menu button that creates a new tab -->
     <string name="browser_menu_new_tab">زبانه جدید</string>
     <!-- Browser menu button that saves the current tab to a collection -->
-    <string name="browser_menu_save_to_collection">افزودن به مجموعه</string>
+    <string name="browser_menu_save_to_collection_2">افزودن به مجموعه</string>
     <!-- Browser menu button that opens a dialog to report issues with the current site -->
     <string name="browser_menu_report_issue">گزارش مشکل پایگاه اینترنتی</string>
     <!-- Browser menu button that open a share menu to share the current site -->
@@ -144,6 +147,9 @@
     <string name="search_widget_text_short">جست‌وجو</string>
     <!-- Text preview for larger sized widgets -->
     <string name="search_widget_text_long">جست در جو اینترنت</string>
+
+    <!-- Content description (not visible, for screen readers etc.): Voice search -->
+    <string name="search_widget_voice">جستجوی صوتی</string>
 
     <!-- Preferences -->
     <!-- Title for the settings page-->
@@ -268,10 +274,6 @@
     <string name="sync_last_synced_summary">آخرین همگام سازی:%s</string>
     <!-- Label summary showing never synced -->
     <string name="sync_never_synced_summary">آخرین همگام سازی: هیچ وقت</string>
-    <!-- Text for displaying the default device name.
-        The first parameter is the application name, the second is the device manufacturer name
-        and the third is the device model. -->
-    <string name="default_device_name">%s در %s%s</string>
 
     <!-- Send Tab -->
     <!-- Name of the "receive tabs" notification channel. Displayed in the "App notifications" system settings for the app -->
@@ -447,8 +449,20 @@
     <string name="history_delete_all">حذف تاریخچه</string>
     <!-- Text for the dialog to confirm clearing all history -->
     <string name="history_delete_all_dialog">آیا مطمئن هستید می‌خواهید تاریخچه مرور خود را پاک کنید؟</string>
+    <!-- Text for the snackbar to confirm that multiple browsing history items has been deleted -->
+    <string name="history_delete_multiple_items_snackbar">تاریخچه حذف شد.</string>
+    <!-- Text for the snackbar to confirm that a single browsing history item has been deleted. The first parameter is the shortened URL of the deleted history item. -->
+    <string name="history_delete_single_item_snackbar">%1$sحذف شد</string>
     <!-- Text for positive action to delete history in deleting history dialog -->
     <string name="history_clear_dialog">پاک کردن</string>
+    <!-- History overflow menu copy button -->
+    <string name="history_menu_copy_button">رونوشت برداشتن</string>
+    <!-- History overflow menu share button -->
+    <string name="history_menu_share_button">اشتراک‌گذاری</string>
+    <!-- History overflow menu open in new tab button -->
+    <string name="history_menu_open_in_new_tab_button">باز کردن در زبانهٔ جدید</string>
+    <!-- History overflow menu open in private tab button -->
+    <string name="history_menu_open_in_private_tab_button">باز کردن در زبانهٔ خصوصی</string>
     <!-- Text for the button to delete a single history item -->
     <string name="history_delete_item">حذف</string>
     <!-- History multi select title in app bar
@@ -494,6 +508,10 @@
     <string name="bookmark_edit">ویرایش نشانک</string>
     <!-- Screen title for selecting a bookmarks folder -->
     <string name="bookmark_select_folder">انتخاب پوشه</string>
+    <!-- Confirmation message for a dialog confirming if the user wants to delete the selected folder -->
+    <string name="bookmark_delete_folder_confirmation_dialog">آيا از حذف اين پوشه مطمئن هستيد؟</string>
+    <!-- Snackbar title shown after a folder has been deleted. This first parameter is the name of the deleted folder -->
+    <string name="bookmark_delete_folder_snackbar">%1$s حذف شد</string>
     <!-- Screen title for adding a bookmarks folder -->
     <string name="bookmark_add_folder">افزودن پوشه</string>
     <!-- deprecated: Snackbar title shown after a bookmark has been created. -->
@@ -547,7 +565,7 @@
      The first parameter is the host part of the URL of the bookmark deleted, if any -->
     <string name="bookmark_deletion_snackbar_message">%1$sحذف شد</string>
     <!-- Bookmark snackbar message on deleting multiple bookmarks -->
-    <string name="bookmark_deletion_multiple_snackbar_message">حذف نشانک‌های انتخاب شده</string>
+    <string name="bookmark_deletion_multiple_snackbar_message_2">نشانک حذف گردید</string>
     <!-- Bookmark undo button for deletion snackbar action -->
     <string name="bookmark_undo_deletion">برگردان</string>
 
@@ -594,10 +612,10 @@
     <string name="tracking_protection_on">روشن</string>
     <!-- Summary of tracking protection preference if tracking protection is set to off -->
     <string name="tracking_protection_off">خاموش</string>
-    <!-- Label that indicates video and audio autoplay is blocked -->
-    <string name="preference_option_autoplay_blocked">فیلم و صدا مسدود شده</string>
-    <!-- Label that indicates video and audio autoplay is allowed -->
-    <string name="preference_option_autoplay_allowed">فیلم و صدا اجازه داده شده</string>
+    <!-- Label that indicates that all video and audio autoplay is allowed -->
+    <string name="preference_option_autoplay_allowed2">اجازه دادن صوت و ویدئو</string>
+    <!-- Label that indicates that all video and audio autoplay is blocked -->
+    <string name="preference_option_autoplay_blocked3">مسدود کردن صوت و ویدئو</string>
     <!-- Summary of delete browsing data on quit preference if it is set to on -->
     <string name="delete_browsing_data_quit_on">روشن</string>
     <!-- Summary of delete browsing data on quit preference if it is set to off -->
@@ -812,6 +830,9 @@
     <!-- Text for the snackbar to show the user that the deletion of browsing data is in progress -->
     <string name="deleting_browsing_data_in_progress">در حال حذف اطلاعات…</string>
 
+    <!-- text for firefox preview moving tip button. "Mozilla Firefox Browser" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_button">دریافت مرورگر موزیلا فایرفاکس</string>
+
     <!-- Onboarding -->
     <!-- Text for onboarding welcome message
     The first parameter is the name of the app (e.g. Firefox Preview) -->
@@ -885,6 +906,9 @@
     <!-- Text for the button to read the privacy notice -->
     <string name="onboarding_privacy_notice_read_button">اعلامیه حریم خصوصی ما را بخوانید</string>
 
+    <!-- Content description (not visible, for screen readers etc.): Close onboarding screen -->
+    <string name="onboarding_close">بستن</string>
+
     <!-- text for the button to finish onboarding -->
     <string name="onboarding_finish">شروع مرور</string>
 
@@ -922,6 +946,8 @@
     <string name="sign_in_with_email">به جای آن از ایمیل استفاده کنید</string>
     <!-- Text shown in confirmation dialog to sign out of account -->
     <string name="sign_out_confirmation_message">فایرفاکس همگام سازی با حساب شما را متوقف خواهد کرد، ولی هیچ کدوم از اطلاعات شما بر روی این مرورگر حذف نخواهد شد.</string>
+    <!-- Text shown in confirmation dialog to sign out of account. The first parameter is the name of the app (e.g. Firefox Preview) -->
+    <string name="sign_out_confirmation_message_2">%s همگام سازی با حساب شما را متوقف خواهد کرد، ولی هیچ کدوم از داده‌های شما بر روی این مرورگر حذف نخواهد شد.</string>
     <!-- Option to continue signing out of account shown in confirmation dialog to sign out of account -->
     <string name="sign_out_disconnect">قطع ارتباط</string>
     <!-- Option to cancel signing out shown in confirmation dialog to sign out of account -->
@@ -1023,6 +1049,9 @@
     <string name="etp_panel_off">محافظت برای این سایت فعال نیست</string>
     <!-- Header for exceptions list for which sites enhanced tracking protection is always off -->
     <string name="enhanced_tracking_protection_exceptions">محاظفت در برابر دنبال شدن برای این پایگاه اینترنتی خاموش شده است</string>
+    <!-- Content description (not visible, for screen readers etc.): Navigate
+    back from ETP details (Ex: Tracking content) -->
+    <string name="etp_back_button_content_description">بازگشت به عقب</string>
     <!-- About page Your rights link text -->
     <string name="about_your_rights">حقوق شما</string>
     <!-- About page link text to open open source licenses screen -->
@@ -1043,6 +1072,11 @@
     <string name="about_licensing_information">اطلاعات مجوز</string>
     <!-- About page link text to open a screen with libraries that are used -->
     <string name="about_other_open_source_libraries">کتابخانه هایی که از آنها استفاده می کنیم</string>
+
+    <!-- Toast shown to the user when they are activating the secret dev menu
+        The first parameter is number of long clicks left to enable the menu -->
+    <string name="about_debug_menu_toast_progress">منؤ اشکال‌زدایی: %1$d کلیک تا فعال سازی</string>
+    <string name="about_debug_menu_toast_done">منؤ اشکال‌زدایی فعال شد</string>
 
     <!-- Content description of the tab counter toolbar button when one tab is open -->
     <string name="tab_counter_content_description_one_tab">1زبانه</string>
@@ -1065,8 +1099,13 @@
     <string name="add_to_homescreen_cancel">انصراف</string>
     <!-- Add button text for the Add to Homescreen dialog -->
     <string name="add_to_homescreen_add">افزودن</string>
+    <!-- Continue to website button text for the first-time Add to Homescreen dialog -->
+    <string name="add_to_homescreen_continue">ادامه به این پایگاه اینترنتی</string>
     <!-- Placeholder text for the TextView in the Add to Homescreen dialog -->
     <string name="add_to_homescreen_text_placeholder">نام میانبر</string>
+
+    <!-- Describes the add to homescreen functionality -->
+    <string name="add_to_homescreen_description">شما به راحتی می‌توانید این پایگاه اینترنتی را به صفحه خانگی تلفن خود اضافه کنید تا دسترسی مستقیم به آن داشته باشید و مرور سریعتی را مانند تجربه کردن یک برنامه داشته باشید.</string>
 
     <!-- Preference for managing the settings for logins and passwords in Fenix -->
     <string name="preferences_passwords_logins_and_passwords">ورودها و گذرواژه‌ها</string>
@@ -1253,4 +1292,8 @@
     <string name="certificate_info_verified_by">تایید شده توسط:%1$s</string>
     <!-- Login overflow menu delete button -->
     <string name="login_menu_delete_button">حذف</string>
+    <!-- Message in delete confirmation dialog for logins -->
+    <string name="login_deletion_confirmation">آیا مطمئنید که می‌خواهید این ورود را حذف کنید؟</string>
+    <!-- Positive action of a dialog asking to delete  -->
+    <string name="dialog_delete_positive">حذف</string>
 </resources>

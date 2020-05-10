@@ -11,14 +11,17 @@ import androidx.test.uiautomator.Until
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.mozilla.fenix.helpers.AndroidAssetDispatcher
 import org.mozilla.fenix.helpers.HomeActivityTestRule
 import org.mozilla.fenix.helpers.TestAssetHelper
+import org.mozilla.fenix.helpers.TestHelper.sendSingleTapToScreen
 import org.mozilla.fenix.helpers.ext.waitNotNull
 import org.mozilla.fenix.ui.robots.homeScreen
 import org.mozilla.fenix.ui.robots.navigationToolbar
+import org.mozilla.fenix.ui.robots.notificationShade
 
 /**
  *  Tests for verifying basic functionality of tabbed browsing
@@ -249,6 +252,7 @@ class TabbedBrowsingTest {
         }
     }
 
+    @Ignore("Temp disabled, intermittent test: https://github.com/mozilla-mobile/fenix/issues/9783")
     @Test
     fun closePrivateTabsNotificationTest() {
         val defaultWebPage = TestAssetHelper.getGenericAsset(mockWebServer, 1)
@@ -259,9 +263,14 @@ class TabbedBrowsingTest {
         navigationToolbar {
         }.enterURLAndEnterToBrowser(defaultWebPage.url) {
             mDevice.openNotification()
+        }
+
+        notificationShade {
             verifyPrivateTabsNotification()
         }.clickClosePrivateTabsNotification {
-            verifyPrivateSessionMessage()
+            // Tap an empty spot on the app homescreen to make sure it's into focus
+            sendSingleTapToScreen(20, 20)
+            verifyPrivateSessionMessage(visible = true)
         }
     }
 }

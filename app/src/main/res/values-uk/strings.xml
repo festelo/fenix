@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_2">Приватний режим Firefox Preview</string>
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_3">Firefox Preview (Приватно)</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_5">Приватний перегляд %s</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_4">%s (Приватний перегляд)</string>
     <!-- Home Fragment -->
     <!-- Content description (not visible, for screen readers etc.): "Three dot" menu button. -->
     <string name="content_description_menu">Додатково</string>
@@ -18,15 +18,15 @@
     <!-- No Open Tabs Message Description -->
     <string name="no_open_tabs_description">Тут з’являтимуться ваші відкриті вкладки.</string>
 
+    <!-- About content. The first parameter is the name of the application. (For example: Fenix) -->
+    <string name="about_content">%1$s розроблено Mozilla.</string>
+
     <!-- Private Browsing -->
     <!-- Title for private session option -->
     <string name="private_browsing_title">Ви у приватному сеансі</string>
     <!-- Explanation for private browsing displayed to users on home view when they first enable private mode
         The first parameter is the name of the app defined in app_name (for example: Fenix) -->
-    <string name="private_browsing_placeholder_description">
-         %1$s очищає вашу історію пошуку та перегляду при виході з програми чи закритті всіх приватних вкладок. Це не робить вас анонімними для вебсайтів чи вашого провайдера, але дозволяє
-        приховати вашу діяльність в Інтернеті від будь-кого іншого, хто користується цим пристроєм.
-    </string>
+    <string name="private_browsing_placeholder_description_2">%1$s стирає вашу історію пошуку та перегляду для приватних вкладок, коли ви закриваєте їх чи виходите з програми. Це не робить вас анонімними для вебсайтів чи вашого провайдера, але дозволяє приховати вашу діяльність в Інтернеті від будь-кого іншого, хто використовує цей пристрій.</string>
     <string name="private_browsing_common_myths">
        Поширені міфи про приватний перегляд
     </string>
@@ -48,6 +48,9 @@
     <!-- Shortcut action to open new private tab -->
     <string name="home_screen_shortcut_open_new_private_tab_2">Приватна вкладка</string>
 
+    <!-- Heading for the Top Sites block -->
+    <string name="home_screen_top_sites_heading">Популярні сайти</string>
+
     <!-- Browser Fragment -->
     <!-- Content description (not visible, for screen readers etc.): Navigate to open tabs -->
     <string name="browser_tabs_button">Відкриті вкладки</string>
@@ -64,7 +67,7 @@
     <!-- Content description (not visible, for screen readers etc.): Un-bookmark the current page -->
     <string name="browser_menu_edit_bookmark">Змінити закладку</string>
     <!-- Browser menu button that opens the addon manager -->
-    <string name="browser_menu_addon_manager">Менеджер додатків</string>
+    <string name="browser_menu_add_ons">Додатки</string>
     <!-- Text displayed when there are no add-ons to be shown -->
     <string name="no_add_ons">Немає додатків</string>
     <!-- Browser menu button that sends a user to help articles -->
@@ -73,9 +76,9 @@
     <string name="browser_menu_whats_new">Що нового</string>
     <!-- Browser menu button that opens the settings menu -->
     <string name="browser_menu_settings">Налаштування</string>
-    <!-- Browser menu button that opens a user's library -->
-    <string name="browser_menu_your_library">Ваша бібліотека</string>
 
+    <!-- Browser menu button that opens a user's library -->
+    <string name="browser_menu_library">Бібліотека</string>
     <!-- Browser menu toggle that requests a desktop site -->
     <string name="browser_menu_desktop_site">Версія для комп’ютера</string>
     <!-- Browser menu toggle that adds a shortcut to the site on the device home screen. -->
@@ -89,7 +92,7 @@
     <!-- Browser menu button that creates a new tab -->
     <string name="browser_menu_new_tab">Нова вкладка</string>
     <!-- Browser menu button that saves the current tab to a collection -->
-    <string name="browser_menu_save_to_collection">Зберегти до збірки</string>
+    <string name="browser_menu_save_to_collection_2">Зберегти до збірки</string>
     <!-- Browser menu button that opens a dialog to report issues with the current site -->
     <string name="browser_menu_report_issue">Повідомити про сайт</string>
     <!-- Browser menu button that open a share menu to share the current site -->
@@ -112,6 +115,10 @@
     <string name="browser_menu_open_app_link">Відкрити в програмі</string>
     <!-- Browser menu button to configure reader mode appearance e.g. the used font type and size -->
     <string name="browser_menu_read_appearance">Вигляд</string>
+
+    <!-- Error message to show when the user tries to access a scheme not
+        handled by the app (Ex: blob, tel etc) -->
+    <string name="unknown_scheme_error_message">Неможливо з’єднатися. Невідома схема URL-адреси.</string>
 
     <!-- Locale Settings Fragment -->
     <!-- Content description for tick mark on selected language -->
@@ -154,6 +161,9 @@
     <string name="search_widget_text_short">Пошук</string>
     <!-- Text preview for larger sized widgets -->
     <string name="search_widget_text_long">Пошук в Інтернеті</string>
+
+    <!-- Content description (not visible, for screen readers etc.): Voice search -->
+    <string name="search_widget_voice">Голосовий пошук</string>
 
     <!-- Preferences -->
     <!-- Title for the settings page-->
@@ -200,11 +210,19 @@
     <string name="preferences_private_browsing_options">Приватний перегляд</string>
     <!-- Preference for opening links in a private tab-->
     <string name="preferences_open_links_in_a_private_tab">Відкривати посилання в приватній вкладці</string>
+    <!-- Preference for allowing screenshots to be taken while in a private tab-->
+    <string name="preferences_allow_screenshots_in_private_mode">Дозволити знімки екрана в приватному перегляді</string>
     <!-- Preference for adding private browsing shortcut -->
     <string name="preferences_add_private_browsing_shortcut">Додати ярлик приватного перегляду</string>
     <!-- Preference for accessibility -->
     <string name="preferences_accessibility">Доступність</string>
 
+    <!-- Preference to override the Firefox Account server -->
+    <string name="preferences_override_fxa_server">Власний сервер облікового запису Firefox</string>
+    <!-- Preference to override the Sync token server -->
+    <string name="preferences_override_sync_tokenserver">Спеціальний сервер синхронізації</string>
+    <!-- Toast shown after updating the FxA/Sync server override preferences -->
+    <string name="toast_override_fxa_sync_server_done">Сервер Облікового запису / Синхронізації  Firefox змінено. Вихід з програми для застосування змін…</string>
     <!-- Preference category for account information -->
     <string name="preferences_category_account">Обліковий запис</string>
     <!-- Preference shown on banner to sign into account -->
@@ -282,10 +300,11 @@
     <string name="sync_last_synced_summary">Востаннє синхронізовано: %s</string>
     <!-- Label summary showing never synced -->
     <string name="sync_never_synced_summary">Востаннє синхронізовано: ніколи</string>
+
     <!-- Text for displaying the default device name.
         The first parameter is the application name, the second is the device manufacturer name
         and the third is the device model. -->
-    <string name="default_device_name">%s на %s %s</string>
+    <string name="default_device_name_2">%1$s на %2$s %3$s</string>
 
     <!-- Send Tab -->
     <!-- Name of the "receive tabs" notification channel. Displayed in the "App notifications" system settings for the app -->
@@ -458,14 +477,29 @@
     <!-- Text for the menu button to remove a top site -->
     <string name="remove_top_site">Вилучити</string>
 
+    <!-- Postfix for private WebApp titles, placeholder is replaced with app name -->
+    <string name="pwa_site_controls_title_private">%1$s (Приватний режим)</string>
+
     <!-- History -->
     <!-- Text for the button to clear all history -->
     <string name="history_delete_all">Видалити історію</string>
     <!-- Text for the dialog to confirm clearing all history -->
     <string name="history_delete_all_dialog">Ви впевнені, що хочете стерти свою історію?</string>
 
+    <!-- Text for the snackbar to confirm that multiple browsing history items has been deleted -->
+    <string name="history_delete_multiple_items_snackbar">Історію видалено</string>
+    <!-- Text for the snackbar to confirm that a single browsing history item has been deleted. The first parameter is the shortened URL of the deleted history item. -->
+    <string name="history_delete_single_item_snackbar">%1$s видалено</string>
     <!-- Text for positive action to delete history in deleting history dialog -->
     <string name="history_clear_dialog">Стерти</string>
+    <!-- History overflow menu copy button -->
+    <string name="history_menu_copy_button">Копіювати</string>
+    <!-- History overflow menu share button -->
+    <string name="history_menu_share_button">Поділитися</string>
+    <!-- History overflow menu open in new tab button -->
+    <string name="history_menu_open_in_new_tab_button">Відкрити у новій вкладці</string>
+    <!-- History overflow menu open in private tab button -->
+    <string name="history_menu_open_in_private_tab_button">Відкрити у приватній вкладці</string>
     <!-- Text for the button to delete a single history item -->
     <string name="history_delete_item">Видалити</string>
     <!-- History multi select title in app bar
@@ -510,6 +544,10 @@
     <string name="bookmark_edit">Змінити закладку</string>
     <!-- Screen title for selecting a bookmarks folder -->
     <string name="bookmark_select_folder">Обрати теку</string>
+    <!-- Confirmation message for a dialog confirming if the user wants to delete the selected folder -->
+    <string name="bookmark_delete_folder_confirmation_dialog">Ви впевнені, що хочете видалити цю теку?</string>
+    <!-- Snackbar title shown after a folder has been deleted. This first parameter is the name of the deleted folder -->
+    <string name="bookmark_delete_folder_snackbar">%1$s видалено</string>
     <!-- Screen title for adding a bookmarks folder -->
     <string name="bookmark_add_folder">Додати теку</string>
     <!-- deprecated: Snackbar title shown after a bookmark has been created. -->
@@ -564,7 +602,7 @@
      The first parameter is the host part of the URL of the bookmark deleted, if any -->
     <string name="bookmark_deletion_snackbar_message">%1$s видалено</string>
     <!-- Bookmark snackbar message on deleting multiple bookmarks -->
-    <string name="bookmark_deletion_multiple_snackbar_message">Видалення вибраних закладок</string>
+    <string name="bookmark_deletion_multiple_snackbar_message_2">Закладки видалено</string>
     <!-- Bookmark undo button for deletion snackbar action -->
     <string name="bookmark_undo_deletion">ВІДНОВИТИ</string>
 
@@ -611,18 +649,16 @@
     <string name="tracking_protection_on">Увімкнено</string>
     <!-- Summary of tracking protection preference if tracking protection is set to off -->
     <string name="tracking_protection_off">Вимкнено</string>
-    <!-- DEPRECATED: Label that indicates video and audio autoplay is blocked -->
-    <string name="preference_option_autoplay_blocked">Відео та аудіо заблоковано</string>
-    <!-- DEPRECATED: Label that indicates video and audio autoplay is allowed -->
-    <string name="preference_option_autoplay_allowed">Відео та аудіо дозволено</string>
     <!-- Label that indicates that all video and audio autoplay is allowed -->
     <string name="preference_option_autoplay_allowed2">Дозволити аудіо та відео</string>
-    <!-- Label that indicates that video and audio autoplay is only allowed over WIFI -->
-    <string name="preference_option_autoplay_allowed_wifi_only">Дозволити аудіо та відео лише через Wi-Fi</string>
+    <!-- Label that indicates that video and audio autoplay is only allowed over Wi-Fi -->
+    <string name="preference_option_autoplay_allowed_wifi_only2">Блокувати аудіо та відео лише для стільникових даних</string>
+    <!-- Subtext that explains 'autoplay on Wi-Fi only' option -->
+    <string name="preference_option_autoplay_allowed_wifi_subtext">Аудіо та відео відтворюватимуться через Wi-Fi</string>
     <!-- Label that indicates that video autoplay is allowed, but audio autoplay is blocked -->
-    <string name="preference_option_autoplay_block_audio">Блокувати аудіо</string>
+    <string name="preference_option_autoplay_block_audio2">Блокувати лише аудіо</string>
     <!-- Label that indicates that all video and audio autoplay is blocked -->
-    <string name="preference_option_autoplay_blocked2">Блокувати відео та аудіо</string>
+    <string name="preference_option_autoplay_blocked3">Блокувати аудіо та відео</string>
     <!-- Summary of delete browsing data on quit preference if it is set to on -->
     <string name="delete_browsing_data_quit_on">Увімкнено</string>
     <!-- Summary of delete browsing data on quit preference if it is set to off -->
@@ -838,6 +874,32 @@
     <!-- Text for the snackbar to show the user that the deletion of browsing data is in progress -->
     <string name="deleting_browsing_data_in_progress">Видалення даних перегляду…</string>
 
+    <!-- Tips -->
+    <!-- text for firefox preview moving tip header "Firefox Preview" and "Firefox Nightly" are intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header">Firefox Preview, відтепер, стає Firefox Nightly</string>
+
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description">Firefox Nightly оновлюється щоночі та має нові експериментальні функції.
+        Однак, він може бути дещо нестабільнішим. Завантажте beta версію нашого браузера для стабільнішої роботи.</string>
+    <!-- text for firefox preview moving tip button. "Mozilla Firefox Browser" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_button">Отримайте браузер Mozilla Firefox</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_installed">Firefox Nightly переміщено</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_installed">Ця програма більше не отримуватиме оновлень безпеки. Припиніть користуватися нею та перейдіть на новий Nightly.
+        \n\nЩоб перенести ваші закладки, дані входу та історію переглядів до іншої програми, створіть обліковий запис Firefox.</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_installed">Перейдіть на новий Nightly</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_not_installed">Firefox Nightly переміщено</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_not_installed">Ця програма більше не отримуватиме оновлень безпеки. Припиніть користуватися нею та перейдіть на новий Nightly.
+        \n\nЩоб перенести ваші закладки, дані входу та історію переглядів до іншої програми, створіть обліковий запис Firefox.</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_not_installed">Отримайте новий Nightly</string>
+
     <!-- Onboarding -->
     <!-- Text for onboarding welcome message
     The first parameter is the name of the app (e.g. Firefox Preview) -->
@@ -915,6 +977,9 @@
     <!-- Text for the button to read the privacy notice -->
     <string name="onboarding_privacy_notice_read_button">Повідомлення про приватність</string>
 
+    <!-- Content description (not visible, for screen readers etc.): Close onboarding screen -->
+    <string name="onboarding_close">Закрити</string>
+
     <!-- text for the button to finish onboarding -->
     <string name="onboarding_finish">Почати перегляд</string>
 
@@ -953,6 +1018,8 @@
 
     <!-- Text shown in confirmation dialog to sign out of account -->
     <string name="sign_out_confirmation_message">Firefox припинить синхронізацію з вашим обліковим записом, але не вилучить жодних даних перегляду на цьому пристрої.</string>
+    <!-- Text shown in confirmation dialog to sign out of account. The first parameter is the name of the app (e.g. Firefox Preview) -->
+    <string name="sign_out_confirmation_message_2">%s припинить синхронізацію з вашим обліковим записом, але не видалить жодних даних перегляду на цьому пристрої.</string>
     <!-- Option to continue signing out of account shown in confirmation dialog to sign out of account -->
     <string name="sign_out_disconnect">Від’єднатись</string>
     <!-- Option to cancel signing out shown in confirmation dialog to sign out of account -->
@@ -1054,6 +1121,9 @@
     <string name="etp_panel_off">Захист на цьому сайті вимкнено</string>
     <!-- Header for exceptions list for which sites enhanced tracking protection is always off -->
     <string name="enhanced_tracking_protection_exceptions">Розширений захист від стеження вимкнено для цих вебсайтів</string>
+    <!-- Content description (not visible, for screen readers etc.): Navigate
+    back from ETP details (Ex: Tracking content) -->
+    <string name="etp_back_button_content_description">Перейти назад</string>
     <!-- About page Your rights link text -->
     <string name="about_your_rights">Ваші права</string>
     <!-- About page link text to open open source licenses screen -->
@@ -1074,6 +1144,11 @@
     <string name="about_licensing_information">Інформація про ліцензію</string>
     <!-- About page link text to open a screen with libraries that are used -->
     <string name="about_other_open_source_libraries">Бібліотеки, які ми використовуємо</string>
+
+    <!-- Toast shown to the user when they are activating the secret dev menu
+        The first parameter is number of long clicks left to enable the menu -->
+    <string name="about_debug_menu_toast_progress">Меню зневадження: %1$d лівих кліки для увімкнення</string>
+    <string name="about_debug_menu_toast_done">Меню зневадження увімкнено</string>
 
     <!-- Content description of the tab counter toolbar button when one tab is open -->
     <string name="tab_counter_content_description_one_tab">1 вкладка</string>
@@ -1096,8 +1171,13 @@
     <string name="add_to_homescreen_cancel">Скасувати</string>
     <!-- Add button text for the Add to Homescreen dialog -->
     <string name="add_to_homescreen_add">Додати</string>
+    <!-- Continue to website button text for the first-time Add to Homescreen dialog -->
+    <string name="add_to_homescreen_continue">Продовжити на вебсайті</string>
     <!-- Placeholder text for the TextView in the Add to Homescreen dialog -->
     <string name="add_to_homescreen_text_placeholder">Назва ярлика</string>
+
+    <!-- Describes the add to homescreen functionality -->
+    <string name="add_to_homescreen_description">Ви можете легко додати цей вебсайт на головний екран вашого телефону, щоб мати миттєвий доступ до нього і працювати швидше, неначе зі звичайною програмою.</string>
 
     <!-- Preference for managing the settings for logins and passwords in Fenix -->
     <string name="preferences_passwords_logins_and_passwords">Паролі</string>

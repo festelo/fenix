@@ -11,9 +11,9 @@ object Versions {
     const val leanplum = "5.2.3"
     const val osslicenses_plugin = "0.9.5"
     const val osslicenses_library = "17.0.0"
-    const val detekt = "1.0.0-RC16"
+    const val detekt = "1.6.0"
 
-    const val androidx_appcompat = "1.1.0"
+    const val androidx_appcompat = "1.2.0-beta01"
     const val androidx_biometric = "1.0.1"
     const val androidx_coordinator_layout = "1.1.0-rc01"
     const val androidx_constraint_layout = "2.0.0-beta4"
@@ -21,11 +21,9 @@ object Versions {
     const val androidx_legacy = "1.0.0"
     const val androidx_annotation = "1.1.0"
     const val androidx_lifecycle = "2.2.0"
-    const val androidx_fragment = "1.2.1"
+    const val androidx_fragment = "1.2.4"
     const val androidx_navigation = "2.2.1"
     const val androidx_recyclerview = "1.1.0"
-    const val androidx_testing = "1.3.0-alpha04"
-    const val androidx_test_ext = "1.0.0"
     const val androidx_core = "1.2.0"
     const val androidx_paging = "2.1.0"
     const val androidx_transition = "1.3.0"
@@ -33,24 +31,17 @@ object Versions {
     const val google_material = "1.1.0"
     const val google_flexbox = "2.0.1"
 
-    const val mozilla_android_components = "37.0.0-SNAPSHOT"
+    const val mozilla_android_components = AndroidComponents.VERSION
 
     const val adjust = "4.18.3"
     const val installreferrer = "1.0"
 
     const val junit = "5.5.2"
-    const val assertJ = "3.13.2"
     const val mockito = "2.24.5"
     const val mockk = "1.9.kotlin12"
-    const val assertk = "0.19"
 
-    const val espresso_version = "3.2.0"
     const val mockwebserver = "3.11.0"
-    const val orchestrator = "1.3.0-alpha02"
-    const val tools_test_rules = "1.3.0-alpha02"
-    const val tools_test_runner = "1.3.0-alpha02"
     const val uiautomator = "2.2.0"
-    const val robolectric = "4.2.1"
 
     const val google_ads_id_version = "16.0.0"
 
@@ -184,20 +175,32 @@ object Deps {
     const val mockito_core = "org.mockito:mockito-core:${Versions.mockito}"
     const val mockito_android = "org.mockito:mockito-android:${Versions.mockito}"
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
-    const val assertk = "com.willowtreeapps.assertk:assertk-jvm:${Versions.assertk}"
 
-    const val espresso_contrib = "androidx.test.espresso:espresso-contrib:${Versions.espresso_version}"
-    const val espresso_core = "androidx.test.espresso:espresso-core:${Versions.espresso_version}"
-    const val espresso_idling_resources = "androidx.test.espresso:espresso-idling-resource:${Versions.espresso_version}"
-    const val espresso_intents = "androidx.test.espresso:espresso-intents:${Versions.espresso_version}"
+    // --- START AndroidX test dependencies --- //
+    // N.B.: the versions of these dependencies appear to be pinned together. To avoid bugs, they
+    // should always be updated together based on the latest version from the Android test releases page:
+    //   https://developer.android.com/jetpack/androidx/releases/test
+    // For the full IDs of these test dependencies, see:
+    //   https://developer.android.com/training/testing/set-up-project#android-test-dependencies
+    private const val androidx_test_shared_version = "1.3.0-alpha05" // this appears to be shared with many deps.
+    const val androidx_test_core = "androidx.test:core:$androidx_test_shared_version"
+    private const val androidx_espresso_version = "3.3.0-alpha05"
+    const val espresso_core = "androidx.test.espresso:espresso-core:$androidx_espresso_version"
+    const val espresso_contrib = "androidx.test.espresso:espresso-contrib:$androidx_espresso_version"
+    const val espresso_idling_resources = "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_version"
+    const val espresso_intents = "androidx.test.espresso:espresso-intents:$androidx_espresso_version"
+    const val androidx_junit = "androidx.test.ext:junit:1.1.2-alpha05"
+    // Monitor is unused
+    const val orchestrator = "androidx.test:orchestrator:$androidx_test_shared_version"
+    const val tools_test_runner = "androidx.test:runner:$androidx_test_shared_version"
+    const val tools_test_rules = "androidx.test:rules:$androidx_test_shared_version"
+    // Truth is unused
+    // Test services is unused
+    // --- END AndroidX test dependencies --- //
+
     const val mockwebserver = "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
-    const val orchestrator = "androidx.test:orchestrator:${Versions.orchestrator}"
-    const val tools_test_rules = "androidx.test:rules:${Versions.tools_test_rules}"
-    const val tools_test_runner = "androidx.test:runner:${Versions.tools_test_runner}"
     const val uiautomator = "androidx.test.uiautomator:uiautomator:${Versions.uiautomator}"
-    const val robolectric = "org.robolectric:robolectric:${Versions.robolectric}"
-    const val androidx_junit = "androidx.test.ext:junit:${Versions.androidx_test_ext}"
-    const val androidx_test_core = "androidx.test:core:${Versions.androidx_testing}"
+    const val robolectric = "org.robolectric:robolectric:4.3.1"
 
     const val google_ads_id = "com.google.android.gms:play-services-ads-identifier:${Versions.google_ads_id_version}"
 
@@ -207,6 +210,27 @@ object Deps {
     const val detektTest = "io.gitlab.arturbosch.detekt:detekt-test:${Versions.detekt}"
     const val junitApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junit}"
     const val junitParams = "org.junit.jupiter:junit-jupiter-params:${Versions.junit}"
-    const val assertJ = "org.assertj:assertj-core:${Versions.assertJ}"
     const val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit}"
+}
+
+/**
+ * Functionality to limit specific dependencies to specific repositories. These are typically expected to be used by
+ * dependency group name (i.e. with `include/excludeGroup`). For additional info, see:
+ * https://docs.gradle.org/current/userguide/declaring_repositories.html#sec::matching_repositories_to_dependencies
+ *
+ * Note: I wanted to nest this in Deps but for some reason gradle can't find it so it's top-level now. :|
+ */
+object RepoMatching {
+    const val mozilla = "org\\.mozilla\\..*"
+    const val androidx = "androidx\\..*"
+    const val comAndroid = "com\\.android\\..*"
+    const val comGoogleFirebase = "com\\.google\\.firebase"
+
+    /**
+     * A matcher for com.google.android.* with one exception: the espresso-contrib dependency includes the
+     * accessibility-test-framework dependency, which is not available in the google repo. As such, we must
+     * explicitly exclude it from this regex so it can be found on jcenter. Note that the transitive dependency
+     * com.google.guava is also not available on google's repo.
+     */
+    const val comGoogleAndroid = "com\\.google\\.android\\.(?!apps\\.common\\.testing\\.accessibility\\.framework).*"
 }

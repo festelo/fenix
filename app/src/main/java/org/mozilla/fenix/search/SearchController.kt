@@ -15,6 +15,7 @@ import mozilla.components.browser.session.Session
 import mozilla.components.support.ktx.kotlin.isUrl
 import org.mozilla.fenix.BrowserDirection
 import org.mozilla.fenix.HomeActivity
+import org.mozilla.fenix.R
 import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.components.metrics.Event.PerformedSearch.SearchAccessPoint.ACTION
 import org.mozilla.fenix.components.metrics.Event.PerformedSearch.SearchAccessPoint.NONE
@@ -23,6 +24,7 @@ import org.mozilla.fenix.components.metrics.MetricsUtils
 import org.mozilla.fenix.components.searchengine.CustomSearchEngineStore
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.metrics
+import org.mozilla.fenix.ext.navigateSafe
 import org.mozilla.fenix.ext.settings
 
 /**
@@ -45,7 +47,7 @@ class DefaultSearchController(
     private val context: Context,
     private val store: SearchFragmentStore,
     private val navController: NavController,
-    private val lifecycleScope: CoroutineScope,
+    private val viewLifecycleScope: CoroutineScope,
     private val clearToolbarFocus: () -> Unit
 ) : SearchController {
 
@@ -80,7 +82,7 @@ class DefaultSearchController(
     }
 
     override fun handleEditingCancelled() {
-        lifecycleScope.launch {
+        viewLifecycleScope.launch {
             clearToolbarFocus()
             // Delay a short amount so the keyboard begins animating away. This makes exit animation
             // much smoother instead of having two separate parts (keyboard hides THEN animation)
@@ -158,8 +160,8 @@ class DefaultSearchController(
     }
 
     override fun handleClickSearchEngineSettings() {
-        val directions = SearchFragmentDirections.actionSearchFragmentToSearchEngineFragment()
-        navController.navigate(directions)
+        val directions = SearchFragmentDirections.actionGlobalSearchEngineFragment()
+        navController.navigateSafe(R.id.searchFragment, directions)
     }
 
     override fun handleExistingSessionSelected(session: Session) {

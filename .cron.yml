@@ -10,8 +10,16 @@ jobs:
           treeherder-symbol: Nd
           target-tasks-method: nightly
       when:
-          - {hour: 6, minute: 0}
           - {hour: 18, minute: 0}
+    # This is a temporary hook in order to not overload Google Play.
+    # See bug 1628413 for more context.
+    - name: nightly-on-google-play
+      job:
+          type: decision-task
+          treeherder-symbol: Nd-gp
+          target-tasks-method: nightly-on-google-play
+      when:
+          - {hour: 6, minute: 0}
     - name: fennec-beta
       job:
           type: decision-task
@@ -24,3 +32,15 @@ jobs:
           treeherder-symbol: raptor-D
           target-tasks-method: raptor
       when: [{hour: 1, minute: 0}]
+    - name: browsertime
+      job:
+          type: decision-task
+          treeherder-symbol: btime-D
+          target-tasks-method: browsertime
+      when: [{hour: 1, minute: 0}]
+    - name: bump-android-components
+      job:
+          type: decision-task
+          treeherder-symbol: bump-ac
+          target-tasks-method: bump_android_components
+      when: [{hour: 14, minute: 0}]

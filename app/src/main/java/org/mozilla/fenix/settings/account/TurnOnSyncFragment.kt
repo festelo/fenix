@@ -29,6 +29,7 @@ class TurnOnSyncFragment : Fragment(), AccountObserver {
 
     private val signInClickListener = View.OnClickListener {
         requireComponents.services.accountsAuthFeature.beginAuthentication(requireContext())
+        requireComponents.analytics.metrics.track(Event.SyncAuthUseEmail)
         // TODO The sign-in web content populates session history,
         // so pressing "back" after signing in won't take us back into the settings screen, but rather up the
         // session history stack.
@@ -38,7 +39,7 @@ class TurnOnSyncFragment : Fragment(), AccountObserver {
 
     private val paringClickListener = View.OnClickListener {
         val directions = TurnOnSyncFragmentDirections.actionTurnOnSyncFragmentToPairFragment()
-        view!!.findNavController().navigate(directions)
+        requireView().findNavController().navigate(directions)
         requireComponents.analytics.metrics.track(Event.SyncAuthScanPairing)
     }
 
@@ -81,11 +82,19 @@ class TurnOnSyncFragment : Fragment(), AccountObserver {
         // Since the snackbar can be presented in BrowserFragment or in SettingsFragment we must
         // base our display method on the padSnackbar argument
         if (args.padSnackbar) {
-            FenixSnackbar.makeWithToolbarPadding(requireView(), snackbarLength)
+            FenixSnackbar.make(
+                view = requireView(),
+                duration = snackbarLength,
+                isDisplayedWithBrowserToolbar = true
+            )
                 .setText(snackbarText)
                 .show()
         } else {
-            FenixSnackbar.make(requireView(), snackbarLength)
+            FenixSnackbar.make(
+                view = requireView(),
+                duration = snackbarLength,
+                isDisplayedWithBrowserToolbar = false
+            )
                 .setText(snackbarText)
                 .show()
         }

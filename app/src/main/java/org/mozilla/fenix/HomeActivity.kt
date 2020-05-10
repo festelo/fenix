@@ -8,12 +8,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PROTECTED
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +24,8 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -33,6 +37,7 @@ import mozilla.components.concept.engine.EngineView
 import mozilla.components.feature.contextmenu.ext.DefaultSelectionActionDelegate
 import mozilla.components.service.fxa.sync.SyncReason
 import mozilla.components.support.base.feature.UserInteractionHandler
+import mozilla.components.support.ktx.android.arch.lifecycle.addObservers
 import mozilla.components.support.ktx.android.content.share
 import mozilla.components.support.ktx.kotlin.isUrl
 import mozilla.components.support.ktx.kotlin.toNormalizedUrl
@@ -48,6 +53,7 @@ import org.mozilla.fenix.components.metrics.BreadcrumbsRecorder
 import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.exceptions.ExceptionsFragmentDirections
 import org.mozilla.fenix.ext.alreadyOnDestination
+import org.mozilla.fenix.ext.checkAndUpdateScreenshotPermission
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.nav
 import org.mozilla.fenix.ext.settings
@@ -70,8 +76,19 @@ import org.mozilla.fenix.settings.logins.SavedLoginsFragmentDirections
 import org.mozilla.fenix.theme.DefaultThemeManager
 import org.mozilla.fenix.theme.ThemeManager
 import org.mozilla.fenix.utils.BrowsersCache
-import org.mozilla.fenix.utils.StartupTaskManager
+import org.mozilla.fenix.utils.RunWhenReadyQueue
+import mozilla.components.concept.tabstray.TabsTray
+import mozilla.components.browser.tabstray.TabsAdapter
+import mozilla.components.browser.tabstray.BrowserTabsTray
+import mozilla.components.browser.tabstray.DefaultTabViewHolder
+import org.mozilla.fenix.tabtray.TabTrayFragmentDirections
 
+/**
+ * The main activity of the application. The application is primarily a single Activity (this one)
+ * with fragments switching out to display different views. The most important views shown here are the:
+ * - home screen
+ * - browser screen
+ */
 @SuppressWarnings("TooManyFunctions", "LargeClass")
 open class HomeActivity : LocaleAwareAppCompatActivity() {
 
@@ -81,7 +98,7 @@ open class HomeActivity : LocaleAwareAppCompatActivity() {
 
     private var isVisuallyComplete = false
 
-    private var visualCompletenessTaskManager: StartupTaskManager? = null
+    private var visualCompletenessQueue: RunWhenReadyQueue? = null
 
     private var sessionObserver: SessionManager.Observer? = null
 
@@ -110,6 +127,7 @@ open class HomeActivity : LocaleAwareAppCompatActivity() {
         components.publicSuffixList.prefetch()
 
         setupThemeAndBrowsingMode(getModeFromIntentOrLastKnown(intent))
+        checkAndUpdateScreenshotPermission(settings())
         setContentView(R.layout.activity_home)
 
         // Must be after we set the content view
@@ -118,7 +136,7 @@ open class HomeActivity : LocaleAwareAppCompatActivity() {
                 // This delay is temporary. We are delaying 5 seconds until the performance
                 // team can locate the real point of visual completeness.
                 it.postDelayed({
-                    visualCompletenessTaskManager!!.start()
+                    visualCompletenessQueue!!.ready()
                 }, delay)
             }
         }
@@ -138,7 +156,10 @@ open class HomeActivity : LocaleAwareAppCompatActivity() {
         }
         supportActionBar?.hide()
 
-        lifecycle.addObserver(webExtensionPopupFeature)
+        lifecycle.addObservers(
+            webExtensionPopupFeature,
+            StartupTimeline.homeActivityLifecycleObserver
+        )
         StartupTimeline.onActivityCreateEndHome(this)
     }
 
@@ -146,13 +167,13 @@ open class HomeActivity : LocaleAwareAppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        lifecycleScope.launch {
-            with(components.backgroundServices) {
+        components.backgroundServices.accountManagerAvailableQueue.runIfReadyOrQueue {
+            lifecycleScope.launch {
                 // Make sure accountManager is initialized.
-                accountManager.initAsync().await()
+                components.backgroundServices.accountManager.initAsync().await()
                 // If we're authenticated, kick-off a sync and a device state refresh.
-                accountManager.authenticatedAccount()?.let {
-                    accountManager.syncNowAsync(SyncReason.Startup, debounce = true)
+                components.backgroundServices.accountManager.authenticatedAccount()?.let {
+                    components.backgroundServices.accountManager.syncNowAsync(SyncReason.Startup, debounce = true)
                 }
             }
         }
@@ -199,6 +220,30 @@ open class HomeActivity : LocaleAwareAppCompatActivity() {
                 share(it)
             }
         }.asView()
+        TabsTray::class.java.name -> {
+            val layout = LinearLayoutManager(context)
+            val adapter = TabsAdapter { parentView, tabsTray ->
+
+                DefaultTabViewHolder(
+                    LayoutInflater.from(parentView.context).inflate(
+                        R.layout.tab_tray_item,
+                        parentView,
+                        false),
+                    tabsTray
+                )
+            }
+            val tray = BrowserTabsTray(context, attrs, tabsAdapter = adapter, layout = layout)
+            val decoration = DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+            val drawable = AppCompatResources.getDrawable(context, R.drawable.tab_tray_divider)
+            drawable?.let {
+                decoration.setDrawable(it)
+                tray.addItemDecoration(decoration)
+            }
+            tray
+        }
         else -> super.onCreateView(parent, name, context, attrs)
     }
 
@@ -209,6 +254,16 @@ open class HomeActivity : LocaleAwareAppCompatActivity() {
             }
         }
         super.onBackPressed()
+    }
+
+    final override fun onUserLeaveHint() {
+        supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.fragments?.forEach {
+            if (it is UserInteractionHandler && it.onHomePressed()) {
+                return
+            }
+        }
+
+        super.onUserLeaveHint()
     }
 
     protected open fun getBreadcrumbMessage(destination: NavDestination): String {
@@ -310,31 +365,25 @@ open class HomeActivity : LocaleAwareAppCompatActivity() {
         BrowserDirection.FromHome ->
             HomeFragmentDirections.actionHomeFragmentToBrowserFragment(customTabSessionId, true)
         BrowserDirection.FromSearch ->
-            SearchFragmentDirections.actionSearchFragmentToBrowserFragment(customTabSessionId)
+            SearchFragmentDirections.actionGlobalBrowser(customTabSessionId)
+        BrowserDirection.FromTabTray ->
+            TabTrayFragmentDirections.actionGlobalBrowser(customTabSessionId)
         BrowserDirection.FromSettings ->
-            SettingsFragmentDirections.actionSettingsFragmentToBrowserFragment(customTabSessionId)
+            SettingsFragmentDirections.actionGlobalBrowser(customTabSessionId)
         BrowserDirection.FromBookmarks ->
-            BookmarkFragmentDirections.actionBookmarkFragmentToBrowserFragment(customTabSessionId)
+            BookmarkFragmentDirections.actionGlobalBrowser(customTabSessionId)
         BrowserDirection.FromHistory ->
-            HistoryFragmentDirections.actionHistoryFragmentToBrowserFragment(customTabSessionId)
+            HistoryFragmentDirections.actionGlobalBrowser(customTabSessionId)
         BrowserDirection.FromExceptions ->
-            ExceptionsFragmentDirections.actionExceptionsFragmentToBrowserFragment(
-                customTabSessionId
-            )
+            ExceptionsFragmentDirections.actionGlobalBrowser(customTabSessionId)
         BrowserDirection.FromAbout ->
-            AboutFragmentDirections.actionAboutFragmentToBrowserFragment(customTabSessionId)
+            AboutFragmentDirections.actionGlobalBrowser(customTabSessionId)
         BrowserDirection.FromTrackingProtection ->
-            TrackingProtectionFragmentDirections.actionTrackingProtectionFragmentToBrowserFragment(
-                customTabSessionId
-            )
+            TrackingProtectionFragmentDirections.actionGlobalBrowser(customTabSessionId)
         BrowserDirection.FromDefaultBrowserSettingsFragment ->
-            DefaultBrowserSettingsFragmentDirections.actionDefaultBrowserSettingsFragmentToBrowserFragment(
-                customTabSessionId
-            )
+            DefaultBrowserSettingsFragmentDirections.actionGlobalBrowser(customTabSessionId)
         BrowserDirection.FromSavedLoginsFragment ->
-            SavedLoginsFragmentDirections.actionSavedLoginsFragmentToBrowserFragment(
-                customTabSessionId
-            )
+            SavedLoginsFragmentDirections.actionGlobalBrowser(customTabSessionId)
     }
 
     private fun load(
@@ -399,9 +448,9 @@ open class HomeActivity : LocaleAwareAppCompatActivity() {
      * The root container is null at this point, so let the HomeActivity know that
      * we are visually complete.
      */
-    fun postVisualCompletenessQueue(visualCompletenessTaskManager: StartupTaskManager) {
+    fun postVisualCompletenessQueue(visualCompletenessQueue: RunWhenReadyQueue) {
         isVisuallyComplete = true
-        this.visualCompletenessTaskManager = visualCompletenessTaskManager
+        this.visualCompletenessQueue = visualCompletenessQueue
     }
 
     companion object {

@@ -2,11 +2,10 @@
 <resources>
 
 
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_2">プライベート Firefox Preview</string>
-
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_3">Firefox Preview (プライベート)</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_5">%s プライベートモード</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_4">%s (プライベート)</string>
     <!-- Home Fragment -->
     <!-- Content description (not visible, for screen readers etc.): "Three dot" menu button. -->
     <string name="content_description_menu">他のオプション</string>
@@ -22,12 +21,15 @@
     <!-- No Open Tabs Message Description -->
     <string name="no_open_tabs_description">開いているタブがここに表示されます。</string>
 
+    <!-- About content. The first parameter is the name of the application. (For example: Fenix) -->
+    <string name="about_content">%1$s は Mozilla の製品です。</string>
+
     <!-- Private Browsing -->
     <!-- Title for private session option -->
     <string name="private_browsing_title">プライベートセッションです</string>
     <!-- Explanation for private browsing displayed to users on home view when they first enable private mode
         The first parameter is the name of the app defined in app_name (for example: Fenix) -->
-    <string name="private_browsing_placeholder_description">%1$s を終了するかプライベートタブをすべて閉じると、検索履歴と閲覧履歴が消去されます。ウェブサイトやご利用のインターネットサービスプロバイダーに対しては匿名化されませんが、この端末を使う他のユーザーからあなたのオンライン行動の秘密を守るのに役立ちます。</string>
+    <string name="private_browsing_placeholder_description_2">%1$s のプライベートタブを閉じるかアプリを終了すると、その検索履歴とブラウジング履歴が消去されます。これは、ウェブサイトやインターネットサービスプロバイダーに対して匿名でアクセスしているわけではありません。この機能は、この端末を使用する他者に対してオンライン上のプライベートな行動を隠すものです。</string>
     <string name="private_browsing_common_myths">
        プライベートブラウジングについての誤解
     </string>
@@ -48,6 +50,9 @@
     <!-- Shortcut action to open new private tab -->
     <string name="home_screen_shortcut_open_new_private_tab_2">新しいプライベートタブ</string>
 
+    <!-- Heading for the Top Sites block -->
+    <string name="home_screen_top_sites_heading">よく見るサイト</string>
+
     <!-- Browser Fragment -->
     <!-- Content description (not visible, for screen readers etc.): Navigate to open tabs -->
     <string name="browser_tabs_button">タブを開きます</string>
@@ -64,7 +69,7 @@
     <!-- Content description (not visible, for screen readers etc.): Un-bookmark the current page -->
     <string name="browser_menu_edit_bookmark">ブックマークを編集</string>
     <!-- Browser menu button that opens the addon manager -->
-    <string name="browser_menu_addon_manager">アドオンマネージャー</string>
+    <string name="browser_menu_add_ons">アドオン</string>
     <!-- Text displayed when there are no add-ons to be shown -->
     <string name="no_add_ons">アドオンがありません</string>
     <!-- Browser menu button that sends a user to help articles -->
@@ -74,7 +79,7 @@
     <!-- Browser menu button that opens the settings menu -->
     <string name="browser_menu_settings">設定</string>
     <!-- Browser menu button that opens a user's library -->
-    <string name="browser_menu_your_library">ライブラリー</string>
+    <string name="browser_menu_library">ライブラリー</string>
     <!-- Browser menu toggle that requests a desktop site -->
     <string name="browser_menu_desktop_site">デスクトップサイト</string>
     <!-- Browser menu toggle that adds a shortcut to the site on the device home screen. -->
@@ -88,7 +93,7 @@
     <!-- Browser menu button that creates a new tab -->
     <string name="browser_menu_new_tab">新しいタブ</string>
     <!-- Browser menu button that saves the current tab to a collection -->
-    <string name="browser_menu_save_to_collection">コレクションに保存</string>
+    <string name="browser_menu_save_to_collection_2">コレクションに保存</string>
     <!-- Browser menu button that opens a dialog to report issues with the current site -->
     <string name="browser_menu_report_issue">サイトの問題を報告</string>
     <!-- Browser menu button that open a share menu to share the current site -->
@@ -112,6 +117,10 @@
     <string name="browser_menu_open_app_link">アプリで開く</string>
     <!-- Browser menu button to configure reader mode appearance e.g. the used font type and size -->
     <string name="browser_menu_read_appearance">外観</string>
+
+    <!-- Error message to show when the user tries to access a scheme not
+        handled by the app (Ex: blob, tel etc) -->
+    <string name="unknown_scheme_error_message">接続できません。認識できない URL スキームです。</string>
 
     <!-- Locale Settings Fragment -->
     <!-- Content description for tick mark on selected language -->
@@ -153,6 +162,9 @@
     <string name="search_widget_text_short">検索</string>
     <!-- Text preview for larger sized widgets -->
     <string name="search_widget_text_long">ウェブ検索</string>
+
+    <!-- Content description (not visible, for screen readers etc.): Voice search -->
+    <string name="search_widget_voice">音声検索</string>
 
     <!-- Preferences -->
     <!-- Title for the settings page-->
@@ -200,10 +212,18 @@
     <string name="preferences_private_browsing_options">プライベートブラウジング</string>
     <!-- Preference for opening links in a private tab-->
     <string name="preferences_open_links_in_a_private_tab">リンクをプライベートタブで開く</string>
+    <!-- Preference for allowing screenshots to be taken while in a private tab-->
+    <string name="preferences_allow_screenshots_in_private_mode">プライベートブラウジングモードでスクリーンショットの撮影を許可する</string>
     <!-- Preference for adding private browsing shortcut -->
     <string name="preferences_add_private_browsing_shortcut">プライベートブラウジングショートカットを追加する</string>
     <!-- Preference for accessibility -->
     <string name="preferences_accessibility">アクセシビリティ</string>
+    <!-- Preference to override the Firefox Account server -->
+    <string name="preferences_override_fxa_server">カスタム Firefox アカウントサーバー</string>
+    <!-- Preference to override the Sync token server -->
+    <string name="preferences_override_sync_tokenserver">カスタム Sync サーバー</string>
+    <!-- Toast shown after updating the FxA/Sync server override preferences -->
+    <string name="toast_override_fxa_sync_server_done">Firefox アカウント/Sync サーバーが変更されました。変更を適用するためにアプリケーションを終了しています…</string>
     <!-- Preference category for account information -->
     <string name="preferences_category_account">アカウント</string>
     <!-- Preference shown on banner to sign into account -->
@@ -284,7 +304,7 @@
     <!-- Text for displaying the default device name.
         The first parameter is the application name, the second is the device manufacturer name
         and the third is the device model. -->
-    <string name="default_device_name">%2$s %3$s 上の %1$s</string>
+    <string name="default_device_name_2">%2$s %3$s 上の %1$s</string>
 
     <!-- Send Tab -->
     <!-- Name of the "receive tabs" notification channel. Displayed in the "App notifications" system settings for the app -->
@@ -459,13 +479,28 @@
     <!-- Text for the menu button to remove a top site -->
     <string name="remove_top_site">削除</string>
 
+    <!-- Postfix for private WebApp titles, placeholder is replaced with app name -->
+    <string name="pwa_site_controls_title_private">%1$s (プライベートモード)</string>
+
     <!-- History -->
     <!-- Text for the button to clear all history -->
     <string name="history_delete_all">履歴を削除</string>
     <!-- Text for the dialog to confirm clearing all history -->
     <string name="history_delete_all_dialog">本当に履歴を消去してもよろしいですか？</string>
+    <!-- Text for the snackbar to confirm that multiple browsing history items has been deleted -->
+    <string name="history_delete_multiple_items_snackbar">履歴が削除されました</string>
+    <!-- Text for the snackbar to confirm that a single browsing history item has been deleted. The first parameter is the shortened URL of the deleted history item. -->
+    <string name="history_delete_single_item_snackbar">%1$s のブラウジング履歴が削除されました</string>
     <!-- Text for positive action to delete history in deleting history dialog -->
     <string name="history_clear_dialog">消去</string>
+    <!-- History overflow menu copy button -->
+    <string name="history_menu_copy_button">コピー</string>
+    <!-- History overflow menu share button -->
+    <string name="history_menu_share_button">共有</string>
+    <!-- History overflow menu open in new tab button -->
+    <string name="history_menu_open_in_new_tab_button">新しいタブで開く</string>
+    <!-- History overflow menu open in private tab button -->
+    <string name="history_menu_open_in_private_tab_button">プライベートタブで開く</string>
     <!-- Text for the button to delete a single history item -->
     <string name="history_delete_item">削除</string>
     <!-- History multi select title in app bar
@@ -511,6 +546,10 @@
     <string name="bookmark_edit">ブックマークを編集</string>
     <!-- Screen title for selecting a bookmarks folder -->
     <string name="bookmark_select_folder">フォルダー選択</string>
+    <!-- Confirmation message for a dialog confirming if the user wants to delete the selected folder -->
+    <string name="bookmark_delete_folder_confirmation_dialog">このフォルダーを削除してもよろしいですか？</string>
+    <!-- Snackbar title shown after a folder has been deleted. This first parameter is the name of the deleted folder -->
+    <string name="bookmark_delete_folder_snackbar">%1$s フォルダーを削除しました</string>
     <!-- Screen title for adding a bookmarks folder -->
     <string name="bookmark_add_folder">フォルダー追加</string>
     <!-- deprecated: Snackbar title shown after a bookmark has been created. -->
@@ -567,7 +606,7 @@
 
 
     <!-- Bookmark snackbar message on deleting multiple bookmarks -->
-    <string name="bookmark_deletion_multiple_snackbar_message">選択したブックマークを削除します</string>
+    <string name="bookmark_deletion_multiple_snackbar_message_2">ブックマークを削除しました</string>
     <!-- Bookmark undo button for deletion snackbar action -->
     <string name="bookmark_undo_deletion">元に戻す</string>
 
@@ -616,11 +655,16 @@
     <!-- Summary of tracking protection preference if tracking protection is set to off -->
     <string name="tracking_protection_off">オフ</string>
 
-    <!-- Label that indicates video and audio autoplay is blocked -->
-    <string name="preference_option_autoplay_blocked">動画と音声の再生をブロックしました</string>
-    <!-- Label that indicates video and audio autoplay is allowed -->
-    <string name="preference_option_autoplay_allowed">動画と音声の再生を許可しました</string>
-
+    <!-- Label that indicates that all video and audio autoplay is allowed -->
+    <string name="preference_option_autoplay_allowed2">音声と動画の再生を許可</string>
+    <!-- Label that indicates that video and audio autoplay is only allowed over Wi-Fi -->
+    <string name="preference_option_autoplay_allowed_wifi_only2">データ通信時のみ音声と動画をブロック</string>
+    <!-- Subtext that explains 'autoplay on Wi-Fi only' option -->
+    <string name="preference_option_autoplay_allowed_wifi_subtext">Wi-Fi 接続時は音声と動画を再生します</string>
+    <!-- Label that indicates that video autoplay is allowed, but audio autoplay is blocked -->
+    <string name="preference_option_autoplay_block_audio2">音声のみブロック</string>
+    <!-- Label that indicates that all video and audio autoplay is blocked -->
+    <string name="preference_option_autoplay_blocked3">音声と動画をブロック</string>
     <!-- Summary of delete browsing data on quit preference if it is set to on -->
     <string name="delete_browsing_data_quit_on">オン</string>
     <!-- Summary of delete browsing data on quit preference if it is set to off -->
@@ -840,6 +884,31 @@
     <!-- Text for the snackbar to show the user that the deletion of browsing data is in progress -->
     <string name="deleting_browsing_data_in_progress">ブラウジングデータを削除しています...</string>
 
+    <!-- Tips -->
+    <!-- text for firefox preview moving tip header "Firefox Preview" and "Firefox Nightly" are intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header">Firefox Preview が Firefox Nightly になりました</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description">Firefox Nightly は毎晩更新され、実験的な新しい機能がテストされています。
+        しかし、これは安定性に欠けるため、より安定したバージョンを使用したい場合はベータ版のダウンロードをおすすめします。</string>
+    <!-- text for firefox preview moving tip button. "Mozilla Firefox Browser" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_button">Mozilla Firefox ブラウザーを入手しましょう</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_installed">Firefox Nightly は移転しました</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_installed">このアプリはセキュリティ更新の提供を終了しました。このアプリの使用を中止し、新しい Nightly に切り替えてください。
+        \n\nブックマークやログイン情報、履歴を別の Firefox へ転送するには、Firefox アカウントを作成してください。</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_installed">新しい Nightly に切り替える</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_not_installed">Firefox Nightly は移転しました</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_not_installed">このアプリはセキュリティ更新の提供を終了しました。新しい Nightly を入手し、このアプリの使用を中止してください。
+        \n\nブックマークやログイン情報、履歴を別の Firefox へ転送するには、Firefox アカウントを作成してください。</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_not_installed">新しい Nightly を入手</string>
+
     <!-- Onboarding -->
     <!-- Text for onboarding welcome message
     The first parameter is the name of the app (e.g. Firefox Preview) -->
@@ -911,6 +980,9 @@
     <!-- Text for the button to read the privacy notice -->
     <string name="onboarding_privacy_notice_read_button">個人情報保護方針を読む</string>
 
+    <!-- Content description (not visible, for screen readers etc.): Close onboarding screen -->
+    <string name="onboarding_close">閉じる</string>
+
     <!-- text for the button to finish onboarding -->
     <string name="onboarding_finish">ブラウジングを始める</string>
 
@@ -948,6 +1020,8 @@
     <string name="sign_in_with_email">代わりにメールアドレスを使う</string>
     <!-- Text shown in confirmation dialog to sign out of account -->
     <string name="sign_out_confirmation_message">Firefox はアカウントとの同期を停止しますが、この端末上のブラウジングデータは削除されません。</string>
+    <!-- Text shown in confirmation dialog to sign out of account. The first parameter is the name of the app (e.g. Firefox Preview) -->
+    <string name="sign_out_confirmation_message_2">%s はあなたのアカウントとの同期を中止しますが、この端末上の閲覧履歴は削除されません。</string>
     <!-- Option to continue signing out of account shown in confirmation dialog to sign out of account -->
     <string name="sign_out_disconnect">接続を解除</string>
     <!-- Option to cancel signing out shown in confirmation dialog to sign out of account -->
@@ -1048,6 +1122,9 @@
     <string name="etp_panel_off">このサイトでは保護が無効になっています</string>
     <!-- Header for exceptions list for which sites enhanced tracking protection is always off -->
     <string name="enhanced_tracking_protection_exceptions">これらのウェブサイトでは強化されたトラッキング防止が無効になります</string>
+    <!-- Content description (not visible, for screen readers etc.): Navigate
+    back from ETP details (Ex: Tracking content) -->
+    <string name="etp_back_button_content_description">前のページへ戻る</string>
     <!-- About page Your rights link text -->
     <string name="about_your_rights">あなたの権利</string>
     <!-- About page link text to open open source licenses screen -->
@@ -1068,6 +1145,11 @@
     <string name="about_licensing_information">ライセンス情報</string>
     <!-- About page link text to open a screen with libraries that are used -->
     <string name="about_other_open_source_libraries">利用しているライブラリー</string>
+
+    <!-- Toast shown to the user when they are activating the secret dev menu
+        The first parameter is number of long clicks left to enable the menu -->
+    <string name="about_debug_menu_toast_progress">デバッグメニュー: 有効にするには %1$d 回クリックしてください</string>
+    <string name="about_debug_menu_toast_done">デバッグメニューが有効です</string>
 
     <!-- Content description of the tab counter toolbar button when one tab is open -->
     <string name="tab_counter_content_description_one_tab">タブ 1 個</string>
@@ -1092,8 +1174,13 @@
     <string name="add_to_homescreen_cancel">キャンセル</string>
     <!-- Add button text for the Add to Homescreen dialog -->
     <string name="add_to_homescreen_add">追加</string>
+    <!-- Continue to website button text for the first-time Add to Homescreen dialog -->
+    <string name="add_to_homescreen_continue">ウェブサイトを開く</string>
     <!-- Placeholder text for the TextView in the Add to Homescreen dialog -->
     <string name="add_to_homescreen_text_placeholder">ショートカット名</string>
+
+    <!-- Describes the add to homescreen functionality -->
+    <string name="add_to_homescreen_description">このウェブサイトを簡単な操作で端末のホーム画面に追加しましょう。アプリのような感覚で手軽にアクセスして素早くブラウジングできます。</string>
 
     <!-- Preference for managing the settings for logins and passwords in Fenix -->
     <string name="preferences_passwords_logins_and_passwords">ログイン情報とパスワード</string>
@@ -1233,6 +1320,10 @@
     <!-- Text shown when a user successfully deletes a custom search engine -->
     <string name="search_delete_search_engine_success_message">%s を削除しました</string>
 
+    <!-- Title text shown for the migration screen to the new browser. Placeholder replaced with app name -->
+    <string name="migration_title">%s のすべてが新しくなりました</string>
+    <!-- Description text followed by a list of things migrating (e.g. Bookmarks, History). Placeholder replaced with app name-->
+    <string name="migration_description">完全に再設計されたブラウザーがあなたを待っています。パフォーマンスと機能が改善され、オンラインでさらに多くのことができるようになりました。\n\nしばらくお待ちください。%s を更新して次のデータを移行しています:</string>
     <!-- Text on the disabled button while in progress. Placeholder replaced with app name -->
     <string name="migration_updating_app_button_text">%s を更新しています…</string>
     <!-- Text on the enabled button. Placeholder replaced with app name-->
@@ -1274,4 +1365,8 @@
     <string name="certificate_info_verified_by">認証局: %1$s</string>
     <!-- Login overflow menu delete button -->
     <string name="login_menu_delete_button">削除</string>
+    <!-- Message in delete confirmation dialog for logins -->
+    <string name="login_deletion_confirmation">このログイン情報を削除してもよろしいですか？</string>
+    <!-- Positive action of a dialog asking to delete  -->
+    <string name="dialog_delete_positive">削除</string>
 </resources>

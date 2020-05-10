@@ -45,7 +45,7 @@ abstract class ToolbarIntegration(
         )
     )
 
-    private var menuPresenter =
+    private val menuPresenter =
         MenuPresenter(toolbar, context.components.core.sessionManager, sessionId)
 
     init {
@@ -61,6 +61,10 @@ abstract class ToolbarIntegration(
     override fun stop() {
         menuPresenter.stop()
         toolbarPresenter.stop()
+    }
+
+    fun invalidateMenu() {
+        menuPresenter.invalidateActions()
     }
 }
 
@@ -115,10 +119,7 @@ class DefaultToolbarIntegration(
                 context.settings().shouldUseTrackingProtection
 
             toolbar.display.icons = toolbar.display.icons.copy(
-                emptyIcon = AppCompatResources.getDrawable(
-                    context,
-                    R.drawable.ic_bookmark_filled
-                )!!,
+                emptyIcon = null,
                 trackingProtectionTrackersBlocked = lottieDrawable,
                 trackingProtectionNothingBlocked = AppCompatResources.getDrawable(
                     context,

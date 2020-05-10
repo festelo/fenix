@@ -62,7 +62,7 @@ job-template:
           default: autograph_apk
     index:
         by-build-type:
-            (fennec-.+|nightly|performance-test|beta|production):
+            (fennec-.+|nightly|performance-test|beta|production|debug):
                 type: signing
             default: {}
     run-on-tasks-for: []
@@ -73,4 +73,4 @@ job-template:
                 default: Bs
         kind: build
         platform: android-all/opt
-        tier: 2
+        tier: 1

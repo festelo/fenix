@@ -43,6 +43,20 @@
     <attr name="syncDisconnected" format="reference" />
     <attr name="syncDisconnectedBackground" format="reference" />
     <attr name="swipeDeleteBackground" format="reference" />
+    <attr name="onboardingDarkGradientStartBackground" format="reference" />
+    <attr name="onboardingDarkGradientEndBackground" format="reference" />
+    <attr name="onboardingSelected" format="reference"/>
+    <attr name="onboardingDeselected" format="reference"/>
+    <attr name="addOnPrivateBrowsingExteriorCircleBackground" format="reference"/>
+    <attr name="addOnPrivateBrowsingInteriorIconBackground" format="reference"/>
+
+    <!-- Tab tray -->
+    <attr name="tabTrayItemText" format="reference"/>
+    <attr name="tabTrayItemUrl" format="reference" />
+    <attr name="tabTrayItemBackground" format="reference" />
+    <attr name="tabTrayItemSelectedBackground" format="reference" />
+    <attr name="tabTrayToolbarBackground" format="reference" />
+    <attr name="tabTrayItemDivider" format="reference" />
 
     <declare-styleable name="LibraryListItem">
         <attr name="listItemTitle" format="reference" />

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_2">Firefox Preview ñemigua</string>
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_3">Firefox Preview (ñemigua)</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_5">Ñemigua %s</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_4">%s (Ñemigua)</string>
     <!-- Home Fragment -->
     <!-- Content description (not visible, for screen readers etc.): "Three dot" menu button. -->
     <string name="content_description_menu">Jeporavorãve</string>
@@ -20,15 +20,15 @@
     <!-- No Open Tabs Message Description -->
     <string name="no_open_tabs_description">Umi tendayke ijurujáva ojehecháta ápe.</string>
 
+    <!-- About content. The first parameter is the name of the application. (For example: Fenix) -->
+    <string name="about_content">%1$s ojapókuri Mozilla.</string>
+
     <!-- Private Browsing -->
     <!-- Title for private session option -->
     <string name="private_browsing_title">Eime tembiapo ñemiguávape</string>
     <!-- Explanation for private browsing displayed to users on home view when they first enable private mode
         The first parameter is the name of the app defined in app_name (for example: Fenix) -->
-    <string name="private_browsing_placeholder_description">
-         %1$s ombogue jeheka rembiasakue ha kundahára esẽvo tembipuru’ígui térã embotykuévo opaite tendayke ñemigua. Kóva nandekuaukáiramo jepe ñanduti renda renondépepe térã ne ñanduti me’ẽhára, ja’evétaramo
-        nombohasýi omo’ã hag̃ua tekoñemi oimeraẽva tapicha oipurúva ko mba’e’okápe.
-    </string>
+    <string name="private_browsing_placeholder_description_2">%1$s omopotĩ nde jeheka ha kundahára rembiasakue tendayke ñemiguápe emboty térã esẽenguévo ko tembipuru’ígui. Kóva nande kuaukáiramo jepe ñanduti rendápe térã ne ñanduti me’ẽhárape, nombohasýi eime ñemi hag̃ua opaite tapicha oipurúva ko mba’e’oka renondépe.</string>
     <string name="private_browsing_common_myths">
        Mombe’ugua’u kundahára ñemi rehegua
     </string>
@@ -50,6 +50,9 @@
     <!-- Shortcut action to open new private tab -->
     <string name="home_screen_shortcut_open_new_private_tab_2">Tendayke pyahu ñemigua</string>
 
+    <!-- Heading for the Top Sites block -->
+    <string name="home_screen_top_sites_heading">Tenda jehayhuvéva</string>
+
     <!-- Browser Fragment -->
     <!-- Content description (not visible, for screen readers etc.): Navigate to open tabs -->
     <string name="browser_tabs_button">Embojuruja tendayke</string>
@@ -66,7 +69,7 @@
     <!-- Content description (not visible, for screen readers etc.): Un-bookmark the current page -->
     <string name="browser_menu_edit_bookmark">Techaukaha mbosako’i</string>
     <!-- Browser menu button that opens the addon manager -->
-    <string name="browser_menu_addon_manager">Moĩmbaha ñangarekohára</string>
+    <string name="browser_menu_add_ons">Moĩmbaha</string>
     <!-- Text displayed when there are no add-ons to be shown -->
     <string name="no_add_ons">Ndaipóri moĩmbaha ápe</string>
     <!-- Browser menu button that sends a user to help articles -->
@@ -77,7 +80,7 @@
     <!-- Browser menu button that opens the settings menu -->
     <string name="browser_menu_settings">Ñemboheko</string>
     <!-- Browser menu button that opens a user's library -->
-    <string name="browser_menu_your_library">Ne mba’erysýi</string>
+    <string name="browser_menu_library">Arandukarenda</string>
     <!-- Browser menu toggle that requests a desktop site -->
     <string name="browser_menu_desktop_site">Tenda mesa arigua</string>
     <!-- Browser menu toggle that adds a shortcut to the site on the device home screen. -->
@@ -91,7 +94,7 @@
     <!-- Browser menu button that creates a new tab -->
     <string name="browser_menu_new_tab">Tendayke pyahu</string>
     <!-- Browser menu button that saves the current tab to a collection -->
-    <string name="browser_menu_save_to_collection">Eñongatu atyhápe</string>
+    <string name="browser_menu_save_to_collection_2">Eñongatu mbyatyhápe</string>
     <!-- Browser menu button that opens a dialog to report issues with the current site -->
     <string name="browser_menu_report_issue">Emomarandu tenda jejavy</string>
     <!-- Browser menu button that open a share menu to share the current site -->
@@ -114,6 +117,10 @@
 
     <!-- Browser menu button to configure reader mode appearance e.g. the used font type and size -->
     <string name="browser_menu_read_appearance">Mba’ejegua</string>
+
+    <!-- Error message to show when the user tries to access a scheme not
+        handled by the app (Ex: blob, tel etc) -->
+    <string name="unknown_scheme_error_message">Ndaikatúi eike. URL reko ojekuaa’ỹva.</string>
 
     <!-- Locale Settings Fragment -->
     <!-- Content description for tick mark on selected language -->
@@ -155,6 +162,9 @@
 
     <!-- Text preview for larger sized widgets -->
     <string name="search_widget_text_long">Eheka ñandutípe</string>
+
+    <!-- Content description (not visible, for screen readers etc.): Voice search -->
+    <string name="search_widget_voice">Ñe’ẽ jeheka</string>
 
     <!-- Preferences -->
     <!-- Title for the settings page-->
@@ -200,10 +210,18 @@
     <string name="preferences_private_browsing_options">Kundahára ñemigua</string>
     <!-- Preference for opening links in a private tab-->
     <string name="preferences_open_links_in_a_private_tab">Embojuruja juajuha tendayke ñemíme</string>
+    <!-- Preference for allowing screenshots to be taken while in a private tab-->
+    <string name="preferences_allow_screenshots_in_private_mode">Emoneĩ mba’erechaha japyhy kundaha ñemíme</string>
     <!-- Preference for adding private browsing shortcut -->
     <string name="preferences_add_private_browsing_shortcut">Embojuaju jeike pya’eha tendayke ñemiguáre</string>
     <!-- Preference for accessibility -->
     <string name="preferences_accessibility">Jeikekuaaha</string>
+    <!-- Preference to override the Firefox Account server -->
+    <string name="preferences_override_fxa_server">Mohendahavusu Firefox Account momba’etepyre</string>
+    <!-- Preference to override the Sync token server -->
+    <string name="preferences_override_sync_tokenserver">Mohendahavusu Sync momba’etepyre</string>
+    <!-- Toast shown after updating the FxA/Sync server override preferences -->
+    <string name="toast_override_fxa_sync_server_done">Account/Sync mba’ete moambuepyre. Esẽnguévo pe tembipuru’ígui emoambue hag̃ua…</string>
     <!-- Preference category for account information -->
     <string name="preferences_category_account">Mba’ete</string>
     <!-- Preference shown on banner to sign into account -->
@@ -279,10 +297,11 @@
     <string name="sync_last_synced_summary">Ñembojuehe ipyahuvéva: %s</string>
     <!-- Label summary showing never synced -->
     <string name="sync_never_synced_summary">Ñembojuehe ipyahuvéva: araka’eve</string>
+
     <!-- Text for displaying the default device name.
         The first parameter is the application name, the second is the device manufacturer name
         and the third is the device model. -->
-    <string name="default_device_name">%s amo %s %s</string>
+    <string name="default_device_name_2">%1$s %2$s %3$s-pe</string>
 
     <!-- Send Tab -->
     <!-- Name of the "receive tabs" notification channel. Displayed in the "App notifications" system settings for the app -->
@@ -455,14 +474,29 @@
     <!-- Text for the menu button to remove a top site -->
     <string name="remove_top_site">Mboguete</string>
 
+    <!-- Postfix for private WebApp titles, placeholder is replaced with app name -->
+    <string name="pwa_site_controls_title_private">%1$s (Ayvu Ñemigua)</string>
+
     <!-- History -->
     <!-- Text for the button to clear all history -->
     <string name="history_delete_all">Emboguete tembiasakue</string>
 
     <!-- Text for the dialog to confirm clearing all history -->
     <string name="history_delete_all_dialog">¿Emopotĩse añetehápe tembiasakue?</string>
+    <!-- Text for the snackbar to confirm that multiple browsing history items has been deleted -->
+    <string name="history_delete_multiple_items_snackbar">Tembiasakue mboguepyre</string>
+    <!-- Text for the snackbar to confirm that a single browsing history item has been deleted. The first parameter is the shortened URL of the deleted history item. -->
+    <string name="history_delete_single_item_snackbar">Mboguepyre %1$s</string>
     <!-- Text for positive action to delete history in deleting history dialog -->
     <string name="history_clear_dialog">Mopotĩ</string>
+    <!-- History overflow menu copy button -->
+    <string name="history_menu_copy_button">Monguatia</string>
+    <!-- History overflow menu share button -->
+    <string name="history_menu_share_button">Moherakuã</string>
+    <!-- History overflow menu open in new tab button -->
+    <string name="history_menu_open_in_new_tab_button">Embojuruja tendayke pyahúpe</string>
+    <!-- History overflow menu open in private tab button -->
+    <string name="history_menu_open_in_private_tab_button">Embojuruja tendayke ñemíme</string>
     <!-- Text for the button to delete a single history item -->
     <string name="history_delete_item">Mboguete</string>
     <!-- History multi select title in app bar
@@ -509,6 +543,10 @@
     <!-- Screen title for selecting a bookmarks folder -->
     <string name="bookmark_select_folder">Ñongatuha jeporavo</string>
 
+    <!-- Confirmation message for a dialog confirming if the user wants to delete the selected folder -->
+    <string name="bookmark_delete_folder_confirmation_dialog">¿Añetehápepa emboguetese ko marandurenda?</string>
+    <!-- Snackbar title shown after a folder has been deleted. This first parameter is the name of the deleted folder -->
+    <string name="bookmark_delete_folder_snackbar">Mboguepyre %1$s</string>
     <!-- Screen title for adding a bookmarks folder -->
     <string name="bookmark_add_folder">Embojuaju ñongatuha</string>
     <!-- deprecated: Snackbar title shown after a bookmark has been created. -->
@@ -563,7 +601,7 @@
      The first parameter is the host part of the URL of the bookmark deleted, if any -->
     <string name="bookmark_deletion_snackbar_message">Emboguete %1$s</string>
     <!-- Bookmark snackbar message on deleting multiple bookmarks -->
-    <string name="bookmark_deletion_multiple_snackbar_message">Emboguete techaukaha poravopyre</string>
+    <string name="bookmark_deletion_multiple_snackbar_message_2">Techaukaha mboguepyre</string>
     <!-- Bookmark undo button for deletion snackbar action -->
     <string name="bookmark_undo_deletion">MBOGUEVI</string>
 
@@ -612,10 +650,16 @@
     <string name="tracking_protection_on">Hendypyre</string>
     <!-- Summary of tracking protection preference if tracking protection is set to off -->
     <string name="tracking_protection_off">Mboguepyre</string>
-    <!-- Label that indicates video and audio autoplay is blocked -->
-    <string name="preference_option_autoplay_blocked">Ta’ãngamýi ha ñe’ẽatãha jokopyre</string>
-    <!-- Label that indicates video and audio autoplay is allowed -->
-    <string name="preference_option_autoplay_allowed">Ta’ãngamýi ha ñe’ẽatãha moneĩmbyre</string>
+    <!-- Label that indicates that all video and audio autoplay is allowed -->
+    <string name="preference_option_autoplay_allowed2">Emoneĩ mba’epu ha ta’ãngamýi</string>
+    <!-- Label that indicates that video and audio autoplay is only allowed over Wi-Fi -->
+    <string name="preference_option_autoplay_allowed_wifi_only2">Ejoko mba’epu ha ta’ãngamýi pumbyry mba’ekuaarãme año</string>
+    <!-- Subtext that explains 'autoplay on Wi-Fi only' option -->
+    <string name="preference_option_autoplay_allowed_wifi_subtext">Mba’epu ha ta’ãngamýi oñembohetáta Wi-Fi ndive</string>
+    <!-- Label that indicates that video autoplay is allowed, but audio autoplay is blocked -->
+    <string name="preference_option_autoplay_block_audio2">Ejoko mba’epu año</string>
+    <!-- Label that indicates that all video and audio autoplay is blocked -->
+    <string name="preference_option_autoplay_blocked3">Ejoko mba’epu ha ta’ãngamýi año</string>
     <!-- Summary of delete browsing data on quit preference if it is set to on -->
     <string name="delete_browsing_data_quit_on">Hendypyre</string>
     <!-- Summary of delete browsing data on quit preference if it is set to off -->
@@ -837,6 +881,31 @@
     <!-- Text for the snackbar to show the user that the deletion of browsing data is in progress -->
     <string name="deleting_browsing_data_in_progress">Oguepahína kundahára mba’ekuaarã…</string>
 
+    <!-- Tips -->
+    <!-- text for firefox preview moving tip header "Firefox Preview" and "Firefox Nightly" are intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header">Firefox Preview ko’ág̃a ha’e Firefox Nightly</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description">Firefox Nightly hekopyahu opaite pyharekue ha oreko tembiapoite pyahu ñeha’ãmby.
+        Upéicharõ jepe, ikatu sa’ive hekopyta. Emboguejy ore kundaha beta emba’apo porãve hag̃ua.</string>
+    <!-- text for firefox preview moving tip button. "Mozilla Firefox Browser" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_button">Ereko Mozilla Firefox kundahára</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_installed">Firefox Nightly ovákuri</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_installed">Ko tembipuru’i ndahekopyahuvéima tekorosãrã. Ndoipuruvéima ko tembipuru’i ha ováma Nightly pyahúpe.
+        \n\nEmbohasa hag̃ua techaukaha, emoñepyrũ tembiapo ha tembiasakue ambue tembipuru’ípe, emoheñói Firefox mba’ete pyahúpe.</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_installed">Eva Nightly pyahúpe</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_not_installed">Firefox Nightly ovákuri</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_not_installed">Ko tembipuru’i ndahekopyahuvéima tekorosãrã. Emboguejy Nightly pyahu ha anive eipuru ko tembipuru’i.
+        \n\nEmbohasa hag̃ua techaukaha, emoñepyrũ tembiapo ha tembiasakue ambue tembipuru’ípe, emoheñói Firefox mba’ete pyahu.</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_not_installed">Ereko Nightly pyahu</string>
+
     <!-- Onboarding -->
     <!-- Text for onboarding welcome message
     The first parameter is the name of the app (e.g. Firefox Preview) -->
@@ -903,8 +972,15 @@
     <!-- text for the privacy notice onboarding card header -->
     <string name="onboarding_privacy_notice_header">Ne ñemigua</string>
 
+    <!-- text for the privacy notice onboarding card description
+    The first parameter is the name of the app (e.g. Firefox Preview) -->
+    <string name="onboarding_privacy_notice_description">Romoha’ãngáma %s eñangareko hag̃ua umi emoherakuãva rehe
+        ñandutípe ha emoherakuã orendive.</string>
     <!-- Text for the button to read the privacy notice -->
     <string name="onboarding_privacy_notice_read_button">Emoñe’ẽ ore marandu’i ñemigua</string>
+
+    <!-- Content description (not visible, for screen readers etc.): Close onboarding screen -->
+    <string name="onboarding_close">Mboty</string>
 
     <!-- text for the button to finish onboarding -->
     <string name="onboarding_finish">Eñepyrũ eikundaha</string>
@@ -943,6 +1019,8 @@
     <string name="sign_in_with_email">Eipuru ñandutiveve</string>
     <!-- Text shown in confirmation dialog to sign out of account -->
     <string name="sign_out_confirmation_message">Firefox nombojuehemo’ãvéima ne mba’ete, hákatu nomboguemo’ãi ne kundahára mba’ekuaarã ko mba’e’oka pegua.</string>
+    <!-- Text shown in confirmation dialog to sign out of account. The first parameter is the name of the app (e.g. Firefox Preview) -->
+    <string name="sign_out_confirmation_message_2">%s nombojuehemo’ãvéima ne mba’ete ndive, hákatu nomboguemo’ãi ne kundaha mba’ekuaarã ko mba’e’okápe.</string>
     <!-- Option to continue signing out of account shown in confirmation dialog to sign out of account -->
     <string name="sign_out_disconnect">Ñesẽte</string>
     <!-- Option to cancel signing out shown in confirmation dialog to sign out of account -->
@@ -1037,6 +1115,8 @@
     <string name="etp_fingerprinters_description">Emboyke ani oñembyaty ne mba’ekuaarã ojehechakuaáva ne mba’e’oka rehegua ikatúva ojepuru ejehapykuehokuaa hag̃ua.</string>
     <!-- Category of trackers (tracking content) that can be blocked by Enhanced Tracking Protection -->
     <string name="etp_tracking_content_title">Tapykueho retepy</string>
+    <!-- Description of tracking content that can be blocked by Enhanced Tracking Protection -->
+    <string name="etp_tracking_content_description">Ejoko ñemurã ñemyanyhẽ okayguáva, ta’ãngamýi ha tetepy oguerekóva ayvu rapykuehoha. Ikatu ombyai ñanduti renda rembiapoite.</string>
     <!-- Enhanced Tracking Protection Onboarding Message shown in a dialog above the toolbar. The first parameter is the name of the application (For example: Fenix) -->
     <string name="etp_onboarding_message_2">Ta’ãnga pytãũvo %s ojokohína tapykuehoha ko tendápe. Eiporavo ehecha hag̃ua mba’etépa ojoko.</string>
     <!-- Enhanced Tracking Protection message that protection is currently on for this site -->
@@ -1045,6 +1125,9 @@
     <string name="etp_panel_off">Umi ñemo’ã ojepe’áma ko tendápe g̃uarã</string>
     <!-- Header for exceptions list for which sites enhanced tracking protection is always off -->
     <string name="enhanced_tracking_protection_exceptions">Ñemo’ã tapykuehogua oñemboguéma ko’ã tendápe g̃uarã</string>
+    <!-- Content description (not visible, for screen readers etc.): Navigate
+    back from ETP details (Ex: Tracking content) -->
+    <string name="etp_back_button_content_description">Eikundaha tapykuévo</string>
     <!-- About page Your rights link text -->
     <string name="about_your_rights">Nde derécho</string>
     <!-- About page link text to open open source licenses screen -->
@@ -1067,6 +1150,11 @@
     <string name="about_licensing_information">Marandu ñemoneĩgua</string>
     <!-- About page link text to open a screen with libraries that are used -->
     <string name="about_other_open_source_libraries">Arandukarenda roipurúva</string>
+
+    <!-- Toast shown to the user when they are activating the secret dev menu
+        The first parameter is number of long clicks left to enable the menu -->
+    <string name="about_debug_menu_toast_progress">Poravprã mopotĩha: opyta %1$d eikutu (s) embojuruja hag̃ua</string>
+    <string name="about_debug_menu_toast_done">Mopotĩha poravorã jurujapyre</string>
 
     <!-- Content description of the tab counter toolbar button when one tab is open -->
     <string name="tab_counter_content_description_one_tab">1 tendayke</string>
@@ -1092,8 +1180,13 @@
     <!-- Add button text for the Add to Homescreen dialog -->
     <string name="add_to_homescreen_add">Mbojuaju</string>
 
+    <!-- Continue to website button text for the first-time Add to Homescreen dialog -->
+    <string name="add_to_homescreen_continue">Eimeve ñanduti rendápe</string>
     <!-- Placeholder text for the TextView in the Add to Homescreen dialog -->
     <string name="add_to_homescreen_text_placeholder">Jeike pya’eha réra</string>
+
+    <!-- Describes the add to homescreen functionality -->
+    <string name="add_to_homescreen_description">Ikatu embojuaju ko ñanduti renda ne mba’erechaha ñepyrũgua rehe eike hag̃ua ha eikundaha pya’eve rekávo tembipuru’ícharamo.</string>
 
     <!-- Preference for managing the settings for logins and passwords in Fenix -->
     <string name="preferences_passwords_logins_and_passwords">Tembiapo ñepyrũ ha ñe’ẽñemi</string>
@@ -1173,6 +1266,8 @@
     <string name="logins_biometric_prompt_message">Emyandyjey ehecha hag̃ua ne rembiapo ñepyrũ ñongatupyre</string>
     <!-- Title of warning dialog if users have no device authentication set up -->
     <string name="logins_warning_dialog_title">Erekokuaa nde puruhára ha ñe’ẽñemi</string>
+    <!-- Message of warning dialog if users have no device authentication set up -->
+    <string name="logins_warning_dialog_message">Emboheko pe patrõ jokoháva mba’e’oka pegua, PIN térã ñe’ẽñemi emo’ã hag̃ua nde puruhára ha ñe’ẽñemi ñongatupyrépe jeike ambue orekórõ ne mba’e’oka.</string>
     <!-- Negative button to ignore warning dialog if users have no device authentication set up -->
     <string name="logins_warning_dialog_later">Upéi</string>
     <!-- Positive button to send users to set up a pin of warning dialog if users have no device authentication set up -->
@@ -1234,6 +1329,8 @@
 
     <!-- Title text shown for the migration screen to the new browser. Placeholder replaced with app name -->
     <string name="migration_title">Eg̃uahẽporãite peteĩ %s ipyahuetévape</string>
+    <!-- Description text followed by a list of things migrating (e.g. Bookmarks, History). Placeholder replaced with app name-->
+    <string name="migration_description">Nera’arõ kundahára ipyahuetéva, oikóva ha hembiapoite porãvéva ne pytyvõ hag̃ua emba’apove hag̃ua ñandutípe.\n\nEha’arõ hekopyahu aja %s nde</string>
     <!-- Text on the disabled button while in progress. Placeholder replaced with app name -->
     <string name="migration_updating_app_button_text">Hekopyahuhína %s…</string>
     <!-- Text on the enabled button. Placeholder replaced with app name-->
@@ -1277,4 +1374,8 @@
     <string name="certificate_info_verified_by">Ohechapyréma: %1$s</string>
     <!-- Login overflow menu delete button -->
     <string name="login_menu_delete_button">Mboguete</string>
+    <!-- Message in delete confirmation dialog for logins -->
+    <string name="login_deletion_confirmation">¿Emboguese añetehápe ko tembiapo ñepyrũ?</string>
+    <!-- Positive action of a dialog asking to delete  -->
+    <string name="dialog_delete_positive">Mboguete</string>
 </resources>

@@ -104,7 +104,11 @@ class AwesomeBarView(
     internal var isKeyboardDismissedProgrammatically: Boolean = false
 
     private val loadUrlUseCase = object : SessionUseCases.LoadUrlUseCase {
-        override fun invoke(url: String, flags: EngineSession.LoadUrlFlags) {
+        override fun invoke(
+            url: String,
+            flags: EngineSession.LoadUrlFlags,
+            additionalHeaders: Map<String, String>?
+        ) {
             interactor.onUrlTapped(url)
         }
     }
@@ -192,9 +196,6 @@ class AwesomeBarView(
             )
 
         searchSuggestionProviderMap = HashMap()
-        search_shortcuts_button.setOnClickListener {
-            interactor.onSearchShortcutsButtonClicked()
-        }
 
         val recyclerListener = object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -215,7 +216,6 @@ class AwesomeBarView(
     }
 
     fun update(state: SearchFragmentState) {
-        updateSearchShortcutsIcon(state)
         updateSuggestionProvidersVisibility(state)
 
         // Do not make suggestions based on user's current URL unless it's a search shortcut
@@ -224,17 +224,6 @@ class AwesomeBarView(
         }
 
         view.onInputChanged(state.query)
-    }
-
-    private fun updateSearchShortcutsIcon(searchState: SearchFragmentState) {
-        with(container.context) {
-            val showShortcuts = searchState.showSearchShortcuts
-            search_shortcuts_button?.isChecked = showShortcuts
-
-            val color = if (showShortcuts) R.attr.contrastText else R.attr.primaryText
-
-            search_shortcuts_button.compoundDrawables[0]?.setTint(getColorFromAttr(color))
-        }
     }
 
     private fun updateSuggestionProvidersVisibility(state: SearchFragmentState) {

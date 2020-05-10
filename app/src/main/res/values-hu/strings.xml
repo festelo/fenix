@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_2">Privát Firefox Preview</string>
-
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_3">Firefox Preview (privát)</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_5">Privát %s</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_4">%s (Privát)</string>
     <!-- Home Fragment -->
     <!-- Content description (not visible, for screen readers etc.): "Three dot" menu button. -->
     <string name="content_description_menu">További beállítások</string>
@@ -20,15 +19,15 @@
     <!-- No Open Tabs Message Description -->
     <string name="no_open_tabs_description">A nyitott lapok itt fognak megjelenni.</string>
 
+    <!-- About content. The first parameter is the name of the application. (For example: Fenix) -->
+    <string name="about_content">A %1$s a Mozilla terméke.</string>
+
     <!-- Private Browsing -->
     <!-- Title for private session option -->
     <string name="private_browsing_title">Jelenleg privát munkamenetben van</string>
     <!-- Explanation for private browsing displayed to users on home view when they first enable private mode
         The first parameter is the name of the app defined in app_name (for example: Fenix) -->
-    <string name="private_browsing_placeholder_description">
-         A %1$s törli a keresési és böngészési előzményeit, ha kilép az alkalmazásból, vagy bezárja az összes privát böngészési lapot. Ugyan ez nem teszi névtelenné a weboldalak vagy a szolgáltatója felé, könnyebbé teszi, 
-        hogy bizalmasan kezelje az online tevékenységét, és más ne tudjon róla, aki ezt az eszközt használja.
-    </string>
+    <string name="private_browsing_placeholder_description_2">A %1$s törli a keresési és böngészési előzményeit a privát lapokból, ha bezárja őket vagy kilép az alkalmazásból. Ugyan ez nem teszi névtelenné a weboldalak vagy a szolgáltatója felé, könnyebbé teszi, hogy bizalmasan kezelje az online tevékenységét, és más ne tudjon róla, aki ezt az eszközt használja.</string>
     <string name="private_browsing_common_myths">
        Gyakori tévhitek a privát böngészésről
     </string>
@@ -49,6 +48,9 @@
     <!-- Shortcut action to open new private tab -->
     <string name="home_screen_shortcut_open_new_private_tab_2">Új privát lap</string>
 
+    <!-- Heading for the Top Sites block -->
+    <string name="home_screen_top_sites_heading">Kedvenc oldalak</string>
+
     <!-- Browser Fragment -->
     <!-- Content description (not visible, for screen readers etc.): Navigate to open tabs -->
     <string name="browser_tabs_button">Nyitott lapok</string>
@@ -65,7 +67,7 @@
     <!-- Content description (not visible, for screen readers etc.): Un-bookmark the current page -->
     <string name="browser_menu_edit_bookmark">Könyvjelző szerkesztése</string>
     <!-- Browser menu button that opens the addon manager -->
-    <string name="browser_menu_addon_manager">Kiegészítőkezelő</string>
+    <string name="browser_menu_add_ons">Kiegészítők</string>
     <!-- Text displayed when there are no add-ons to be shown -->
     <string name="no_add_ons">Nincsenek kiegészítők</string>
     <!-- Browser menu button that sends a user to help articles -->
@@ -75,7 +77,7 @@
     <!-- Browser menu button that opens the settings menu -->
     <string name="browser_menu_settings">Beállítások</string>
     <!-- Browser menu button that opens a user's library -->
-    <string name="browser_menu_your_library">Az Ön könyvtára</string>
+    <string name="browser_menu_library">Könyvtár</string>
     <!-- Browser menu toggle that requests a desktop site -->
     <string name="browser_menu_desktop_site">Asztali oldal</string>
     <!-- Browser menu toggle that adds a shortcut to the site on the device home screen. -->
@@ -89,7 +91,7 @@
     <!-- Browser menu button that creates a new tab -->
     <string name="browser_menu_new_tab">Új lap</string>
     <!-- Browser menu button that saves the current tab to a collection -->
-    <string name="browser_menu_save_to_collection">Gyűjteménybe mentés</string>
+    <string name="browser_menu_save_to_collection_2">Gyűjteménybe mentés</string>
     <!-- Browser menu button that opens a dialog to report issues with the current site -->
     <string name="browser_menu_report_issue">Hibás webhely bejelentése</string>
     <!-- Browser menu button that open a share menu to share the current site -->
@@ -113,6 +115,10 @@
     <string name="browser_menu_open_app_link">Megnyitás alkalmazásban</string>
     <!-- Browser menu button to configure reader mode appearance e.g. the used font type and size -->
     <string name="browser_menu_read_appearance">Megjelenés</string>
+
+    <!-- Error message to show when the user tries to access a scheme not
+        handled by the app (Ex: blob, tel etc) -->
+    <string name="unknown_scheme_error_message">Nem tud csatlakozni. Felismerhetetlen URL-séma.</string>
 
     <!-- Locale Settings Fragment -->
     <!-- Content description for tick mark on selected language -->
@@ -154,6 +160,9 @@
     <string name="search_widget_text_short">Keresés</string>
     <!-- Text preview for larger sized widgets -->
     <string name="search_widget_text_long">Keresés a weben</string>
+
+    <!-- Content description (not visible, for screen readers etc.): Voice search -->
+    <string name="search_widget_voice">Hangalapú keresés</string>
 
     <!-- Preferences -->
     <!-- Title for the settings page-->
@@ -199,10 +208,18 @@
     <string name="preferences_private_browsing_options">Privát böngészés</string>
     <!-- Preference for opening links in a private tab-->
     <string name="preferences_open_links_in_a_private_tab">Hivatkozások megnyitása privát lapon</string>
+    <!-- Preference for allowing screenshots to be taken while in a private tab-->
+    <string name="preferences_allow_screenshots_in_private_mode">Képernyőképek engedélyezése privát böngészésben</string>
     <!-- Preference for adding private browsing shortcut -->
     <string name="preferences_add_private_browsing_shortcut">Privát böngészési parancsikon hozzáadása</string>
     <!-- Preference for accessibility -->
     <string name="preferences_accessibility">Akadálymentesítés</string>
+    <!-- Preference to override the Firefox Account server -->
+    <string name="preferences_override_fxa_server">Egyéni Firefox-fiókkiszolgáló</string>
+    <!-- Preference to override the Sync token server -->
+    <string name="preferences_override_sync_tokenserver">Egyéni Sync kiszolgáló</string>
+    <!-- Toast shown after updating the FxA/Sync server override preferences -->
+    <string name="toast_override_fxa_sync_server_done">A Firefox-fiók/Sync-kiszolgáló módosítva. Kilépés az alkalmazásból a változások érvényesítéséhez…</string>
     <!-- Preference category for account information -->
     <string name="preferences_category_account">Fiók</string>
     <!-- Preference shown on banner to sign into account -->
@@ -279,10 +296,11 @@
     <string name="sync_last_synced_summary">Legutóbb szinkronizálva: %s</string>
     <!-- Label summary showing never synced -->
     <string name="sync_never_synced_summary">Legutóbb szinkronizálva: soha</string>
+
     <!-- Text for displaying the default device name.
         The first parameter is the application name, the second is the device manufacturer name
         and the third is the device model. -->
-    <string name="default_device_name">%s ezen: %s %s</string>
+    <string name="default_device_name_2">%1$s ezen: %2$s %3$s</string>
 
     <!-- Send Tab -->
     <!-- Name of the "receive tabs" notification channel. Displayed in the "App notifications" system settings for the app -->
@@ -460,8 +478,20 @@
     <string name="history_delete_all">Előzmények törlése</string>
     <!-- Text for the dialog to confirm clearing all history -->
     <string name="history_delete_all_dialog">Biztos, hogy törli az előzményeket?</string>
+    <!-- Text for the snackbar to confirm that multiple browsing history items has been deleted -->
+    <string name="history_delete_multiple_items_snackbar">Előzmények törölve</string>
+    <!-- Text for the snackbar to confirm that a single browsing history item has been deleted. The first parameter is the shortened URL of the deleted history item. -->
+    <string name="history_delete_single_item_snackbar">%1$s törölve</string>
     <!-- Text for positive action to delete history in deleting history dialog -->
     <string name="history_clear_dialog">Törlés</string>
+    <!-- History overflow menu copy button -->
+    <string name="history_menu_copy_button">Másolás</string>
+    <!-- History overflow menu share button -->
+    <string name="history_menu_share_button">Megosztás</string>
+    <!-- History overflow menu open in new tab button -->
+    <string name="history_menu_open_in_new_tab_button">Megnyitás új lapon</string>
+    <!-- History overflow menu open in private tab button -->
+    <string name="history_menu_open_in_private_tab_button">Megnyitás privát lapon</string>
     <!-- Text for the button to delete a single history item -->
     <string name="history_delete_item">Törlés</string>
     <!-- History multi select title in app bar
@@ -506,6 +536,10 @@
     <string name="bookmark_edit">Könyvjelző szerkesztése</string>
     <!-- Screen title for selecting a bookmarks folder -->
     <string name="bookmark_select_folder">Válasszon mappát</string>
+    <!-- Confirmation message for a dialog confirming if the user wants to delete the selected folder -->
+    <string name="bookmark_delete_folder_confirmation_dialog">Biztos, hogy törölni szeretné ezt a mappát?</string>
+    <!-- Snackbar title shown after a folder has been deleted. This first parameter is the name of the deleted folder -->
+    <string name="bookmark_delete_folder_snackbar">%1$s törölve</string>
     <!-- Screen title for adding a bookmarks folder -->
     <string name="bookmark_add_folder">Mappa hozzáadása</string>
     <!-- deprecated: Snackbar title shown after a bookmark has been created. -->
@@ -560,7 +594,7 @@
      The first parameter is the host part of the URL of the bookmark deleted, if any -->
     <string name="bookmark_deletion_snackbar_message">%1$s törölve</string>
     <!-- Bookmark snackbar message on deleting multiple bookmarks -->
-    <string name="bookmark_deletion_multiple_snackbar_message">Kiválasztott könyvjelzők törlése</string>
+    <string name="bookmark_deletion_multiple_snackbar_message_2">Könyvjelzők törölve</string>
     <!-- Bookmark undo button for deletion snackbar action -->
     <string name="bookmark_undo_deletion">VISSZAVONÁS</string>
 
@@ -608,11 +642,16 @@
     <!-- Summary of tracking protection preference if tracking protection is set to off -->
     <string name="tracking_protection_off">Ki</string>
 
-    <!-- Label that indicates video and audio autoplay is blocked -->
-    <string name="preference_option_autoplay_blocked">Videó és hang blokkolva</string>
-    <!-- Label that indicates video and audio autoplay is allowed -->
-    <string name="preference_option_autoplay_allowed">Videó és hang engedélyezve</string>
-
+    <!-- Label that indicates that all video and audio autoplay is allowed -->
+    <string name="preference_option_autoplay_allowed2">Hang és videó engedélyezése</string>
+    <!-- Label that indicates that video and audio autoplay is only allowed over Wi-Fi -->
+    <string name="preference_option_autoplay_allowed_wifi_only2">Hang és videó blokkolása csak mobil-adatkapcsolaton</string>
+    <!-- Subtext that explains 'autoplay on Wi-Fi only' option -->
+    <string name="preference_option_autoplay_allowed_wifi_subtext">A hang és videó Wi-Fi-n lesz lejátszva</string>
+    <!-- Label that indicates that video autoplay is allowed, but audio autoplay is blocked -->
+    <string name="preference_option_autoplay_block_audio2">Csak a hang blokkolása</string>
+    <!-- Label that indicates that all video and audio autoplay is blocked -->
+    <string name="preference_option_autoplay_blocked3">Hang és videó blokkolása</string>
     <!-- Summary of delete browsing data on quit preference if it is set to on -->
     <string name="delete_browsing_data_quit_on">Be</string>
     <!-- Summary of delete browsing data on quit preference if it is set to off -->
@@ -830,6 +869,33 @@
     <!-- Text for the snackbar to show the user that the deletion of browsing data is in progress -->
     <string name="deleting_browsing_data_in_progress">Böngészési adatok törlése…</string>
 
+    <!-- Tips -->
+    <!-- text for firefox preview moving tip header "Firefox Preview" and "Firefox Nightly" are intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header">A Firefox Preview most már a Firefox Nightly</string>
+
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description">A Firefox Nightly minden éjjel frissül, és kísérleti, új funkciókkal rendelkezik.
+        Viszont lehet, hogy kevésbe stabil. Töltse le a béta böngészőnkét a stabilabb élményért.</string>
+    <!-- text for firefox preview moving tip button. "Mozilla Firefox Browser" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_button">A Mozilla Firefox böngésző beszerzése</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_installed">A Firefox Nightly elköltözött</string>
+
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_installed">Ez az alkalmazás többé nem fog biztonsági frissítéseket kapni. Fejezze be az alkalmazás használatát, és váltson az új Nightlyra.
+        \n\nA könyvjelzők, bejelentkezések és előzmények átviteléhez a másik alkalmazásba, hozzon létre egy Firefox-fiókot.</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_installed">Váltás az új Nightlyra</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_not_installed">A Firefox Nightly elköltözött</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_not_installed">Ez az alkalmazás többé nem fog biztonsági frissítéseket kapni. Szerezze be az új Nightlyt, és fejezze be az alkalmazás használatát.
+        \n\nA könyvjelzők, bejelentkezések és előzmények átviteléhez a másik alkalmazásba, hozzon létre egy Firefox-fiókot.</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_not_installed">Szerezze be az új Nightlyt</string>
+
     <!-- Onboarding -->
     <!-- Text for onboarding welcome message
     The first parameter is the name of the app (e.g. Firefox Preview) -->
@@ -903,6 +969,9 @@
     <!-- Text for the button to read the privacy notice -->
     <string name="onboarding_privacy_notice_read_button">Olvassa el az adatvédelmi nyilatkozatunkat</string>
 
+    <!-- Content description (not visible, for screen readers etc.): Close onboarding screen -->
+    <string name="onboarding_close">Bezárás</string>
+
     <!-- text for the button to finish onboarding -->
     <string name="onboarding_finish">Böngészés megkezdése</string>
 
@@ -941,6 +1010,8 @@
     <string name="sign_in_with_email">E-mail használata ehelyett</string>
     <!-- Text shown in confirmation dialog to sign out of account -->
     <string name="sign_out_confirmation_message">A Firefox leállítja a szinkronizációt a fiókjával, de nem töröl semmilyen böngészési adatot erről az eszközről.</string>
+    <!-- Text shown in confirmation dialog to sign out of account. The first parameter is the name of the app (e.g. Firefox Preview) -->
+    <string name="sign_out_confirmation_message_2">A %s leállítja a szinkronizációt a fiókjával, de nem töröl semmilyen böngészési adatot erről az eszközről.</string>
     <!-- Option to continue signing out of account shown in confirmation dialog to sign out of account -->
     <string name="sign_out_disconnect">Kapcsolat bontása</string>
     <!-- Option to cancel signing out shown in confirmation dialog to sign out of account -->
@@ -1043,6 +1114,9 @@
 
     <!-- Header for exceptions list for which sites enhanced tracking protection is always off -->
     <string name="enhanced_tracking_protection_exceptions">A továbbfejlesztett követés elleni védelem ki van kapcsolva ezeken a webhelyeken</string>
+    <!-- Content description (not visible, for screen readers etc.): Navigate
+    back from ETP details (Ex: Tracking content) -->
+    <string name="etp_back_button_content_description">Navigálás visszafelé</string>
     <!-- About page Your rights link text -->
     <string name="about_your_rights">Az Ön jogai</string>
     <!-- About page link text to open open source licenses screen -->
@@ -1063,6 +1137,11 @@
     <string name="about_licensing_information">Licencinformációk</string>
     <!-- About page link text to open a screen with libraries that are used -->
     <string name="about_other_open_source_libraries">Az általunk használt programkönyvtárak</string>
+
+    <!-- Toast shown to the user when they are activating the secret dev menu
+        The first parameter is number of long clicks left to enable the menu -->
+    <string name="about_debug_menu_toast_progress">Hibakeresési menü: %1$d kattintás van hátra az engedélyezésig</string>
+    <string name="about_debug_menu_toast_done">Hibakeresési menü engedélyezve</string>
 
     <!-- Content description of the tab counter toolbar button when one tab is open -->
     <string name="tab_counter_content_description_one_tab">1 lap</string>
@@ -1086,8 +1165,13 @@
     <string name="add_to_homescreen_cancel">Mégse</string>
     <!-- Add button text for the Add to Homescreen dialog -->
     <string name="add_to_homescreen_add">Hozzáadás</string>
+    <!-- Continue to website button text for the first-time Add to Homescreen dialog -->
+    <string name="add_to_homescreen_continue">Tovább a weblapra</string>
     <!-- Placeholder text for the TextView in the Add to Homescreen dialog -->
     <string name="add_to_homescreen_text_placeholder">Parancsikon neve</string>
+
+    <!-- Describes the add to homescreen functionality -->
+    <string name="add_to_homescreen_description">Könnyedén hozzáadhatja ezt a weboldalt a telefonja Kezdőképernyőhöz, és azonnal elérheti azt, így gyorsabban böngészve, miközben alkalmazásszerű élményt kap.</string>
 
     <!-- Preference for managing the settings for logins and passwords in Fenix -->
     <string name="preferences_passwords_logins_and_passwords">Bejelentkezések és jelszavak</string>
@@ -1272,4 +1356,8 @@
     <string name="certificate_info_verified_by">Ellenőrizte: %1$s </string>
     <!-- Login overflow menu delete button -->
     <string name="login_menu_delete_button">Törlés</string>
+    <!-- Message in delete confirmation dialog for logins -->
+    <string name="login_deletion_confirmation">Biztos, hogy törölni szeretné ezt a bejelentkezést?</string>
+    <!-- Positive action of a dialog asking to delete  -->
+    <string name="dialog_delete_positive">Törlés</string>
 </resources>

@@ -32,7 +32,9 @@ import kotlinx.coroutines.withContext
 import org.mozilla.fenix.R
 import org.mozilla.fenix.components.FenixSnackbar
 import org.mozilla.fenix.components.metrics.Event
+import org.mozilla.fenix.ext.checkAndUpdateScreenshotPermission
 import org.mozilla.fenix.ext.components
+import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.ext.showToolbar
 
 /**
@@ -50,7 +52,7 @@ class SavedLoginSiteInfoFragment : Fragment(R.layout.fragment_saved_login_site_i
     override fun onPause() {
         // If we pause this fragment, we want to pop users back to reauth
         if (findNavController().currentDestination?.id != R.id.savedLoginsFragment) {
-            activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+            activity?.let { it.checkAndUpdateScreenshotPermission(it.settings()) }
             findNavController().popBackStack(R.id.loginsFragment, false)
         }
         super.onPause()
@@ -94,7 +96,7 @@ class SavedLoginSiteInfoFragment : Fragment(R.layout.fragment_saved_login_site_i
 
     private fun deleteLogin() {
         var deleteLoginJob: Deferred<Boolean>? = null
-        val deleteJob = lifecycleScope.launch(IO) {
+        val deleteJob = viewLifecycleOwner.lifecycleScope.launch(IO) {
             deleteLoginJob = async {
                 requireContext().components.core.passwordsStorage.delete(args.savedLoginItem.id)
             }
@@ -181,7 +183,11 @@ class SavedLoginSiteInfoFragment : Fragment(R.layout.fragment_saved_login_site_i
 
         private fun showCopiedSnackbar(copiedItem: String) {
             view?.let {
-                FenixSnackbar.make(it, Snackbar.LENGTH_SHORT).setText(copiedItem).show()
+                FenixSnackbar.make(
+                    view = it,
+                    duration = Snackbar.LENGTH_SHORT,
+                    isDisplayedWithBrowserToolbar = false
+                ).setText(copiedItem).show()
             }
         }
     }

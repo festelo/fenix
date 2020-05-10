@@ -12,13 +12,16 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.tab_list_row.*
-import mozilla.components.feature.media.state.MediaState
+import mozilla.components.browser.state.state.MediaState
 import mozilla.components.support.ktx.android.util.dpToFloat
 import org.mozilla.fenix.R
 import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.increaseTapArea
 import org.mozilla.fenix.ext.loadIntoView
+import org.mozilla.fenix.ext.removeAndDisable
+import org.mozilla.fenix.ext.removeTouchDelegate
+import org.mozilla.fenix.ext.showAndEnable
 import org.mozilla.fenix.home.Tab
 import org.mozilla.fenix.home.sessioncontrol.TabSessionInteractor
 
@@ -46,19 +49,21 @@ class TabViewHolder(
             interactor.onCloseTab(tab?.sessionId!!)
         }
 
-        play_pause_button.increaseTapArea(PLAY_PAUSE_BUTTON_EXTRA_DPS)
-
         play_pause_button.setOnClickListener {
             when (tab?.mediaState) {
-                is MediaState.Playing -> {
+                MediaState.State.PLAYING -> {
                     it.context.components.analytics.metrics.track(Event.TabMediaPause)
                     interactor.onPauseMediaClicked()
                 }
 
-                is MediaState.Paused -> {
+                MediaState.State.PAUSED -> {
                     it.context.components.analytics.metrics.track(Event.TabMediaPlay)
                     interactor.onPlayMediaClicked()
                 }
+
+                MediaState.State.NONE -> throw AssertionError(
+                    "Play/Pause button clicked without play/pause state."
+                )
             }
         }
 
@@ -82,27 +87,45 @@ class TabViewHolder(
         updateHostname(tab.hostname)
         updateFavIcon(tab.url, tab.icon)
         updateSelected(tab.selected ?: false)
-        updatePlayPauseButton(tab.mediaState ?: MediaState.None)
+        updatePlayPauseButton(tab.mediaState)
         item_tab.transitionName = "$TAB_ITEM_TRANSITION_NAME${tab.sessionId}"
         updateCloseButtonDescription(tab.title)
     }
 
-    internal fun updatePlayPauseButton(mediaState: MediaState) {
+    internal fun updatePlayPauseButton(mediaState: MediaState.State) {
         with(play_pause_button) {
-            visibility = if (mediaState is MediaState.Playing || mediaState is MediaState.Paused) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            invalidate()
+            when (mediaState) {
+                MediaState.State.PAUSED -> {
+                    showAndEnable()
+                    play_pause_button.increaseTapArea(PLAY_PAUSE_BUTTON_EXTRA_DPS)
+                    contentDescription =
+                        context.getString(R.string.mozac_feature_media_notification_action_play)
+                    setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            context,
+                            R.drawable.play_with_background
+                        )
+                    )
+                }
 
-            if (mediaState is MediaState.Playing) {
-                play_pause_button.contentDescription =
-                    context.getString(R.string.mozac_feature_media_notification_action_pause)
-                setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.pause_with_background))
-            } else {
-                play_pause_button.contentDescription =
-                    context.getString(R.string.mozac_feature_media_notification_action_play)
-                setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.play_with_background))
+                MediaState.State.PLAYING -> {
+                    showAndEnable()
+                    play_pause_button.increaseTapArea(PLAY_PAUSE_BUTTON_EXTRA_DPS)
+                    contentDescription =
+                        context.getString(R.string.mozac_feature_media_notification_action_pause)
+                    setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            context,
+                            R.drawable.pause_with_background
+                        )
+                    )
+                }
+
+                MediaState.State.NONE -> {
+                    removeTouchDelegate()
+                    removeAndDisable()
+                }
             }
         }
     }
@@ -110,6 +133,7 @@ class TabViewHolder(
     internal fun updateTab(tab: Tab) {
         this.tab = tab
     }
+
     internal fun updateTitle(text: String) {
         tab_title.text = text
     }
@@ -129,6 +153,7 @@ class TabViewHolder(
     internal fun updateSelected(selected: Boolean) {
         selected_border.visibility = if (selected) View.VISIBLE else View.GONE
     }
+
     internal fun updateCloseButtonDescription(title: String) {
         close_tab_button.contentDescription =
             close_tab_button.context.getString(R.string.close_tab_title, title)

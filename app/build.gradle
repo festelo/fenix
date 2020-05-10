@@ -1,19 +1,3 @@
-// Allow installing Gradle plugins from the Mozilla Maven repositories
-buildscript {
-    repositories {
-        maven {
-            url "https://snapshots.maven.mozilla.org/maven2"
-        }
-        maven {
-            url "https://maven.mozilla.org/maven2"
-        }
-
-        dependencies {
-            classpath "org.mozilla.components:tooling-glean-gradle:${Versions.mozilla_android_components}"
-        }
-    }
-}
-
 plugins {
     id "com.jetbrains.python.envs" version "0.0.26"
 }
@@ -31,6 +15,7 @@ apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 import com.android.build.OutputFile
 import org.gradle.internal.logging.text.StyledTextOutput.Style
 import org.gradle.internal.logging.text.StyledTextOutputFactory
+import org.mozilla.fenix.gradle.tasks.LintUnitTestRunner
 
 import static org.gradle.api.tasks.testing.TestResult.ResultType
 
@@ -45,9 +30,15 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
-        manifestPlaceholders.isRaptorEnabled = "false"
         resValue "bool", "IS_DEBUG", "false"
         buildConfigField "boolean", "USE_RELEASE_VERSIONING", "false"
+        buildConfigField "String", "AMO_COLLECTION", "\"16f6e5d9a40448b8955db57ced6d75\""
+        def deepLinkSchemeValue = "fenix-dev"
+        buildConfigField "String", "DEEP_LINK_SCHEME", "\"$deepLinkSchemeValue\""
+        manifestPlaceholders = [
+                "isRaptorEnabled": "false",
+                "deepLinkScheme": deepLinkSchemeValue
+        ]
     }
 
     def releaseTemplate = {
@@ -70,22 +61,40 @@ android {
             manifestPlaceholders.isRaptorEnabled = "true"
             applicationIdSuffix ".fenix.performancetest"
             debuggable true
+            manifestPlaceholders = [
+                // Since we configure this build to behave like a "fennec" flavored build, we need
+                // to set a shared user id for the manifest. The actual values does not matter.
+                // However we pick a unique value to not "clash" with other Fenix/Fennec builds
+                // installed on the device.
+                "sharedUserId": "org.mozilla.fenix.performancetest.sharedID"
+            ]
         }
         fenixNightly releaseTemplate >> {
             applicationIdSuffix ".fenix.nightly"
             buildConfigField "boolean", "USE_RELEASE_VERSIONING", "true"
+            def deepLinkSchemeValue = "fenix-nightly"
+            buildConfigField "String", "DEEP_LINK_SCHEME", "\"$deepLinkSchemeValue\""
+            manifestPlaceholders = ["deepLinkScheme": deepLinkSchemeValue]
         }
         fenixBeta releaseTemplate >> {
             applicationIdSuffix ".fenix.beta"
             buildConfigField "boolean", "USE_RELEASE_VERSIONING", "true"
+            def deepLinkSchemeValue = "fenix-beta"
+            buildConfigField "String", "DEEP_LINK_SCHEME", "\"$deepLinkSchemeValue\""
+            manifestPlaceholders = ["deepLinkScheme": deepLinkSchemeValue]
         }
         fenixProduction releaseTemplate >> {
             applicationIdSuffix ".fenix"
             buildConfigField "boolean", "USE_RELEASE_VERSIONING", "true"
+            def deepLinkSchemeValue = "fenix"
+            buildConfigField "String", "DEEP_LINK_SCHEME", "\"$deepLinkSchemeValue\""
+            manifestPlaceholders = ["deepLinkScheme": deepLinkSchemeValue]
         }
         fennecProduction releaseTemplate >> {
             buildConfigField "boolean", "USE_RELEASE_VERSIONING", "true"
             applicationIdSuffix ".firefox"
+            def deepLinkSchemeValue = "fenix"
+            buildConfigField "String", "DEEP_LINK_SCHEME", "\"$deepLinkSchemeValue\""
             manifestPlaceholders = [
                     // This release type is meant to replace Firefox (Release channel) and therefore needs to inherit
                     // its sharedUserId for all eternity. See:
@@ -94,12 +103,15 @@ android {
                     // fatal consequences. For example see:
                     //  - https://issuetracker.google.com/issues/36924841
                     //  - https://issuetracker.google.com/issues/36905922
-                    "sharedUserId": "org.mozilla.firefox.sharedID"
+                    "sharedUserId": "org.mozilla.firefox.sharedID",
+                    "deepLinkScheme": deepLinkSchemeValue
             ]
         }
         fennecBeta releaseTemplate >> {
             buildConfigField "boolean", "USE_RELEASE_VERSIONING", "true"
             applicationIdSuffix ".firefox_beta"
+            def deepLinkSchemeValue = "fenix-beta"
+            buildConfigField "String", "DEEP_LINK_SCHEME", "\"$deepLinkSchemeValue\""
             manifestPlaceholders = [
                     // This release type is meant to replace Firefox (Release channel) and therefore needs to inherit
                     // its sharedUserId for all eternity. See:
@@ -108,12 +120,15 @@ android {
                     // fatal consequences. For example see:
                     //  - https://issuetracker.google.com/issues/36924841
                     //  - https://issuetracker.google.com/issues/36905922
-                    "sharedUserId": "org.mozilla.firefox.sharedID"
+                    "sharedUserId": "org.mozilla.firefox.sharedID",
+                    "deepLinkScheme": deepLinkSchemeValue
             ]
         }
         fennecNightly releaseTemplate >> {
             buildConfigField "boolean", "USE_RELEASE_VERSIONING", "true"
             applicationIdSuffix ".fennec_aurora"
+            def deepLinkSchemeValue = "fenix-nightly"
+            buildConfigField "String", "DEEP_LINK_SCHEME", "\"$deepLinkSchemeValue\""
             manifestPlaceholders = [
                     // This release type is meant to replace Firefox (Release channel) and therefore needs to inherit
                     // its sharedUserId for all eternity. See:
@@ -122,7 +137,8 @@ android {
                     // fatal consequences. For example see:
                     //  - https://issuetracker.google.com/issues/36924841
                     //  - https://issuetracker.google.com/issues/36905922
-                    "sharedUserId": "org.mozilla.fennec.sharedID"
+                    "sharedUserId": "org.mozilla.fennec.sharedID",
+                    "deepLinkScheme": deepLinkSchemeValue
             ]
         }
     }
@@ -164,6 +180,14 @@ android {
         }
     }
 
+    aaptOptions {
+        // All JavaScript code used internally by GeckoView is packaged in a
+        // file called omni.ja. If this file is compressed in the APK,
+        // GeckoView must uncompress it before it can do anything else which
+        // causes a significant delay on startup.
+        noCompress 'ja'
+    }
+
     testOptions {
         execution 'ANDROIDX_TEST_ORCHESTRATOR'
         unitTests.includeAndroidResources = true
@@ -185,6 +209,12 @@ android {
             manifest.srcFile "src/migration/AndroidManifest.xml"
         }
         fennecProduction {
+            java.srcDirs = ['src/migration/java']
+            manifest.srcFile "src/migration/AndroidManifest.xml"
+        }
+        forPerformanceTest {
+            // We want our performance test builds to use the same code as our "fennec" flavor builds
+            // since those builds will ship to our large user base.
             java.srcDirs = ['src/migration/java']
             manifest.srcFile "src/migration/AndroidManifest.xml"
         }
@@ -240,7 +270,7 @@ android.applicationVariants.all { variant ->
     if (hasTest) {
         apply plugin: 'kotlin-allopen'
         allOpen {
-            annotation("org.mozilla.fenix.test.OpenClass")
+            annotation("org.mozilla.fenix.utils.OpenClass")
         }
     }
 
@@ -422,10 +452,12 @@ dependencies {
     implementation Deps.mozilla_concept_storage
     implementation Deps.mozilla_concept_sync
     implementation Deps.mozilla_concept_toolbar
+    implementation Deps.mozilla_concept_tabstray
 
     implementation Deps.mozilla_browser_awesomebar
     implementation Deps.mozilla_feature_downloads
     implementation Deps.mozilla_browser_domains
+    implementation Deps.mozilla_browser_tabstray
     implementation Deps.mozilla_browser_icons
     implementation Deps.mozilla_browser_menu
     implementation Deps.mozilla_browser_search
@@ -558,11 +590,12 @@ dependencies {
     testImplementation Deps.mockito_core
     androidTestImplementation Deps.mockito_android
     testImplementation Deps.mockk
-    testImplementation Deps.assertk
 
     // For the initial release of Glean 19, we require consumer applications to
     // depend on a separate library for unit tests. This will be removed in future releases.
     testImplementation "org.mozilla.telemetry:glean-forUnitTests:${project.ext.glean_version}"
+
+    lintChecks project(":mozilla-lint-rules")
 }
 
 if (project.hasProperty("raptor")) {
@@ -651,6 +684,8 @@ task buildTranslationArray {
     android.defaultConfig.buildConfigField "String[]", "SUPPORTED_LOCALE_ARRAY", foundLocalesString
 }
 
+task lintUnitTestRunner(type: LintUnitTestRunner)
+
 afterEvaluate {
 
     // Format test output. Ported from AC #2401
@@ -707,4 +742,9 @@ if (gradle.hasProperty('localProperties.dependencySubstitutions.geckoviewTopsrcd
 if (gradle.hasProperty('localProperties.autoPublish.android-components.dir')) {
     ext.acSrcDir = gradle."localProperties.autoPublish.android-components.dir"
     apply from: "../${acSrcDir}/substitute-local-ac.gradle"
+}
+
+if (gradle.hasProperty('localProperties.autoPublish.application-services.dir')) {
+    ext.appServicesSrcDir = gradle."localProperties.autoPublish.application-services.dir"
+    apply from: "../${appServicesSrcDir}/build-scripts/substitute-local-appservices.gradle"
 }

@@ -6,8 +6,6 @@ package org.mozilla.fenix.settings.about
 
 import android.view.ViewGroup
 import android.widget.TextView
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
@@ -16,15 +14,13 @@ import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.android.synthetic.main.about_list_item.view.*
 import mozilla.components.support.test.robolectric.testContext
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mozilla.fenix.TestApplication
 import org.mozilla.fenix.settings.about.viewholders.AboutItemViewHolder
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
+import org.mozilla.fenix.helpers.FenixRobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-@Config(application = TestApplication::class)
+@RunWith(FenixRobolectricTestRunner::class)
 class AboutPageAdapterTest {
     private var aboutList: List<AboutPageItem> =
         mutableListOf(
@@ -39,33 +35,19 @@ class AboutPageAdapterTest {
     private val listener: AboutPageListener = mockk(relaxed = true)
 
     @Test
-    fun `updateData should set the new data and call notifyDataSetChanged()`() {
-        val adapter = spyk(AboutPageAdapter(listener), recordPrivateCalls = true)
-        every { adapter.notifyDataSetChanged() } just Runs
-
-        adapter.updateData(aboutList)
-
-        // Wasn't able to test in verify block the 'adapter.aboutList' setter from the updateData method
-        assertThat(adapter.aboutList).isEqualTo(aboutList)
-        verify {
-            adapter.notifyDataSetChanged()
-        }
-    }
-
-    @Test
     fun `getItemCount on a default instantiated Adapter should return 0`() {
         val adapter = AboutPageAdapter(listener)
 
-        assertThat(adapter.itemCount).isEqualTo(0)
+        assertEquals(0, adapter.itemCount)
     }
 
     @Test
     fun `getItemCount after updateData() call should return the correct list size`() {
         val adapter = AboutPageAdapter(listener)
 
-        adapter.updateData(aboutList)
+        adapter.submitList(aboutList)
 
-        assertThat(adapter.itemCount).isEqualTo(2)
+        assertEquals(2, adapter.itemCount)
     }
 
     @Test
@@ -76,7 +58,7 @@ class AboutPageAdapterTest {
 
         val viewHolder = adapter.onCreateViewHolder(parentView, AboutItemViewHolder.LAYOUT_ID)
 
-        assertThat(viewHolder::class).isEqualTo(AboutItemViewHolder::class)
+        assertEquals(AboutItemViewHolder::class, viewHolder::class)
     }
 
     @Test
@@ -93,9 +75,9 @@ class AboutPageAdapterTest {
         } returns viewHolder
         every { viewHolder.bind(any()) } just Runs
 
-        adapter.updateData(aboutList)
+        adapter.submitList(aboutList)
         adapter.bindViewHolder(viewHolder, 1)
 
-        verify { viewHolder.bind(adapter.aboutList?.get(1) as AboutPageItem.Item) }
+        verify { viewHolder.bind(aboutList[1] as AboutPageItem.Item) }
     }
 }

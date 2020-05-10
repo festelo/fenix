@@ -1,19 +1,18 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 ---
 loader: taskgraph.loader.transform:loader
+
+kind-dependencies:
+    - fetch
+
 transforms:
     - taskgraph.transforms.job:transforms
+    - taskgraph.transforms.cached_tasks:transforms
     - taskgraph.transforms.task:transforms
 
-job-defaults:
-    worker-type: always-optimized
-    run:
-        using: index-search
 
-jobs:
-    linux64-minidump-stackwalk:
-        description: "minidump_stackwalk toolchain"
-        attributes:
-            toolchain-artifact: public/build/minidump_stackwalk.tar.xz
-        run:
-            index-search:
-                - gecko.cache.level-3.toolchains.v3.linux64-minidump-stackwalk.latest
+jobs-from:
+    - android.yml
+    - gecko-derived.yml

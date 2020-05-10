@@ -6,11 +6,6 @@ package org.mozilla.fenix.home.intent
 
 import android.content.Intent
 import android.net.Uri
-import assertk.assertAll
-import assertk.assertThat
-import assertk.assertions.isEqualTo
-import assertk.assertions.isFalse
-import assertk.assertions.isTrue
 import io.mockk.Called
 import io.mockk.every
 import io.mockk.mockk
@@ -23,16 +18,16 @@ import mozilla.components.browser.session.SessionManager
 import mozilla.components.concept.engine.EngineSession
 import mozilla.components.feature.intent.ext.getSessionId
 import mozilla.components.feature.session.SessionUseCases
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mozilla.fenix.TestApplication
 import org.mozilla.fenix.home.intent.FennecBookmarkShortcutsIntentProcessor.Companion.ACTION_FENNEC_HOMESCREEN_SHORTCUT
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
+import org.mozilla.fenix.helpers.FenixRobolectricTestRunner
 import java.util.UUID
 
-@RunWith(RobolectricTestRunner::class)
-@Config(application = TestApplication::class)
+@RunWith(FenixRobolectricTestRunner::class)
 class FennecBookmarkShortcutsIntentProcessorTest {
     private val sessionManager = mockk<SessionManager>(relaxed = true)
     private val loadUrlUseCase = mockk<SessionUseCases.DefaultLoadUrlUseCase>(relaxed = true)
@@ -45,7 +40,7 @@ class FennecBookmarkShortcutsIntentProcessorTest {
 
         val wasEmptyIntentProcessed = processor.process(Intent())
 
-        assertThat(wasEmptyIntentProcessed).isFalse()
+        assertFalse(wasEmptyIntentProcessed)
         verify {
             sessionManager wasNot Called
             loadUrlUseCase wasNot Called
@@ -65,11 +60,9 @@ class FennecBookmarkShortcutsIntentProcessorTest {
 
         val wasIntentProcessed = processor.process(fennecShortcutsIntent)
 
-        assertAll {
-            assertThat(wasIntentProcessed).isTrue()
-            assertThat(fennecShortcutsIntent.action).isEqualTo(Intent.ACTION_VIEW)
-            assertThat(fennecShortcutsIntent.getSessionId()).isEqualTo(expectedSession.id)
-        }
+        assertTrue(wasIntentProcessed)
+        assertEquals(Intent.ACTION_VIEW, fennecShortcutsIntent.action)
+        assertEquals(expectedSession.id, fennecShortcutsIntent.getSessionId())
         verifyAll {
             sessionManager.add(expectedSession, true)
             loadUrlUseCase(testUrl, expectedSession, EngineSession.LoadUrlFlags.external())

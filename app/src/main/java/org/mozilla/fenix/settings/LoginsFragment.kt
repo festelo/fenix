@@ -35,6 +35,7 @@ import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.getPreferenceKey
 import org.mozilla.fenix.ext.requireComponents
+import org.mozilla.fenix.ext.secure
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.ext.showToolbar
 import java.util.concurrent.Executors
@@ -69,7 +70,7 @@ class LoginsFragment : PreferenceFragmentCompat(), AccountObserver {
 
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 Log.d(LOG_TAG, "onAuthenticationSucceeded")
-                lifecycleScope.launch(Main) {
+                viewLifecycleOwner.lifecycleScope.launch(Main) {
                     // Workaround for likely biometric library bug
                     // https://github.com/mozilla-mobile/fenix/issues/8438
                     delay(SHORT_DELAY_MS)
@@ -173,7 +174,7 @@ class LoginsFragment : PreferenceFragmentCompat(), AccountObserver {
     private fun updateSyncPreferenceStatus() {
         val syncLogins = getPreferenceKey(R.string.pref_key_password_sync_logins)
         findPreference<Preference>(syncLogins)?.apply {
-            val syncEnginesStatus = SyncEnginesStorage(context!!).getStatus()
+            val syncEnginesStatus = SyncEnginesStorage(requireContext()).getStatus()
             val loginsSyncStatus = syncEnginesStatus.getOrElse(SyncEngine.Passwords) { false }
             summary = getString(
                 if (loginsSyncStatus) R.string.preferences_passwords_sync_logins_on
@@ -241,7 +242,7 @@ class LoginsFragment : PreferenceFragmentCompat(), AccountObserver {
                     startActivity(intent)
                 }
                 create()
-            }.show()
+            }.show().secure(activity)
             it.settings().incrementShowLoginsSecureWarningCount()
         }
     }
@@ -271,12 +272,12 @@ class LoginsFragment : PreferenceFragmentCompat(), AccountObserver {
 
     private fun navigateToAccountSettingsFragment() {
         val directions =
-            LoginsFragmentDirections.actionLoginsFragmentToAccountSettingsFragment()
+            LoginsFragmentDirections.actionGlobalAccountSettingsFragment()
         findNavController().navigate(directions)
     }
 
     private fun navigateToAccountProblemFragment() {
-        val directions = LoginsFragmentDirections.actionLoginsFragmentToAccountProblemFragment()
+        val directions = LoginsFragmentDirections.actionGlobalAccountProblemFragment()
         findNavController().navigate(directions)
     }
 

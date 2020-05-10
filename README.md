@@ -39,7 +39,10 @@ Before you attempt to make a contribution please read the [Community Participati
 
 * Browse our [current Issues](https://github.com/mozilla-mobile/fenix/issues), or [file a security issue][sec issue].
 
-* Matrix: [#fenix:mozilla.org channel](https://chat.mozilla.org/#/room/#fenix:mozilla.org) (**We're available Monday-Friday, GMT and PST working hours**).
+* Matrix: [#fenix:mozilla.org channel](https://chat.mozilla.org/#/room/#fenix:mozilla.org) (**We're available Monday-Friday, GMT and PST working hours**). Related channels:
+  * [#mobile-test-eng:mozilla.org channel](https://chat.mozilla.org/#/room/#mobile-test-eng:mozilla.org): for UI test automation
+  * [#perf-android-frontend:mozilla.org channel](https://chat.mozilla.org/#/room/#perf-android-frontend:mozilla.org): for front-end (JVM) performance of Android apps
+  * [#android-tips:mozilla.org channel](https://chat.mozilla.org/#/room/#android-tips:mozilla.org): for tips on Android development
 
 * Check out the [project wiki](https://github.com/mozilla-mobile/fenix/wiki) for more information.
 
@@ -153,17 +156,17 @@ git push <remote> --no-verify
 There are multiple helper flags available via `local.properties` that will help speed up local development workflow
 when working across multiple layers of the dependency stack - specifically, with android-components, geckoview or application-services.
 
-### android-components auto-publication workflow
-Specify a relative path to your local `android-components` checkout via `autoPublish.android-components.dir`.
+### Auto-publication workflow for android-components and application-services
+If you're making changes to these projects and want to test them in Fenix, auto-publication workflow is the fastest, most reliable
+way to do that.
 
-If enabled, during a Fenix build android-components will be compiled and locally published if it has been modified,
-and published versions of android-components modules will be automatically used instead of whatever is declared in Dependencies.kt.
+In `local.properties`, specify a relative path to your local `android-components` and/or `application-services` checkouts. E.g.:
+- `autoPublish.android-components.dir=../android-components`
+- `autoPublish.application-services.dir=../application-services`
 
-### application-services composite builds
-Specify a relative path to your local `application-services` checkout via `substitutions.application-services.dir`.
+Once these flags are set, your Fenix builds will include any local modifications present in these projects.
 
-If enabled, a multi-project gradle build will be configured, and any application-services dependency will be substituted
-for the local version. Any changes to `application-services` will be automatically included in Fenix builds.
+See a [demo of auto-publication workflow in action](https://www.youtube.com/watch?v=qZKlBzVvQGc).
 
 ### GeckoView
 Specify a relative path to your local `mozilla-central` checkout via `dependencySubstitutions.geckoviewTopsrcdir`,

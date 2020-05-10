@@ -6,7 +6,6 @@ package org.mozilla.fenix.home.sessioncontrol
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
@@ -15,9 +14,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.tab_list_row.*
-import mozilla.components.feature.media.state.MediaState
 import mozilla.components.feature.tab.collections.TabCollection
 import mozilla.components.feature.top.sites.TopSite
+import org.mozilla.fenix.components.tips.Tip
+import org.mozilla.fenix.ext.removeAndDisable
+import org.mozilla.fenix.ext.removeTouchDelegate
 import org.mozilla.fenix.home.OnboardingState
 import org.mozilla.fenix.home.Tab
 import org.mozilla.fenix.home.sessioncontrol.viewholders.CollectionHeaderViewHolder
@@ -29,6 +30,7 @@ import org.mozilla.fenix.home.sessioncontrol.viewholders.SaveTabGroupViewHolder
 import org.mozilla.fenix.home.sessioncontrol.viewholders.TabHeaderViewHolder
 import org.mozilla.fenix.home.sessioncontrol.viewholders.TabInCollectionViewHolder
 import org.mozilla.fenix.home.sessioncontrol.viewholders.TabViewHolder
+import org.mozilla.fenix.home.sessioncontrol.viewholders.TopSiteHeaderViewHolder
 import org.mozilla.fenix.home.sessioncontrol.viewholders.TopSiteViewHolder
 import org.mozilla.fenix.home.sessioncontrol.viewholders.onboarding.OnboardingAutomaticSignInViewHolder
 import org.mozilla.fenix.home.sessioncontrol.viewholders.onboarding.OnboardingFinishViewHolder
@@ -41,10 +43,12 @@ import org.mozilla.fenix.home.sessioncontrol.viewholders.onboarding.OnboardingTh
 import org.mozilla.fenix.home.sessioncontrol.viewholders.onboarding.OnboardingToolbarPositionPickerViewHolder
 import org.mozilla.fenix.home.sessioncontrol.viewholders.onboarding.OnboardingTrackingProtectionViewHolder
 import org.mozilla.fenix.home.sessioncontrol.viewholders.onboarding.OnboardingWhatsNewViewHolder
-
+import org.mozilla.fenix.home.tips.ButtonTipViewHolder
 import mozilla.components.feature.tab.collections.Tab as ComponentTab
 
 sealed class AdapterItem(@LayoutRes val viewType: Int) {
+    data class TipItem(val tip: Tip) : AdapterItem(
+        ButtonTipViewHolder.LAYOUT_ID)
     data class TabHeader(val isPrivate: Boolean, val hasTabs: Boolean) : AdapterItem(TabHeaderViewHolder.LAYOUT_ID)
     data class TabItem(val tab: Tab) : AdapterItem(TabViewHolder.LAYOUT_ID) {
         override fun sameAs(other: AdapterItem) = other is TabItem && tab.sessionId == other.tab.sessionId
@@ -71,19 +75,18 @@ sealed class AdapterItem(@LayoutRes val viewType: Int) {
         }
     }
 
+    object TopSiteHeader : AdapterItem(TopSiteHeaderViewHolder.LAYOUT_ID)
     data class TopSiteList(val topSites: List<TopSite>) : AdapterItem(TopSiteViewHolder.LAYOUT_ID)
 
     object SaveTabGroup : AdapterItem(SaveTabGroupViewHolder.LAYOUT_ID)
 
     object PrivateBrowsingDescription : AdapterItem(PrivateBrowsingDescriptionViewHolder.LAYOUT_ID)
     data class NoContentMessage(
-        @DrawableRes val icon: Int,
         @StringRes val header: Int,
         @StringRes val description: Int
     ) : AdapterItem(NoContentMessageViewHolder.LAYOUT_ID)
 
     data class NoContentMessageWithAction(
-        @DrawableRes val icon: Int,
         @StringRes val header: Int,
         @StringRes val description: Int,
         @DrawableRes val buttonIcon: Int = 0,
@@ -165,7 +168,9 @@ class SessionControlAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
         return when (viewType) {
+            ButtonTipViewHolder.LAYOUT_ID -> ButtonTipViewHolder(view, interactor)
             TabHeaderViewHolder.LAYOUT_ID -> TabHeaderViewHolder(view, interactor)
+            TopSiteHeaderViewHolder.LAYOUT_ID -> TopSiteHeaderViewHolder(view)
             TabViewHolder.LAYOUT_ID -> TabViewHolder(view, interactor)
             TopSiteViewHolder.LAYOUT_ID -> TopSiteViewHolder(view, interactor)
             SaveTabGroupViewHolder.LAYOUT_ID -> SaveTabGroupViewHolder(view, interactor)
@@ -174,7 +179,7 @@ class SessionControlAdapter(
             NoContentMessageWithActionViewHolder.LAYOUT_ID -> NoContentMessageWithActionViewHolder(view)
             CollectionHeaderViewHolder.LAYOUT_ID -> CollectionHeaderViewHolder(view)
             CollectionViewHolder.LAYOUT_ID -> CollectionViewHolder(view, interactor)
-            TabInCollectionViewHolder.LAYOUT_ID -> TabInCollectionViewHolder(view, interactor)
+            TabInCollectionViewHolder.LAYOUT_ID -> TabInCollectionViewHolder(view, interactor, differentLastItem = true)
             OnboardingHeaderViewHolder.LAYOUT_ID -> OnboardingHeaderViewHolder(view)
             OnboardingSectionHeaderViewHolder.LAYOUT_ID -> OnboardingSectionHeaderViewHolder(view)
             OnboardingAutomaticSignInViewHolder.LAYOUT_ID -> OnboardingAutomaticSignInViewHolder(view)
@@ -182,9 +187,9 @@ class SessionControlAdapter(
             OnboardingThemePickerViewHolder.LAYOUT_ID -> OnboardingThemePickerViewHolder(view)
             OnboardingTrackingProtectionViewHolder.LAYOUT_ID -> OnboardingTrackingProtectionViewHolder(view)
             OnboardingPrivateBrowsingViewHolder.LAYOUT_ID -> OnboardingPrivateBrowsingViewHolder(view, interactor)
-            OnboardingPrivacyNoticeViewHolder.LAYOUT_ID -> OnboardingPrivacyNoticeViewHolder(view)
+            OnboardingPrivacyNoticeViewHolder.LAYOUT_ID -> OnboardingPrivacyNoticeViewHolder(view, interactor)
             OnboardingFinishViewHolder.LAYOUT_ID -> OnboardingFinishViewHolder(view, interactor)
-            OnboardingWhatsNewViewHolder.LAYOUT_ID -> OnboardingWhatsNewViewHolder(view)
+            OnboardingWhatsNewViewHolder.LAYOUT_ID -> OnboardingWhatsNewViewHolder(view, interactor)
             OnboardingToolbarPositionPickerViewHolder.LAYOUT_ID -> OnboardingToolbarPositionPickerViewHolder(view)
             else -> throw IllegalStateException()
         }
@@ -196,6 +201,10 @@ class SessionControlAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         when (holder) {
+            is ButtonTipViewHolder -> {
+                val tipItem = item as AdapterItem.TipItem
+                holder.bind(tipItem.tip)
+            }
             is TabHeaderViewHolder -> {
                 val tabHeader = item as AdapterItem.TabHeader
                 holder.bind(tabHeader.isPrivate, tabHeader.hasTabs)
@@ -208,12 +217,12 @@ class SessionControlAdapter(
             }
             is NoContentMessageWithActionViewHolder -> {
                 val listener = { interactor.onOpenNewTabClicked() }
-                val (icon, header, description, buttonIcon, buttonText) = item as AdapterItem.NoContentMessageWithAction
-                holder.bind(icon, header, description, buttonIcon, buttonText, listener)
+                val (header, description, buttonIcon, buttonText) = item as AdapterItem.NoContentMessageWithAction
+                holder.bind(header, description, buttonIcon, buttonText, listener)
             }
             is NoContentMessageViewHolder -> {
-                val (icon, header, description) = item as AdapterItem.NoContentMessage
-                holder.bind(icon, header, description)
+                val (header, description) = item as AdapterItem.NoContentMessage
+                holder.bind(header, description)
             }
             is CollectionViewHolder -> {
                 val (collection, expanded, sessionHasOpenTabs) = item as AdapterItem.CollectionItem
@@ -247,7 +256,8 @@ class SessionControlAdapter(
             (holder as TabViewHolder).updateTab(it.tab)
 
             // Always set the visibility to GONE to avoid the play button sticking around from previous draws
-            holder.play_pause_button.visibility = View.GONE
+            holder.play_pause_button.removeTouchDelegate()
+            holder.play_pause_button.removeAndDisable()
 
             if (it.shouldUpdateHostname) { holder.updateHostname(it.tab.hostname) }
             if (it.shouldUpdateTitle) {
@@ -258,7 +268,7 @@ class SessionControlAdapter(
             }
             if (it.shouldUpdateSelected) { holder.updateSelected(it.tab.selected ?: false) }
             if (it.shouldUpdateMediaState) {
-                holder.updatePlayPauseButton(it.tab.mediaState ?: MediaState.None)
+                holder.updatePlayPauseButton(it.tab.mediaState)
             }
         }
     }

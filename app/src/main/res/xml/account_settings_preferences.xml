@@ -1,38 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <androidx.preference.Preference
+        app:iconSpaceReserved="false"
         android:key="@string/pref_key_sync_now"
         android:title="@string/preferences_sync_now" />
 
+    <androidx.preference.EditTextPreference
+        app:iconSpaceReserved="false"
+        android:key="@string/pref_key_sync_device_name"
+        android:title="@string/preferences_sync_device_name" />
+
     <androidx.preference.Preference
+        app:iconSpaceReserved="false"
         android:key="@string/pref_key_sign_out"
         android:title="@string/preferences_sign_out" />
 
     <androidx.preference.PreferenceCategory
         android:key="@string/preferences_sync_category"
-        android:title="@string/preferences_sync_category">
+        android:title="@string/preferences_sync_category"
+        android:layout="@layout/preference_cat_style">
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_key_sync_bookmarks"
+            android:layout="@layout/checkbox_left_preference"
             android:title="@string/preferences_sync_bookmarks" />
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_key_sync_history"
+            android:layout="@layout/checkbox_left_preference"
             android:title="@string/preferences_sync_history" />
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_key_sync_logins"
+            android:layout="@layout/checkbox_left_preference"
             android:title="@string/preferences_sync_logins" />
-
-        <androidx.preference.EditTextPreference
-            android:key="@string/pref_key_sync_device_name"
-            android:title="@string/preferences_sync_device_name" />
-
     </androidx.preference.PreferenceCategory>
 </PreferenceScreen>

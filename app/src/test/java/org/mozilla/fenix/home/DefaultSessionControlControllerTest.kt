@@ -13,11 +13,11 @@ import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import mozilla.components.browser.session.SessionManager
+import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.concept.engine.Engine
 import mozilla.components.feature.tab.collections.TabCollection
 import mozilla.components.feature.tabs.TabsUseCases
@@ -36,12 +36,12 @@ import org.mozilla.fenix.settings.SupportUtils
 import mozilla.components.feature.tab.collections.Tab as ComponentTab
 
 @ExperimentalCoroutinesApi
-@UseExperimental(ObsoleteCoroutinesApi::class)
 class DefaultSessionControlControllerTest {
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
+    private val store: BrowserStore = mockk(relaxed = true)
     private val activity: HomeActivity = mockk(relaxed = true)
-    private val store: HomeFragmentStore = mockk(relaxed = true)
+    private val fragmentStore: HomeFragmentStore = mockk(relaxed = true)
     private val navController: NavController = mockk(relaxed = true)
     private val browsingModeManager: BrowsingModeManager = mockk(relaxed = true)
     private val closeTab: (sessionId: String) -> Unit = mockk(relaxed = true)
@@ -50,6 +50,8 @@ class DefaultSessionControlControllerTest {
     private val hideOnboarding: () -> Unit = mockk(relaxed = true)
     private val openSettingsScreen: () -> Unit = mockk(relaxed = true)
     private val openSearchScreen: () -> Unit = mockk(relaxed = true)
+    private val openWhatsNewLink: () -> Unit = mockk(relaxed = true)
+    private val openPrivacyNotice: () -> Unit = mockk(relaxed = true)
     private val invokePendingDeleteJobs: () -> Unit = mockk(relaxed = true)
     private val registerCollectionStorageObserver: () -> Unit = mockk(relaxed = true)
     private val scrollToTheTop: () -> Unit = mockk(relaxed = true)
@@ -73,7 +75,7 @@ class DefaultSessionControlControllerTest {
         every { activity.components.core.tabCollectionStorage } returns tabCollectionStorage
         every { activity.components.useCases.tabsUseCases } returns tabsUseCases
 
-        every { store.state } returns state
+        every { fragmentStore.state } returns state
         every { state.collections } returns emptyList()
         every { state.expandedCollections } returns emptySet()
         every { state.mode } returns Mode.Normal
@@ -81,11 +83,12 @@ class DefaultSessionControlControllerTest {
         every { activity.components.analytics.metrics } returns metrics
 
         controller = DefaultSessionControlController(
-            activity = activity,
             store = store,
+            activity = activity,
+            fragmentStore = fragmentStore,
             navController = navController,
             browsingModeManager = browsingModeManager,
-            lifecycleScope = MainScope(),
+            viewLifecycleScope = MainScope(),
             closeTab = closeTab,
             closeAllTabs = closeAllTabs,
             getListOfTabs = getListOfTabs,
@@ -95,7 +98,9 @@ class DefaultSessionControlControllerTest {
             scrollToTheTop = scrollToTheTop,
             showDeleteCollectionPrompt = showDeleteCollectionPrompt,
             openSettingsScreen = openSettingsScreen,
-            openSearchScreen = openSearchScreen
+            openSearchScreen = openSearchScreen,
+            openWhatsNewLink = openWhatsNewLink,
+            openPrivacyNotice = openPrivacyNotice
         )
     }
 
@@ -237,6 +242,6 @@ class DefaultSessionControlControllerTest {
     fun handleToggleCollectionExpanded() {
         val collection: TabCollection = mockk(relaxed = true)
         controller.handleToggleCollectionExpanded(collection, true)
-        verify { store.dispatch(HomeFragmentAction.CollectionExpanded(collection, true)) }
+        verify { fragmentStore.dispatch(HomeFragmentAction.CollectionExpanded(collection, true)) }
     }
 }

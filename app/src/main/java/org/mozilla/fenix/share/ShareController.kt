@@ -68,12 +68,12 @@ class DefaultShareController(
     private val snackbar: FenixSnackbar,
     private val navController: NavController,
     private val recentAppsStorage: RecentAppsStorage,
-    private val lifecycleScope: CoroutineScope,
+    private val viewLifecycleScope: CoroutineScope,
     private val dismiss: (ShareController.Result) -> Unit
 ) : ShareController {
 
     override fun handleReauth() {
-        val directions = ShareFragmentDirections.actionShareFragmentToAccountProblemFragment()
+        val directions = ShareFragmentDirections.actionGlobalAccountProblemFragment()
         navController.nav(R.id.shareFragment, directions)
         dismiss(ShareController.Result.DISMISSED)
     }
@@ -83,8 +83,8 @@ class DefaultShareController(
     }
 
     override fun handleShareToApp(app: AppShareOption) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            recentAppsStorage.updateRecentApp(app.packageName)
+        viewLifecycleScope.launch(Dispatchers.IO) {
+            recentAppsStorage.updateRecentApp(app.activityName)
         }
 
         val intent = Intent(ACTION_SEND).apply {
@@ -123,7 +123,7 @@ class DefaultShareController(
     override fun handleSignIn() {
         context.metrics.track(Event.SignInToSendTab)
         val directions =
-            ShareFragmentDirections.actionShareFragmentToTurnOnSyncFragment(padSnackbar = true)
+            ShareFragmentDirections.actionGlobalTurnOnSync(padSnackbar = true)
         navController.nav(R.id.shareFragment, directions)
         dismiss(ShareController.Result.DISMISSED)
     }

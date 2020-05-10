@@ -29,7 +29,6 @@ import org.mozilla.fenix.BrowserDirection
 import org.mozilla.fenix.HomeActivity
 import org.mozilla.fenix.R
 import org.mozilla.fenix.browser.browsingmode.BrowsingMode
-import org.mozilla.fenix.components.FenixSnackbar
 import org.mozilla.fenix.components.Services
 import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.ext.components
@@ -41,8 +40,9 @@ class BookmarkControllerTest {
 
     private val context: Context = mockk(relaxed = true)
     private val navController: NavController = mockk(relaxed = true)
-    private val snackbar: FenixSnackbar = mockk(relaxed = true)
+    private val showSnackbar: (String) -> Unit = mockk(relaxed = true)
     private val deleteBookmarkNodes: (Set<BookmarkNode>, Event) -> Unit = mockk(relaxed = true)
+    private val deleteBookmarkFolder: (BookmarkNode) -> Unit = mockk(relaxed = true)
     private val invokePendingDeletion: () -> Unit = mockk(relaxed = true)
 
     private val homeActivity: HomeActivity = mockk(relaxed = true)
@@ -91,8 +91,9 @@ class BookmarkControllerTest {
         controller = DefaultBookmarkController(
             context = homeActivity,
             navController = navController,
-            snackbar = snackbar,
+            showSnackbar = showSnackbar,
             deleteBookmarkNodes = deleteBookmarkNodes,
+            deleteBookmarkFolder = deleteBookmarkFolder,
             invokePendingDeletion = invokePendingDeletion
         )
     }
@@ -166,8 +167,7 @@ class BookmarkControllerTest {
         controller.handleBookmarkSelected(root)
 
         verify {
-            snackbar.setText(errorMessage)
-            snackbar.show()
+            showSnackbar(errorMessage)
         }
     }
 
@@ -182,8 +182,7 @@ class BookmarkControllerTest {
 
         verifyOrder {
             ClipData.newPlainText(item.url, item.url)
-            snackbar.setText(urlCopiedMessage)
-            snackbar.show()
+            showSnackbar(urlCopiedMessage)
         }
     }
 
@@ -240,11 +239,11 @@ class BookmarkControllerTest {
     }
 
     @Test
-    fun `handleBookmarkDeletion for a folder should properly call a passed in delegate`() {
-        controller.handleBookmarkDeletion(setOf(subfolder), Event.RemoveBookmarkFolder)
+    fun `handleBookmarkDeletion for a folder should properly call the delete folder delegate`() {
+        controller.handleBookmarkFolderDeletion(subfolder)
 
         verify {
-            deleteBookmarkNodes(setOf(subfolder), Event.RemoveBookmarkFolder)
+            deleteBookmarkFolder(subfolder)
         }
     }
 
@@ -255,16 +254,6 @@ class BookmarkControllerTest {
         verify {
             invokePendingDeletion.invoke()
             navController.popBackStack()
-        }
-    }
-
-    @Test
-    fun `handleSigningIn should trigger 'PairingSignIn`() {
-        controller.handleSigningIn()
-
-        verify {
-            invokePendingDeletion.invoke()
-            services.launchPairingSignIn(homeActivity, navController)
         }
     }
 }

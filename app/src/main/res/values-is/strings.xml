@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_2">Firefox Preview í huliðsvöfrun</string>
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_3">Firefox Preview (huliðsvöfrun)</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_5">Huliðs %s</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_4">%s (Huliðs)</string>
     <!-- Home Fragment -->
     <!-- Content description (not visible, for screen readers etc.): "Three dot" menu button. -->
     <string name="content_description_menu">Fleiri stillingar</string>
@@ -18,12 +18,16 @@
     <!-- No Open Tabs Message Description -->
     <string name="no_open_tabs_description">Opnu fliparnir þínir verða sýndir hér.</string>
 
+    <!-- About content. The first parameter is the name of the application. (For example: Fenix) -->
+    <string name="about_content">%1$s er framleitt af Mozilla.</string>
+
     <!-- Private Browsing -->
     <!-- Title for private session option -->
     <string name="private_browsing_title">Þú ert í huliðsglugga</string>
     <!-- Explanation for private browsing displayed to users on home view when they first enable private mode
         The first parameter is the name of the app defined in app_name (for example: Fenix) -->
-    <string name="private_browsing_placeholder_description">%1$s hreinsar leitar- og vafraferilinn þinn þegar þú lokar forritinu eða lokar öllum einkaflipum og gluggum. Þó að þetta sé ekki nafnlaust gagnvart vefsíðum eða þjónustuveitanda þínum, þá gerir þetta þér auðveldara að halda því sem þú gerir á netinu huldu gagnvart einkaaðilum sem nota þetta tæki.</string>
+    <string name="private_browsing_placeholder_description_2">¶
+ · %1$s hreinsar leitar- og vafraferilinn þinn þegar þú lokar forritinu eða lokar öllum einkaflipum og gluggum. Þó að þetta sé ekki nafnlaust gagnvart vefsíðum eða þjónustuveitanda þínum, þá gerir þetta þér auðveldara að halda því sem þú gerir á netinu huldu gagnvart einkaaðilum sem nota þetta tæki.</string>
     <string name="private_browsing_common_myths">¶
       Algengar mýtur um huliðsleit¶</string>
     <!-- Delete session button to erase your history in a private session -->
@@ -43,6 +47,9 @@
     <!-- Shortcut action to open new private tab -->
     <string name="home_screen_shortcut_open_new_private_tab_2">Nýr einkaflipi</string>
 
+    <!-- Heading for the Top Sites block -->
+    <string name="home_screen_top_sites_heading">Vinsælustu svæðin</string>
+
     <!-- Browser Fragment -->
     <!-- Content description (not visible, for screen readers etc.): Navigate to open tabs -->
     <string name="browser_tabs_button">Opnir flipar</string>
@@ -59,7 +66,7 @@
     <!-- Content description (not visible, for screen readers etc.): Un-bookmark the current page -->
     <string name="browser_menu_edit_bookmark">Breyta bókamerki</string>
     <!-- Browser menu button that opens the addon manager -->
-    <string name="browser_menu_addon_manager">Viðbótastjóri</string>
+    <string name="browser_menu_add_ons">Viðbætur</string>
     <!-- Text displayed when there are no add-ons to be shown -->
     <string name="no_add_ons">Engar viðbætur hér</string>
     <!-- Browser menu button that sends a user to help articles -->
@@ -68,9 +75,9 @@
     <string name="browser_menu_whats_new">Hvað er nýtt</string>
     <!-- Browser menu button that opens the settings menu -->
     <string name="browser_menu_settings">Stillingar</string>
-    <!-- Browser menu button that opens a user's library -->
-    <string name="browser_menu_your_library">Bókasafnið þitt</string>
 
+    <!-- Browser menu button that opens a user's library -->
+    <string name="browser_menu_library">Safn</string>
     <!-- Browser menu toggle that requests a desktop site -->
     <string name="browser_menu_desktop_site">Borðtölvu vefsvæði</string>
     <!-- Browser menu toggle that adds a shortcut to the site on the device home screen. -->
@@ -84,7 +91,7 @@
     <!-- Browser menu button that creates a new tab -->
     <string name="browser_menu_new_tab">Nýr flipi</string>
     <!-- Browser menu button that saves the current tab to a collection -->
-    <string name="browser_menu_save_to_collection">Vista í safn</string>
+    <string name="browser_menu_save_to_collection_2">Vista í safn</string>
     <!-- Browser menu button that opens a dialog to report issues with the current site -->
     <string name="browser_menu_report_issue">Viltu láta vita af veseni á vefsvæði</string>
     <!-- Browser menu button that open a share menu to share the current site -->
@@ -107,6 +114,10 @@
     <string name="browser_menu_open_app_link">Opna í smáforriti</string>
     <!-- Browser menu button to configure reader mode appearance e.g. the used font type and size -->
     <string name="browser_menu_read_appearance">Útlit</string>
+
+    <!-- Error message to show when the user tries to access a scheme not
+        handled by the app (Ex: blob, tel etc) -->
+    <string name="unknown_scheme_error_message">Get ekki tengst. Óþekkjanlegt fyrirkomulag á slóð.</string>
 
     <!-- Locale Settings Fragment -->
     <!-- Content description for tick mark on selected language -->
@@ -148,6 +159,9 @@
 
     <!-- Text preview for larger sized widgets -->
     <string name="search_widget_text_long">Leita á vefnum</string>
+
+    <!-- Content description (not visible, for screen readers etc.): Voice search -->
+    <string name="search_widget_voice">Raddleit</string>
 
     <!-- Preferences -->
     <!-- Title for the settings page-->
@@ -193,10 +207,18 @@
     <string name="preferences_private_browsing_options">Huliðsgluggastillingar</string>
     <!-- Preference for opening links in a private tab-->
     <string name="preferences_open_links_in_a_private_tab">Opna tengla í huliðsflipa</string>
+    <!-- Preference for allowing screenshots to be taken while in a private tab-->
+    <string name="preferences_allow_screenshots_in_private_mode">Leyfa skjáskot í huliðsstillingu</string>
     <!-- Preference for adding private browsing shortcut -->
     <string name="preferences_add_private_browsing_shortcut">Bæta við flýtileið fyrir huliðsglugga</string>
     <!-- Preference for accessibility -->
     <string name="preferences_accessibility">Aðgengileiki</string>
+    <!-- Preference to override the Firefox Account server -->
+    <string name="preferences_override_fxa_server">Sérsniðinn netþjónn fyrir Firefox miðlarareikning</string>
+    <!-- Preference to override the Sync token server -->
+    <string name="preferences_override_sync_tokenserver">Sérsniðinn samstillingarþjónn</string>
+    <!-- Toast shown after updating the FxA/Sync server override preferences -->
+    <string name="toast_override_fxa_sync_server_done">Firefox reikningi / samstillingarþjóni hefur verið breytt. Slekk á forritinu til að innleiða breytingar…</string>
     <!-- Preference category for account information -->
     <string name="preferences_category_account">Reikningur</string>
     <!-- Preference shown on banner to sign into account -->
@@ -271,10 +293,11 @@
     <string name="sync_last_synced_summary">Síðasta samstilling: %s</string>
     <!-- Label summary showing never synced -->
     <string name="sync_never_synced_summary">Síðasta samstilling: aldrei</string>
+
     <!-- Text for displaying the default device name.
         The first parameter is the application name, the second is the device manufacturer name
         and the third is the device model. -->
-    <string name="default_device_name">%s á %s%s</string>
+    <string name="default_device_name_2">%1$s á %2$s %3$s</string>
 
     <!-- Send Tab -->
     <!-- Name of the "receive tabs" notification channel. Displayed in the "App notifications" system settings for the app -->
@@ -446,13 +469,28 @@
     <!-- Text for the menu button to remove a top site -->
     <string name="remove_top_site">Fjarlægja</string>
 
+    <!-- Postfix for private WebApp titles, placeholder is replaced with app name -->
+    <string name="pwa_site_controls_title_private">%1$s (huliðshamur)</string>
+
     <!-- History -->
     <!-- Text for the button to clear all history -->
     <string name="history_delete_all">Eyða ferli</string>
     <!-- Text for the dialog to confirm clearing all history -->
     <string name="history_delete_all_dialog">Ertu viss að þú viljir hreinsa ferilinn þinn?</string>
+    <!-- Text for the snackbar to confirm that multiple browsing history items has been deleted -->
+    <string name="history_delete_multiple_items_snackbar">Hreinsa feril</string>
+    <!-- Text for the snackbar to confirm that a single browsing history item has been deleted. The first parameter is the shortened URL of the deleted history item. -->
+    <string name="history_delete_single_item_snackbar">Eyða %1$s</string>
     <!-- Text for positive action to delete history in deleting history dialog -->
     <string name="history_clear_dialog">Hreinsa</string>
+    <!-- History overflow menu copy button -->
+    <string name="history_menu_copy_button">Afrita</string>
+    <!-- History overflow menu share button -->
+    <string name="history_menu_share_button">Deila</string>
+    <!-- History overflow menu open in new tab button -->
+    <string name="history_menu_open_in_new_tab_button">Opna nýjan flipa</string>
+    <!-- History overflow menu open in private tab button -->
+    <string name="history_menu_open_in_private_tab_button">Opna í einkaflipa</string>
     <!-- Text for the button to delete a single history item -->
     <string name="history_delete_item">Eyða</string>
     <!-- History multi select title in app bar
@@ -497,6 +535,10 @@
     <string name="bookmark_edit">Breyta bókamerki</string>
     <!-- Screen title for selecting a bookmarks folder -->
     <string name="bookmark_select_folder">Veldu möppu</string>
+    <!-- Confirmation message for a dialog confirming if the user wants to delete the selected folder -->
+    <string name="bookmark_delete_folder_confirmation_dialog">Ertu viss um að þú viljir eyða þessari möppu?</string>
+    <!-- Snackbar title shown after a folder has been deleted. This first parameter is the name of the deleted folder -->
+    <string name="bookmark_delete_folder_snackbar">Eyddi %1$s</string>
     <!-- Screen title for adding a bookmarks folder -->
     <string name="bookmark_add_folder">Bæta við möppu</string>
     <!-- deprecated: Snackbar title shown after a bookmark has been created. -->
@@ -550,7 +592,7 @@
      The first parameter is the host part of the URL of the bookmark deleted, if any -->
     <string name="bookmark_deletion_snackbar_message">Eyddi %1$s</string>
     <!-- Bookmark snackbar message on deleting multiple bookmarks -->
-    <string name="bookmark_deletion_multiple_snackbar_message">Eyði völdum bókamerkjum</string>
+    <string name="bookmark_deletion_multiple_snackbar_message_2">Bókamerki fjarlægð</string>
     <!-- Bookmark undo button for deletion snackbar action -->
     <string name="bookmark_undo_deletion">AFTURKALLA</string>
 
@@ -598,10 +640,16 @@
     <string name="tracking_protection_on">Virkt</string>
     <!-- Summary of tracking protection preference if tracking protection is set to off -->
     <string name="tracking_protection_off">Óvirkt</string>
-    <!-- Label that indicates video and audio autoplay is blocked -->
-    <string name="preference_option_autoplay_blocked">Lokað á myndband og hljóð</string>
-    <!-- Label that indicates video and audio autoplay is allowed -->
-    <string name="preference_option_autoplay_allowed">Opið fyrir myndband og hljóð</string>
+    <!-- Label that indicates that all video and audio autoplay is allowed -->
+    <string name="preference_option_autoplay_allowed2">Leyfa hljóð og myndskeið</string>
+    <!-- Label that indicates that video and audio autoplay is only allowed over Wi-Fi -->
+    <string name="preference_option_autoplay_allowed_wifi_only2">Loka á hljóð og myndskeið eingöngu á farsímanetstengingum</string>
+    <!-- Subtext that explains 'autoplay on Wi-Fi only' option -->
+    <string name="preference_option_autoplay_allowed_wifi_subtext">Hljóð og myndbönd munu spila á þráðlausum netum</string>
+    <!-- Label that indicates that video autoplay is allowed, but audio autoplay is blocked -->
+    <string name="preference_option_autoplay_block_audio2">Lokaðu eingöngu fyrir hljóð</string>
+    <!-- Label that indicates that all video and audio autoplay is blocked -->
+    <string name="preference_option_autoplay_blocked3">Loka á hljóð og myndskeið</string>
     <!-- Summary of delete browsing data on quit preference if it is set to on -->
     <string name="delete_browsing_data_quit_on">Virkt</string>
     <!-- Summary of delete browsing data on quit preference if it is set to off -->
@@ -814,6 +862,34 @@
     <!-- Text for the snackbar to show the user that the deletion of browsing data is in progress -->
     <string name="deleting_browsing_data_in_progress">Eyði vafragögnum…</string>
 
+    <!-- Tips -->
+    <!-- text for firefox preview moving tip header "Firefox Preview" and "Firefox Nightly" are intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header">Firefox Preview heitir nú Firefox Nightly</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description">¶
+ · Firefox Nightly er uppfærður á hverju kvöldi og er með virkni sem verið er að prófa sig áfram með.¶
+ · Hins vegar gæti hann verið óstöðugari fyrir vikið. Sæktu betu útgáfu af vafranum ef þú vilt stöðugri vafra.</string>
+    <!-- text for firefox preview moving tip button. "Mozilla Firefox Browser" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_button">Sæktu Mozilla Firefox vafra</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_installed">Firefox Nightly er kominn á nýjan stað</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_installed">¶
+ · Þetta forrit mun ekki lengur fá öryggisuppfærslur. Hættu að nota þetta forrit og skiptu yfir í nýja Nightly.¶
+ · \n\nÞú ættir að búa til Firefox reikning til að búa til bókamerki, innskráningu og sögu í annað forrit.</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_installed">Skiptu yfir í nýja Nightly</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_not_installed">Firefox Nightly er kominn á nýjan stað</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_not_installed">¶
+ · Þetta forrit mun ekki lengur fá öryggisuppfærslur. Sæktu nýja Nightly og hættu að nota þetta forrit.¶
+ · \n\nÞú ættir að búa til Firefox reikning til að búa til bókamerki, innskráningu og sögu í annað forrit.</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_not_installed">Sæktu nýja Nightly</string>
+
     <!-- Onboarding -->
     <!-- Text for onboarding welcome message
     The first parameter is the name of the app (e.g. Firefox Preview) -->
@@ -888,6 +964,9 @@
     <!-- Text for the button to read the privacy notice -->
     <string name="onboarding_privacy_notice_read_button">Lestu persónuverndartilkynningu okkar</string>
 
+    <!-- Content description (not visible, for screen readers etc.): Close onboarding screen -->
+    <string name="onboarding_close">Loka</string>
+
     <!-- text for the button to finish onboarding -->
     <string name="onboarding_finish">Fara að vafra</string>
 
@@ -926,6 +1005,8 @@
     <string name="sign_in_with_email">Nota tölvupóst í staðinn</string>
     <!-- Text shown in confirmation dialog to sign out of account -->
     <string name="sign_out_confirmation_message">Firefox mun hætta að samstilla reikninginn þinn en mun ekki eyða neinum vafragögnum á þessu tæki.</string>
+    <!-- Text shown in confirmation dialog to sign out of account. The first parameter is the name of the app (e.g. Firefox Preview) -->
+    <string name="sign_out_confirmation_message_2">%s mun hætta að samstilla reikninginn þinn en mun ekki eyða neinum vafragögnum á þessu tæki.</string>
     <!-- Option to continue signing out of account shown in confirmation dialog to sign out of account -->
     <string name="sign_out_disconnect">Aftengja</string>
     <!-- Option to cancel signing out shown in confirmation dialog to sign out of account -->
@@ -1027,6 +1108,9 @@
 
     <!-- Header for exceptions list for which sites enhanced tracking protection is always off -->
     <string name="enhanced_tracking_protection_exceptions">Slökkt er á aukinni rekjaravernd fyrir þessi vefsvæði</string>
+    <!-- Content description (not visible, for screen readers etc.): Navigate
+    back from ETP details (Ex: Tracking content) -->
+    <string name="etp_back_button_content_description">Fara til baka</string>
     <!-- About page Your rights link text -->
     <string name="about_your_rights">Rétturinn þinn</string>
     <!-- About page link text to open open source licenses screen -->
@@ -1047,6 +1131,11 @@
     <string name="about_licensing_information">Leyfisupplýsingar</string>
     <!-- About page link text to open a screen with libraries that are used -->
     <string name="about_other_open_source_libraries">Söfn sem við notum</string>
+
+    <!-- Toast shown to the user when they are activating the secret dev menu
+        The first parameter is number of long clicks left to enable the menu -->
+    <string name="about_debug_menu_toast_progress">Kembiforrit: %1$d smellur/ir eftir til að virkja</string>
+    <string name="about_debug_menu_toast_done">Kembiforrit virkt</string>
 
     <!-- Content description of the tab counter toolbar button when one tab is open -->
     <string name="tab_counter_content_description_one_tab">1 flipi</string>
@@ -1070,8 +1159,13 @@
     <!-- Add button text for the Add to Homescreen dialog -->
     <string name="add_to_homescreen_add">Bæta við</string>
 
+    <!-- Continue to website button text for the first-time Add to Homescreen dialog -->
+    <string name="add_to_homescreen_continue">Halda áfram á vefsvæði</string>
     <!-- Placeholder text for the TextView in the Add to Homescreen dialog -->
     <string name="add_to_homescreen_text_placeholder">Heiti á flýtivísun</string>
+
+    <!-- Describes the add to homescreen functionality -->
+    <string name="add_to_homescreen_description">Þú getur á auðveldan hátt bætt þessu vefsvæði á ræsiskjáinn þinn fyrir auðveldari aðgengi og hraðari vöfrun.</string>
 
     <!-- Preference for managing the settings for logins and passwords in Fenix -->
     <string name="preferences_passwords_logins_and_passwords">Innskráning og lykilorð</string>
@@ -1257,4 +1351,8 @@
     <string name="certificate_info_verified_by">Sannvottað af: %1$s</string>
     <!-- Login overflow menu delete button -->
     <string name="login_menu_delete_button">Eyða</string>
+    <!-- Message in delete confirmation dialog for logins -->
+    <string name="login_deletion_confirmation">Ertu viss um að þú viljir eyða þessari innskráningu?</string>
+    <!-- Positive action of a dialog asking to delete  -->
+    <string name="dialog_delete_positive">Eyða</string>
 </resources>

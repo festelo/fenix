@@ -1,6 +1,8 @@
 # %ARG DOCKER_IMAGE_PARENT
 FROM $DOCKER_IMAGE_PARENT
-MAINTAINER Richard Pappalardo <rpappalax@gmail.com>
+
+LABEL authors="Richard Pappalardo <rpappalax@gmail.com>, Aaron Train <atrain@mozilla.com>"
+LABEL maintainer="Richard Pappalardo <rpappalax@gmail.com>
 
 #----------------------------------------------------------------------------------------------------------------------
 #-- Test tools --------------------------------------------------------------------------------------------------------
@@ -10,7 +12,7 @@ USER worker:worker
 
 ENV GOOGLE_SDK_DOWNLOAD ./gcloud.tar.gz
 ENV GOOGLE_SDK_VERSION 233
-ENV FLANK_VERSION v8.0.1 
+ENV FLANK_VERSION flank_snapshot
 
 ENV TEST_TOOLS /builds/worker/test-tools
 ENV PATH ${PATH}:${TEST_TOOLS}:${TEST_TOOLS}/google-cloud-sdk/bin

@@ -32,11 +32,13 @@ import mozilla.components.support.ktx.android.content.runOnlyInMainProcess
 import mozilla.components.support.locale.LocaleAwareApplication
 import mozilla.components.support.rusthttp.RustHttpConfig
 import mozilla.components.support.rustlog.RustLog
+import mozilla.components.support.utils.logElapsedTime
 import mozilla.components.support.webextensions.WebExtensionSupport
 import org.mozilla.fenix.FeatureFlags.webPushIntegration
 import org.mozilla.fenix.components.Components
 import org.mozilla.fenix.components.metrics.MetricServiceType
 import org.mozilla.fenix.ext.settings
+import org.mozilla.fenix.perf.StartupTimeline
 import org.mozilla.fenix.push.PushFxaIntegration
 import org.mozilla.fenix.push.WebPushEngineIntegration
 import org.mozilla.fenix.session.NotificationSessionObserver
@@ -48,6 +50,10 @@ import org.mozilla.fenix.utils.Settings
 @SuppressLint("Registered")
 @Suppress("TooManyFunctions", "LargeClass")
 open class FenixApplication : LocaleAwareApplication() {
+    init {
+        recordOnInit() // DO NOT MOVE ANYTHING ABOVE HERE: the timing of this measurement is critical.
+    }
+
     private val logger = Logger("FenixApplication")
 
     open val components by lazy { Components(this) }
@@ -149,8 +155,25 @@ open class FenixApplication : LocaleAwareApplication() {
         // }
 
         registerActivityLifecycleCallbacks(
-            PerformanceActivityLifecycleCallbacks(components.performance.visualCompletenessTaskManager)
+            PerformanceActivityLifecycleCallbacks(components.performance.visualCompletenessQueue)
         )
+
+        components.performance.visualCompletenessQueue.runIfReadyOrQueue {
+            GlobalScope.launch(Dispatchers.IO) {
+                logger.info("Running post-visual completeness tasks...")
+                logElapsedTime(logger, "Storage initialization") {
+                    components.core.historyStorage.warmUp()
+                    components.core.bookmarksStorage.warmUp()
+                    components.core.passwordsStorage.warmUp()
+                }
+            }
+            // Account manager initialization needs to happen on the main thread.
+            GlobalScope.launch(Dispatchers.Main) {
+                logElapsedTime(logger, "Kicking-off account manager") {
+                    components.backgroundServices.accountManager
+                }
+            }
+        }
     }
 
     // See https://github.com/mozilla-mobile/fenix/issues/7227 for context.
@@ -330,21 +353,37 @@ open class FenixApplication : LocaleAwareApplication() {
                         session.id
                 },
                 onCloseTabOverride = {
-                    _, sessionId -> components.tabsUseCases.removeTab(sessionId)
+                    _, sessionId -> components.useCases.tabsUseCases.removeTab(sessionId)
                 },
                 onSelectTabOverride = {
                     _, sessionId ->
                         val selected = components.core.sessionManager.findSessionById(sessionId)
-                        selected?.let { components.tabsUseCases.selectTab(it) }
+                        selected?.let { components.useCases.tabsUseCases.selectTab(it) }
                 },
                 onExtensionsLoaded = { extensions ->
                     components.addonUpdater.registerForFutureUpdates(extensions)
-                    components.supportedAddChecker.registerForChecks()
+                    components.supportedAddonsChecker.registerForChecks()
                 },
                 onUpdatePermissionRequest = components.addonUpdater::onUpdatePermissionRequest
             )
         } catch (e: UnsupportedOperationException) {
             Logger.error("Failed to initialize web extension support", e)
         }
+    }
+
+    protected fun recordOnInit() {
+        // This gets called by more than one process. Ideally we'd only run this in the main process
+        // but the code to check which process we're in crashes because the Context isn't valid yet.
+        //
+        // This method is not covered by our internal crash reporting: be very careful when modifying it.
+        StartupTimeline.onApplicationInit() // DO NOT MOVE ANYTHING ABOVE HERE: the timing is critical.
+    }
+
+    override fun onConfigurationChanged(config: android.content.res.Configuration) {
+        // Workaround for androidx appcompat issue where follow system day/night mode config changes
+        // are not triggered when also using createConfigurationContext like we do in LocaleManager
+        // https://issuetracker.google.com/issues/143570309#comment3
+        applicationContext.resources.configuration.uiMode = config.uiMode
+        super.onConfigurationChanged(config)
     }
 }

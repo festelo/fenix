@@ -9,8 +9,10 @@ import mozilla.components.service.glean.Glean
 import mozilla.components.service.glean.private.NoExtraKeys
 import mozilla.components.support.base.log.logger.Logger
 import org.mozilla.fenix.GleanMetrics.AboutPage
+import org.mozilla.fenix.GleanMetrics.Addons
 import org.mozilla.fenix.GleanMetrics.AppTheme
 import org.mozilla.fenix.GleanMetrics.BookmarksManagement
+import org.mozilla.fenix.GleanMetrics.BrowserSearch
 import org.mozilla.fenix.GleanMetrics.Collections
 import org.mozilla.fenix.GleanMetrics.ContextMenu
 import org.mozilla.fenix.GleanMetrics.CrashReporter
@@ -38,6 +40,7 @@ import org.mozilla.fenix.GleanMetrics.SearchWidget
 import org.mozilla.fenix.GleanMetrics.SyncAccount
 import org.mozilla.fenix.GleanMetrics.SyncAuth
 import org.mozilla.fenix.GleanMetrics.Tab
+import org.mozilla.fenix.GleanMetrics.Tip
 import org.mozilla.fenix.GleanMetrics.ToolbarSettings
 import org.mozilla.fenix.GleanMetrics.TopSites
 import org.mozilla.fenix.GleanMetrics.TrackingProtection
@@ -103,6 +106,21 @@ private val Event.wrapper: EventWrapper<*>?
                 Events.performedSearch.record(it)
             },
             { Events.performedSearchKeys.valueOf(it) }
+        )
+        is Event.SearchWithAds -> EventWrapper<NoExtraKeys>(
+            {
+                BrowserSearch.withAds[label].add(1)
+            }
+        )
+        is Event.SearchAdClicked -> EventWrapper<NoExtraKeys>(
+            {
+                BrowserSearch.adClicks[label].add(1)
+            }
+        )
+        is Event.SearchInContent -> EventWrapper<NoExtraKeys>(
+            {
+                BrowserSearch.inContent[label].add(1)
+            }
         )
         is Event.SearchShortcutSelected -> EventWrapper(
             { SearchShortcuts.selected.record(it) },
@@ -214,6 +232,12 @@ private val Event.wrapper: EventWrapper<*>?
         )
         is Event.SyncAuthClosed -> EventWrapper<NoExtraKeys>(
             { SyncAuth.closed.record(it) }
+        )
+        is Event.SyncAuthUseEmail -> EventWrapper<NoExtraKeys>(
+            { SyncAuth.useEmail.record(it) }
+        )
+        is Event.SyncAuthUseEmailProblem -> EventWrapper<NoExtraKeys>(
+            { SyncAuth.useEmailProblem.record(it) }
         )
         is Event.SyncAuthSignIn -> EventWrapper<NoExtraKeys>(
             { SyncAuth.signIn.record(it) }
@@ -491,6 +515,24 @@ private val Event.wrapper: EventWrapper<*>?
             { AppTheme.darkThemeSelected.record(it) },
             { AppTheme.darkThemeSelectedKeys.valueOf(it) }
         )
+        is Event.AddonsOpenInSettings -> EventWrapper<NoExtraKeys>(
+            { Addons.openAddonsInSettings.record(it) }
+        )
+        is Event.AddonsOpenInToolbarMenu -> EventWrapper<NoExtraKeys>(
+            { Addons.openAddonInToolbarMenu.record(it) }
+        )
+        is Event.TipDisplayed -> EventWrapper(
+            { Tip.displayed.record(it) },
+            { Tip.displayedKeys.valueOf(it) }
+        )
+        is Event.TipPressed -> EventWrapper(
+            { Tip.pressed.record(it) },
+            { Tip.pressedKeys.valueOf(it) }
+        )
+        is Event.TipClosed -> EventWrapper(
+            { Tip.closed.record(it) },
+            { Tip.closedKeys.valueOf(it) }
+        )
         // Don't record other events in Glean:
         is Event.AddBookmark -> null
         is Event.OpenedBookmark -> null
@@ -508,6 +550,7 @@ class GleanMetricsService(private val context: Context) : MetricsService {
     private var initialized = false
 
     private val activationPing = ActivationPing(context)
+    private val installationPing = InstallationPing(context)
 
     override fun start() {
         logger.debug("Enabling Glean.")
@@ -519,20 +562,16 @@ class GleanMetricsService(private val context: Context) : MetricsService {
 
         // The code below doesn't need to execute immediately, so we'll add them to the visual
         // completeness task queue to be run later.
-        val taskManager = context.components.performance.visualCompletenessTaskManager
-
-        // We have to initialize Glean *on* the main thread, because it registers lifecycle
-        // observers. However, the activation ping must be sent *off* of the main thread,
-        // because it calls Google ad APIs that must be called *off* of the main thread.
-        // These two things actually happen in parallel, but that should be ok because Glean
-        // can handle events being recorded before it's initialized.
-        taskManager.add {
+        context.components.performance.visualCompletenessQueue.runIfReadyOrQueue {
+            // We have to initialize Glean *on* the main thread, because it registers lifecycle
+            // observers. However, the activation ping must be sent *off* of the main thread,
+            // because it calls Google ad APIs that must be called *off* of the main thread.
+            // These two things actually happen in parallel, but that should be ok because Glean
+            // can handle events being recorded before it's initialized.
             Glean.registerPings(Pings)
-        }
 
-        // setStartupMetrics is not a fast function. It does not need to be done before we can consider
-        // ourselves initialized. So, let's do it, well, later.
-        taskManager.add {
+            // setStartupMetrics is not a fast function. It does not need to be done before we can consider
+            // ourselves initialized. So, let's do it, well, later.
             setStartupMetrics()
         }
     }
@@ -544,7 +583,17 @@ class GleanMetricsService(private val context: Context) : MetricsService {
                 defaultMozBrowser.set(it)
             }
             mozillaProducts.set(MozillaProductDetector.getInstalledMozillaProducts(context))
+
             adjustCampaign.set(context.settings().adjustCampaignId)
+            adjustAdGroup.set(context.settings().adjustAdGroup)
+            adjustCreative.set(context.settings().adjustCreative)
+            adjustNetwork.set(context.settings().adjustNetwork)
+            val topSitesSize = context.settings().topSitesSize
+            hasTopSites.set(topSitesSize > 0)
+            if (topSitesSize > 0) {
+                topSitesCount.add(topSitesSize)
+            }
+
             toolbarPosition.set(
                 if (context.settings().shouldUseBottomToolbar) {
                     Event.ToolbarPositionChanged.Position.BOTTOM.name
@@ -567,7 +616,7 @@ class GleanMetricsService(private val context: Context) : MetricsService {
         }
 
         activationPing.checkAndSend()
-        InstallationPing(context).checkAndSend()
+        installationPing.checkAndSend()
     }
 
     override fun stop() {

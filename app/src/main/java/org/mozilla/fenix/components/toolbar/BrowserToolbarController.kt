@@ -18,15 +18,17 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mozilla.components.browser.session.Session
 import mozilla.components.browser.session.SessionManager
+import mozilla.components.browser.state.selector.findTab
+import mozilla.components.browser.state.selector.selectedTab
 import mozilla.components.concept.engine.EngineView
 import mozilla.components.concept.engine.prompt.ShareData
 import mozilla.components.support.ktx.kotlin.isUrl
 import org.mozilla.fenix.NavGraphDirections
 import org.mozilla.fenix.R
 import org.mozilla.fenix.browser.BrowserAnimator
+import org.mozilla.fenix.browser.BrowserAnimator.Companion.getToolbarNavOptions
 import org.mozilla.fenix.browser.BrowserFragment
 import org.mozilla.fenix.browser.BrowserFragmentDirections
-import org.mozilla.fenix.browser.browsingmode.BrowsingModeManager
 import org.mozilla.fenix.browser.readermode.ReaderModeController
 import org.mozilla.fenix.collections.SaveCollectionStep
 import org.mozilla.fenix.components.FenixSnackbar
@@ -36,14 +38,17 @@ import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.getRootView
 import org.mozilla.fenix.ext.nav
+import org.mozilla.fenix.ext.navigateSafe
 import org.mozilla.fenix.ext.settings
-import org.mozilla.fenix.lib.Do
+import org.mozilla.fenix.home.SharedViewModel
 import org.mozilla.fenix.settings.deletebrowsingdata.deleteAndQuit
+import org.mozilla.fenix.utils.Do
 
 /**
  * An interface that handles the view manipulation of the BrowserToolbar, triggered by the Interactor
  */
 interface BrowserToolbarController {
+    fun handleScroll(offset: Int)
     fun handleToolbarPaste(text: String)
     fun handleToolbarPasteAndGo(text: String)
     fun handleToolbarItemInteraction(item: ToolbarMenu.Item)
@@ -54,23 +59,21 @@ interface BrowserToolbarController {
 
 @Suppress("LargeClass")
 class DefaultBrowserToolbarController(
-    private val store: BrowserFragmentStore,
     private val activity: Activity,
     private val navController: NavController,
     private val readerModeController: ReaderModeController,
-    private val browsingModeManager: BrowsingModeManager,
     private val sessionManager: SessionManager,
     private val findInPageLauncher: () -> Unit,
     private val engineView: EngineView,
     private val browserAnimator: BrowserAnimator,
     private val swipeRefresh: SwipeRefreshLayout,
     private val customTabSession: Session?,
-    private val getSupportUrl: () -> String,
     private val openInFenixIntent: Intent,
     private val bookmarkTapped: (Session) -> Unit,
     private val scope: CoroutineScope,
     private val tabCollectionStorage: TabCollectionStorage,
-    private val topSiteStorage: TopSiteStorage
+    private val topSiteStorage: TopSiteStorage,
+    private val sharedViewModel: SharedViewModel
 ) : BrowserToolbarController {
 
     private val currentSession
@@ -89,7 +92,7 @@ class DefaultBrowserToolbarController(
                 pastedText = text
             )
 
-            navController.nav(R.id.browserFragment, directions)
+            navController.nav(R.id.browserFragment, directions, getToolbarNavOptions(activity))
         }
     }
 
@@ -114,11 +117,12 @@ class DefaultBrowserToolbarController(
                 currentSession?.id
             )
 
-            navController.nav(R.id.browserFragment, directions)
+            navController.nav(R.id.browserFragment, directions, getToolbarNavOptions(activity))
         }
     }
 
     override fun handleTabCounterClick() {
+        sharedViewModel.shouldScrollToSelectedTab = true
         animateTabAndNavigateHome()
     }
 
@@ -128,9 +132,13 @@ class DefaultBrowserToolbarController(
                 ToolbarMenu.Item.AddToHomeScreen -> activity.settings().installPwaOpened = true
                 is ToolbarMenu.Item.ReaderMode -> activity.settings().readerModeOpened = true
                 ToolbarMenu.Item.OpenInApp -> activity.settings().openInAppOpened = true
-                else -> {}
+                else -> { }
             }
         }
+    }
+
+    override fun handleScroll(offset: Int) {
+        engineView.setVerticalClipping(offset)
     }
 
     @ExperimentalCoroutinesApi
@@ -162,7 +170,11 @@ class DefaultBrowserToolbarController(
                         topSiteStorage.addTopSite(it.title, it.url)
                     }
                     MainScope().launch {
-                        FenixSnackbar.make(swipeRefresh, Snackbar.LENGTH_SHORT)
+                        FenixSnackbar.make(
+                            view = swipeRefresh,
+                            duration = Snackbar.LENGTH_SHORT,
+                            isDisplayedWithBrowserToolbar = true
+                        )
                             .setText(
                                 swipeRefresh.context.getString(R.string.snackbar_added_to_top_sites)
                             )
@@ -170,7 +182,7 @@ class DefaultBrowserToolbarController(
                     }
                 }
             }
-            ToolbarMenu.Item.AddToHomeScreen -> {
+            ToolbarMenu.Item.AddToHomeScreen, ToolbarMenu.Item.InstallToHomeScreen -> {
                 activity.settings().installPwaOpened = true
                 MainScope().launch {
                     with(activity.components.useCases.webAppUseCases) {
@@ -179,7 +191,7 @@ class DefaultBrowserToolbarController(
                         } else {
                             val directions =
                                 BrowserFragmentDirections.actionBrowserFragmentToCreateShortcutFragment()
-                            navController.navigate(directions)
+                            navController.navigateSafe(R.id.browserFragment, directions)
                         }
                     }
                 }
@@ -202,18 +214,19 @@ class DefaultBrowserToolbarController(
                 activity.components.analytics.metrics.track(Event.FindInPageOpened)
             }
             ToolbarMenu.Item.ReportIssue -> {
-                val currentUrl = currentSession?.url
-                currentUrl?.apply {
-                    val reportUrl = String.format(BrowserFragment.REPORT_SITE_ISSUE_URL, this)
-                    activity.components.useCases.tabsUseCases.addTab.invoke(reportUrl)
+                val selectedTab = activity.components.core.store.state.selectedTab
+                selectedTab?.let {
+                    val currentUrl = it.content.url
+                    val reportUrl = String.format(BrowserFragment.REPORT_SITE_ISSUE_URL, currentUrl)
+                    val private = it.content.private
+                    reportSiteIssue(reportUrl, private)
                 }
             }
 
             ToolbarMenu.Item.AddonsManager -> {
                 navController.nav(
                     R.id.browserFragment,
-                    BrowserFragmentDirections
-                        .actionBrowserFragmentToAddonsManagementFragment()
+                    BrowserFragmentDirections.actionGlobalAddonsManagementFragment()
                 )
             }
             ToolbarMenu.Item.SaveToCollection -> {
@@ -222,7 +235,7 @@ class DefaultBrowserToolbarController(
 
                 currentSession?.let { currentSession ->
                     val directions =
-                        BrowserFragmentDirections.actionBrowserFragmentToCreateCollectionFragment(
+                        BrowserFragmentDirections.actionGlobalCollectionCreationFragment(
                             previousFragmentId = R.id.browserFragment,
                             tabIds = arrayOf(currentSession.id),
                             selectedTabIds = arrayOf(currentSession.id),
@@ -254,7 +267,11 @@ class DefaultBrowserToolbarController(
                 // browsing data on quit" is activated). After the deletion is over, the snackbar
                 // is dismissed.
                 val snackbar: FenixSnackbar? = activity.getRootView()?.let { v ->
-                    FenixSnackbar.makeWithToolbarPadding(v)
+                    FenixSnackbar.make(
+                        view = v,
+                        duration = Snackbar.LENGTH_LONG,
+                        isDisplayedWithBrowserToolbar = true
+                    )
                         .setText(v.context.getString(R.string.deleting_browsing_data_in_progress))
                 }
 
@@ -263,9 +280,9 @@ class DefaultBrowserToolbarController(
             is ToolbarMenu.Item.ReaderMode -> {
                 activity.settings().readerModeOpened = true
 
-                val enabled = currentSession?.readerMode
-                    ?: activity.components.core.sessionManager.selectedSession?.readerMode
-                    ?: false
+                val enabled = currentSession?.let {
+                    activity.components.core.store.state.findTab(it.id)?.readerState?.active
+                } ?: false
 
                 if (enabled) {
                     readerModeController.hideReaderView()
@@ -297,19 +314,31 @@ class DefaultBrowserToolbarController(
     }
 
     private fun animateTabAndNavigateHome() {
+        if (activity.settings().useNewTabTray) {
+            val directions = BrowserFragmentDirections.actionBrowserFragmentToTabsTrayFragment()
+            navController.navigate(directions)
+            return
+        }
+
         scope.launch {
             browserAnimator.beginAnimateOut()
             // Delay for a short amount of time so the browser has time to start animating out
             // before we transition the fragment. This makes the animation feel smoother
             delay(ANIMATION_DELAY)
             if (!navController.popBackStack(R.id.homeFragment, false)) {
-                val directions = BrowserFragmentDirections.actionBrowserFragmentToHomeFragment()
                 navController.nav(
                     R.id.browserFragment,
-                    directions,
-                    null
+                    BrowserFragmentDirections.actionGlobalHome()
                 )
             }
+        }
+    }
+
+    private fun reportSiteIssue(reportUrl: String, private: Boolean) {
+        if (private) {
+            activity.components.useCases.tabsUseCases.addPrivateTab.invoke(reportUrl)
+        } else {
+            activity.components.useCases.tabsUseCases.addTab.invoke(reportUrl)
         }
     }
 
@@ -336,6 +365,7 @@ class DefaultBrowserToolbarController(
             ToolbarMenu.Item.SaveToCollection -> Event.BrowserMenuItemTapped.Item.SAVE_TO_COLLECTION
             ToolbarMenu.Item.AddToTopSites -> Event.BrowserMenuItemTapped.Item.ADD_TO_TOP_SITES
             ToolbarMenu.Item.AddToHomeScreen -> Event.BrowserMenuItemTapped.Item.ADD_TO_HOMESCREEN
+            ToolbarMenu.Item.InstallToHomeScreen -> Event.BrowserMenuItemTapped.Item.ADD_TO_HOMESCREEN
             ToolbarMenu.Item.Quit -> Event.BrowserMenuItemTapped.Item.QUIT
             is ToolbarMenu.Item.ReaderMode ->
                 if (item.isChecked) {

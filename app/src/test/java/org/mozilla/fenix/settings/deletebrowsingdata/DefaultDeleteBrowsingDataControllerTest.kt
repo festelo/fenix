@@ -5,7 +5,6 @@
 package org.mozilla.fenix.settings.deletebrowsingdata
 
 import android.content.Context
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
@@ -13,7 +12,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
@@ -22,15 +20,9 @@ import mozilla.components.concept.engine.Engine
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mozilla.fenix.TestApplication
 import org.mozilla.fenix.ext.components
-import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
-@UseExperimental(ObsoleteCoroutinesApi::class)
-@RunWith(AndroidJUnit4::class)
-@Config(application = TestApplication::class)
 class DefaultDeleteBrowsingDataControllerTest {
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")

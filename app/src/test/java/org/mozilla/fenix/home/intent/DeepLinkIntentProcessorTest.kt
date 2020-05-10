@@ -18,13 +18,10 @@ import org.junit.runner.RunWith
 import org.mozilla.fenix.BrowserDirection
 import org.mozilla.fenix.HomeActivity
 import org.mozilla.fenix.NavGraphDirections
-import org.mozilla.fenix.TestApplication
 import org.mozilla.fenix.browser.browsingmode.BrowsingMode
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
+import org.mozilla.fenix.helpers.FenixRobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-@Config(application = TestApplication::class)
+@RunWith(FenixRobolectricTestRunner::class)
 class DeepLinkIntentProcessorTest {
 
     private lateinit var activity: HomeActivity
@@ -59,11 +56,20 @@ class DeepLinkIntentProcessorTest {
     }
 
     @Test
+    fun `return true if scheme is a fenix variant`() {
+        assertTrue(processor.process(testIntent("fenix-beta://test"), navController, out))
+
+        verify { activity wasNot Called }
+        verify { navController wasNot Called }
+        verify { out wasNot Called }
+    }
+
+    @Test
     fun `process home deep link`() {
         assertTrue(processor.process(testIntent("fenix://home"), navController, out))
 
         verify { activity wasNot Called }
-        verify { navController.navigate(NavGraphDirections.actionGlobalHomeFragment()) }
+        verify { navController.navigate(NavGraphDirections.actionGlobalHome()) }
         verify { out wasNot Called }
     }
 
@@ -117,7 +123,7 @@ class DeepLinkIntentProcessorTest {
         assertTrue(processor.process(testIntent("fenix://enable_private_browsing"), navController, out))
 
         verify { activity.browsingModeManager.mode = BrowsingMode.Private }
-        verify { navController.navigate(NavGraphDirections.actionGlobalHomeFragment()) }
+        verify { navController.navigate(NavGraphDirections.actionGlobalHome()) }
         verify { out wasNot Called }
     }
 

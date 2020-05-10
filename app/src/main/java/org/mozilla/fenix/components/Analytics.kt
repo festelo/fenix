@@ -21,7 +21,7 @@ import org.mozilla.fenix.components.metrics.GleanMetricsService
 import org.mozilla.fenix.components.metrics.LeanplumMetricsService
 import org.mozilla.fenix.components.metrics.MetricController
 import org.mozilla.fenix.ext.settings
-import org.mozilla.fenix.test.Mockable
+import org.mozilla.fenix.utils.Mockable
 import org.mozilla.geckoview.BuildConfig.MOZ_APP_BUILDID
 import org.mozilla.geckoview.BuildConfig.MOZ_APP_VENDOR
 import org.mozilla.geckoview.BuildConfig.MOZ_APP_VERSION
@@ -49,8 +49,6 @@ class Analytics(
             services.add(sentryService)
         }
 
-        services.add(GleanCrashReporterService(context))
-
         // The name "Fenix" here matches the product name on Socorro and is unrelated to the actual app name:
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1523284
         val socorroService = MozillaSocorroService(context, appName = "Fenix",
@@ -71,6 +69,7 @@ class Analytics(
 
         CrashReporter(
             services = services,
+            telemetryServices = listOf(GleanCrashReporterService(context)),
             shouldPrompt = CrashReporter.Prompt.ALWAYS,
             promptConfiguration = CrashReporter.PromptConfiguration(
                 appName = context.getString(R.string.app_name),

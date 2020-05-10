@@ -10,11 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mozilla.components.browser.session.Session
+import mozilla.components.feature.app.links.AppLinksUseCases
 import mozilla.components.feature.contextmenu.ContextMenuCandidate
 import mozilla.components.feature.readerview.ReaderViewFeature
 import mozilla.components.feature.search.SearchFeature
@@ -22,19 +24,21 @@ import mozilla.components.feature.session.TrackingProtectionUseCases
 import mozilla.components.feature.sitepermissions.SitePermissions
 import mozilla.components.feature.tab.collections.TabCollection
 import mozilla.components.feature.tabs.WindowFeature
-import mozilla.components.lib.state.ext.consumeFrom
 import mozilla.components.support.base.feature.UserInteractionHandler
 import mozilla.components.support.base.feature.ViewBoundFeatureWrapper
 import org.mozilla.fenix.FeatureFlags
 import org.mozilla.fenix.HomeActivity
 import org.mozilla.fenix.R
+import org.mozilla.fenix.addons.runIfFragmentIsAttached
 import org.mozilla.fenix.components.FenixSnackbar
 import org.mozilla.fenix.components.TabCollectionStorage
 import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.nav
+import org.mozilla.fenix.ext.navigateSafe
 import org.mozilla.fenix.ext.requireComponents
 import org.mozilla.fenix.ext.settings
+import org.mozilla.fenix.shortcut.FirstTimePwaObserver
 import org.mozilla.fenix.trackingprotection.TrackingProtectionOverlay
 
 /**
@@ -60,7 +64,6 @@ class BrowserFragment : BaseBrowserFragment(), UserInteractionHandler {
 
     override fun initializeUI(view: View): Session? {
         val context = requireContext()
-        val sessionManager = context.components.core.sessionManager
         val components = context.components
 
         return super.initializeUI(view)?.also {
@@ -68,11 +71,14 @@ class BrowserFragment : BaseBrowserFragment(), UserInteractionHandler {
                 feature = ReaderViewFeature(
                     context,
                     components.core.engine,
-                    sessionManager,
+                    components.core.store,
                     view.readerViewControlsBar
-                ) { available ->
+                ) { available, _ ->
                     if (available) {
                         components.analytics.metrics.track(Event.ReaderModeAvailable)
+                    }
+                    runIfFragmentIsAttached {
+                        browserToolbarView.toolbarIntegration.invalidateMenu()
                     }
                 },
                 owner = this,
@@ -98,23 +104,35 @@ class BrowserFragment : BaseBrowserFragment(), UserInteractionHandler {
                 owner = this,
                 view = view
             )
-
-            consumeFrom(browserFragmentStore) {
-                browserToolbarView.update(it)
-            }
         }
     }
 
     override fun onStart() {
         super.onStart()
+        val context = requireContext()
+        val settings = context.settings()
+        val session = getSessionById()
+
         val toolbarSessionObserver = TrackingProtectionOverlay(
-            context = requireContext(),
-            settings = requireContext().settings()
+            context = context,
+            settings = settings
         ) {
             browserToolbarView.view
         }
-        getSessionById()?.register(toolbarSessionObserver, this, autoPause = true)
+        session?.register(toolbarSessionObserver, this, autoPause = true)
         updateEngineBottomMargin()
+
+        if (settings.shouldShowFirstTimePwaFragment) {
+            session?.register(
+                FirstTimePwaObserver(
+                    navController = findNavController(),
+                    settings = settings,
+                    webAppUseCases = context.components.useCases.webAppUseCases
+                ),
+                owner = this,
+                autoPause = true
+            )
+        }
     }
 
     private fun updateEngineBottomMargin() {
@@ -164,6 +182,8 @@ class BrowserFragment : BaseBrowserFragment(), UserInteractionHandler {
     }
 
     override fun navToTrackingProtectionPanel(session: Session) {
+        val navController = findNavController()
+
         val useCase = TrackingProtectionUseCases(
             sessionManager = requireComponents.core.sessionManager,
             engine = requireComponents.core.engine
@@ -177,7 +197,7 @@ class BrowserFragment : BaseBrowserFragment(), UserInteractionHandler {
                     trackingProtectionEnabled = isEnabled,
                     gravity = getAppropriateLayoutGravity()
                 )
-            nav(R.id.browserFragment, directions)
+            navController.navigateSafe(R.id.browserFragment, directions)
         }
     }
 
@@ -192,7 +212,11 @@ class BrowserFragment : BaseBrowserFragment(), UserInteractionHandler {
 
         private fun showTabSavedToCollectionSnackbar() {
             view?.let { view ->
-                FenixSnackbar.makeWithToolbarPadding(view, Snackbar.LENGTH_SHORT)
+                FenixSnackbar.make(
+                    view = view,
+                    duration = Snackbar.LENGTH_SHORT,
+                    isDisplayedWithBrowserToolbar = true
+                )
                     .setText(view.context.getString(R.string.create_collection_tab_saved))
                     .show()
             }
@@ -202,13 +226,21 @@ class BrowserFragment : BaseBrowserFragment(), UserInteractionHandler {
     override fun getContextMenuCandidates(
         context: Context,
         view: View
-    ): List<ContextMenuCandidate> = ContextMenuCandidate.defaultCandidates(
-        context,
-        context.components.useCases.tabsUseCases,
-        context.components.useCases.contextMenuUseCases,
-        view,
-        FenixSnackbarDelegate(view)
-    )
+    ): List<ContextMenuCandidate> {
+        val contextMenuCandidateAppLinksUseCases = AppLinksUseCases(
+            requireContext(),
+            { true }
+        )
+
+        return ContextMenuCandidate.defaultCandidates(
+            context,
+            context.components.useCases.tabsUseCases,
+            context.components.useCases.contextMenuUseCases,
+            view,
+            FenixSnackbarDelegate(view)
+        ) + ContextMenuCandidate.createOpenInExternalAppCandidate(requireContext(),
+            contextMenuCandidateAppLinksUseCases)
+    }
 
     companion object {
         private const val SHARED_TRANSITION_MS = 200L

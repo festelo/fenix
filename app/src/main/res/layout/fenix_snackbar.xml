@@ -33,8 +33,7 @@
             android:textAlignment="textStart"
             android:textColor="@color/photonWhite"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:typeface="sans"
+            app:fontFamily="@font/metropolis_semibold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/snackbar_btn"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,6 +41,7 @@
             tools:text="This is a custom Snackbar text" />
 
         <Button
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:id="@+id/snackbar_btn"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
@@ -55,9 +55,8 @@
             android:textAllCaps="true"
             android:textColor="@color/photonWhite"
             android:textSize="14sp"
-            android:textStyle="bold"
-            android:typeface="sans"
             android:visibility="gone"
+            app:fontFamily="@font/metropolis_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/snackbar_text"

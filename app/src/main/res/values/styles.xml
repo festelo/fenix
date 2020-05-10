@@ -7,10 +7,11 @@
     <style name="NormalThemeBase" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Android system styling -->
         <item name="searchViewStyle">@style/SearchViewStyle</item>
+        <item name="autoCompleteTextViewStyle">@style/AutoCompleteTextViewStyle</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:progressBarStyleHorizontal">@style/progressBarStyleHorizontal</item>
-        <item name="android:statusBarColor">@color/foundation_normal_theme</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@color/foundation_normal_theme</item>
         <item name="android:colorEdgeEffect">@color/accent_normal_theme</item>
         <item name="android:colorAccent">@color/primary_text_normal_theme</item>
@@ -20,6 +21,11 @@
         <item name="alertDialogTheme">@style/DialogStyleNormal</item>
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
+
+        <item name="mozacInputLayoutErrorTextColor"
+            tools:ignore="UnusedResources">@color/destructive_normal_theme</item>
+        <item name="mozacInputLayoutErrorIconColor"
+            tools:ignore="UnusedResources">@color/destructive_normal_theme</item>
 
         <!-- Active thumb color & Active track color (30% transparency) -->
         <item name="colorControlActivated">@color/accent_high_contrast_normal_theme</item>
@@ -60,6 +66,19 @@
         <item name="syncDisconnected">@color/sync_disconnected_icon_fill_normal_theme</item>
         <item name="syncDisconnectedBackground">@color/sync_disconnected_background_normal_theme</item>
         <item name="swipeDeleteBackground">@color/swipe_delete_background_normal_theme</item>
+        <item name="onboardingDarkGradientStartBackground">@color/onboarding_card_background_start_gradient_normal_theme</item>
+        <item name="onboardingDarkGradientEndBackground">@color/onboarding_card_background_end_gradient_normal_theme</item>
+        <item name="onboardingSelected">@color/onboarding_illustration_selected_normal_theme</item>
+        <item name="onboardingDeselected">@color/onboarding_illustration_deselected_normal_theme</item>
+        <item name="addOnPrivateBrowsingExteriorCircleBackground">@color/add_on_private_browsing_exterior_circle_background_normal_theme</item>
+        <item name="addOnPrivateBrowsingInteriorIconBackground">@color/add_on_private_browsing_interior_icon_background_normal_theme</item>
+
+        <item name="tabTrayItemText">@color/tab_tray_item_text_normal_theme</item>
+        <item name="tabTrayItemUrl">@color/tab_tray_item_url_normal_theme</item>
+        <item name="tabTrayItemBackground">@color/tab_tray_item_background_normal_theme</item>
+        <item name="tabTrayItemSelectedBackground">@color/tab_tray_item_selected_background_normal_theme</item>
+        <item name="tabTrayToolbarBackground">@color/tab_tray_toolbar_background_normal_theme</item>
+        <item name="tabTrayItemDivider">@color/tab_tray_item_divider_normal_theme</item>
 
         <!-- Drawables -->
         <item name="fenixLogo">@drawable/ic_logo_wordmark_normal</item>
@@ -85,17 +104,25 @@
         <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyleLight</item>
     </style>
 
+    <style name="Switch.Colored" parent="Theme.AppCompat">
+        <item name="colorControlActivated">?attr/onboardingSelected</item>
+    </style>
+
     <style name="DialogStyleDark" parent="BaseDialogStyle">
         <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyleDark</item>
         <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyleDark</item>
     </style>
 
     <style name="DialogButtonStyleLight" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
         <item name="android:textColor">?accentBright</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="DialogButtonStyleDark" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
         <item name="android:textColor">?accentHighContrast</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="DialogStyleNormal" parent="DialogStyleLight"/>
@@ -103,10 +130,11 @@
     <style name="PrivateThemeBase" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <!-- Android system styling -->
         <item name="searchViewStyle">@style/SearchViewStyle</item>
+        <item name="autoCompleteTextViewStyle">@style/AutoCompleteTextViewStyle</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:progressBarStyleHorizontal">@style/progressBarStyleHorizontal</item>
-        <item name="android:statusBarColor">@color/foundation_private_theme</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@color/foundation_private_theme</item>
         <item name="android:colorEdgeEffect">@color/accent_private_theme</item>
         <item name="android:colorAccent">@color/primary_text_private_theme</item>
@@ -117,6 +145,11 @@
         <item name="alertDialogTheme">@style/DialogStyleDark</item>
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
+
+        <item name="mozacInputLayoutErrorTextColor"
+            tools:ignore="UnusedResources">@color/destructive_private_theme</item>
+        <item name="mozacInputLayoutErrorIconColor"
+            tools:ignore="UnusedResources">@color/destructive_private_theme</item>
 
         <!-- Inactive thumb color -->
         <item name="colorSwitchThumbNormal">@color/toggle_off_knob_dark_theme</item>
@@ -155,6 +188,20 @@
         <item name="syncDisconnected">@color/sync_disconnected_icon_fill_private_theme</item>
         <item name="syncDisconnectedBackground">@color/sync_disconnected_background_private_theme</item>
         <item name="swipeDeleteBackground">@color/swipe_delete_background_private_theme</item>
+        <item name="onboardingDarkGradientStartBackground">@color/onboarding_card_background_start_gradient_private_theme</item>
+        <item name="onboardingDarkGradientEndBackground">@color/onboarding_card_background_end_gradient_private_theme</item>
+        <item name="onboardingSelected">@color/onboarding_illustration_selected_private_theme</item>
+        <item name="onboardingDeselected">@color/onboarding_illustration_deselected_private_theme</item>
+        <item name="addOnPrivateBrowsingExteriorCircleBackground">@color/add_on_private_browsing_exterior_circle_background_private_theme</item>
+        <item name="addOnPrivateBrowsingInteriorIconBackground">@color/add_on_private_browsing_interior_icon_background_private_theme</item>
+
+        <!-- Tab Tray -->
+        <item name="tabTrayItemText">@color/tab_tray_item_text_private_theme</item>
+        <item name="tabTrayItemUrl">@color/tab_tray_item_url_private_theme</item>
+        <item name="tabTrayItemBackground">@color/tab_tray_item_background_private_theme</item>
+        <item name="tabTrayItemSelectedBackground">@color/tab_tray_item_selected_background_private_theme</item>
+        <item name="tabTrayToolbarBackground">@color/tab_tray_toolbar_background_private_theme</item>
+        <item name="tabTrayItemDivider">@color/tab_tray_item_divider_private_theme</item>
 
         <!-- Drawables -->
         <item name="fenixLogo">@drawable/ic_logo_wordmark_private</item>
@@ -178,17 +225,40 @@
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
-    <style name="ThemeIndependentMaterialGreyButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:letterSpacing">0</item>
+    <!-- UI button styling -->
+    <style name="NeutralButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="iconTint">@color/button_text_color</item>
+        <item name="iconPadding">8dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:background">@drawable/rounded_button_background</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAllCaps">false</item>
         <item name="backgroundTint">@color/grey_button_color</item>
         <item name="android:textColor">@color/button_text_color</item>
         <item name="rippleColor">?secondaryText</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
-    <style name="ThemeIndependentMaterialGreyButtonDestructive" parent="ThemeIndependentMaterialGreyButton">
+    <!-- Ideally we should consolidate this with NeutralButton in the future -->
+    <style name="NeutralOnboardingButton" parent="NeutralButton">
+        <item name="backgroundTint">?neutralFaded</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:textColor">?primaryText</item>
+    </style>
+
+    <style name="DestructiveButton" parent="NeutralButton">
+        <item name="iconTint">@color/destructive_button_text_color</item>
         <item name="android:textColor">@color/destructive_button_text_color</item>
+    </style>
+
+    <style name="PositiveButton" parent="NeutralButton">
+        <item name="backgroundTint">?accent</item>
+        <item name="iconTint">?contrastText</item>
+        <item name="android:textColor">?contrastText</item>
     </style>
 
     <style name="search_pill" parent="Widget.AppCompat.Button.Borderless">
@@ -218,6 +288,7 @@
         <item name="android:paddingStart">24dp</item>
         <item name="android:paddingEnd">24dp</item>
         <item name="android:elevation">0dp</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="SitePermissionCancelButton" parent="SitePermissionButton">
@@ -252,26 +323,26 @@
     <style name="HeaderTextStyle" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">?primaryText</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.03</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="Header16TextStyle" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textColor">?primaryText</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="Header14TextStyle" parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:textColor">?primaryText</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="Header12TextStyle" parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:textColor">?secondaryText</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="Body14TextStyle" parent="TextAppearance.MaterialComponents.Body2">
@@ -279,18 +350,25 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="Body16TextStyle" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">?primaryText</item>
+    </style>
+
     <style name="SubtitleTextStyle" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textColor">?secondaryText</item>
         <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="Subtitle12TextStyle" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textColor">?secondaryText</item>
         <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="ToolbarTitleTextStyle" parent="HeaderTextStyle">
         <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="ListItemTextStyle" parent="TextAppearance.MaterialComponents.Subtitle1">
@@ -318,6 +396,19 @@
         <item name="android:layout_alignParentStart">true</item>
     </style>
 
+    <style name="QuickSettingsLargeText">
+        <item name="android:textColor">@color/state_list_text_color</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_alignParentStart">true</item>
+    </style>
+
+    <style name="QuickSettingsLargeText.Icon">
+        <item name="android:drawablePadding">8dp</item>
+    </style>
+
     <style name="QuickSettingsText.Icon">
         <item name="android:drawablePadding">8dp</item>
     </style>
@@ -332,12 +423,17 @@
 
     <style name="OnboardingCardLight">
         <item name="android:background">@drawable/onboarding_card_background_light</item>
-        <item name="android:padding">16dp</item>
         <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:elevation">5dp</item>
     </style>
 
-    <style name="OnboardingCardDark" parent="OnboardingCardLight">
+    <style name="OnboardingCardLightWithPadding" parent="OnboardingCardLight">
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="OnboardingCardDark" parent="OnboardingCardLightWithPadding">
         <item name="android:background">@drawable/onboarding_card_background_dark</item>
+        <item name="android:elevation">0dp</item>
     </style>
 
     <style name="SearchShortcutsLabelStyle">
@@ -359,6 +455,10 @@
         <item name="android:textSize">@dimen/search_fragment_clipboard_title_text_size</item>
     </style>
 
+    <style name="MetropolisButton">
+        <item name="fontFamily">@font/metropolis_semibold</item>
+    </style>
+
     <style name="SearchClipboardUrlStyle" parent="SearchClipboardStyle">
         <item name="android:textAppearance">@style/Subtitle12TextStyle</item>
         <item name="android:textColor">?fillLinkFromClipboard</item>
@@ -369,7 +469,6 @@
     <style name="CreateShortcutDialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:minHeight">40dp</item>
         <item name="android:layout_marginTop">32dp</item>
         <item name="android:textColor">?accentUsedOnDarkBackground</item>
@@ -381,6 +480,7 @@
         <item name="android:textColor">?secondaryText</item>
         <item name="android:textSize">@dimen/share_header_text_size</item>
         <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/metropolis_semibold</item>
     </style>
 
     <style name="FirefoxAccountsDialogStyle" parent="DialogStyleBase">
@@ -421,5 +521,9 @@
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="searchHintIcon">@null</item>
+    </style>
+
+    <style name="AutoCompleteTextViewStyle" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textColorHint">@color/search_view_hint_color</item>
     </style>
 </resources>

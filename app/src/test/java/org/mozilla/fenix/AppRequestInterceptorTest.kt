@@ -6,28 +6,23 @@ package org.mozilla.fenix
 
 import android.net.ConnectivityManager
 import androidx.core.content.getSystemService
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import mozilla.components.browser.errorpages.ErrorPages
 import mozilla.components.browser.errorpages.ErrorType
 import mozilla.components.concept.engine.request.RequestInterceptor
 import mozilla.components.support.test.robolectric.testContext
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.fenix.AppRequestInterceptor.Companion.HIGH_RISK_ERROR_PAGES
 import org.mozilla.fenix.AppRequestInterceptor.Companion.LOW_AND_MEDIUM_RISK_ERROR_PAGES
 import org.mozilla.fenix.ext.isOnline
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
+import org.mozilla.fenix.helpers.FenixRobolectricTestRunner
 
-@UseExperimental(ObsoleteCoroutinesApi::class)
-@RunWith(RobolectricTestRunner::class)
-@Config(application = TestApplication::class)
+@RunWith(FenixRobolectricTestRunner::class)
 class AppRequestInterceptorTest {
 
     private lateinit var interceptor: RequestInterceptor
@@ -71,7 +66,7 @@ class AppRequestInterceptorTest {
                 html = LOW_AND_MEDIUM_RISK_ERROR_PAGES
             )
 
-            assertThat(actualPage).isEqualTo(expectedPage)
+            assertEquals(expectedPage, actualPage)
         }
     }
 
@@ -88,7 +83,7 @@ class AppRequestInterceptorTest {
                 html = LOW_AND_MEDIUM_RISK_ERROR_PAGES
             )
 
-            assertThat(actualPage).isEqualTo(expectedPage)
+            assertEquals(expectedPage, actualPage)
         }
     }
 
@@ -106,7 +101,7 @@ class AppRequestInterceptorTest {
                 html = HIGH_RISK_ERROR_PAGES
             )
 
-            assertThat(actualPage).isEqualTo(expectedPage)
+            assertEquals(expectedPage, actualPage)
         }
     }
 

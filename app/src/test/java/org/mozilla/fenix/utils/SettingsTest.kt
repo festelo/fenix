@@ -4,7 +4,7 @@
 
 package org.mozilla.fenix.utils
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.mozilla.fenix.helpers.FenixRobolectricTestRunner
 import mozilla.components.feature.sitepermissions.SitePermissionsRules
 import mozilla.components.feature.sitepermissions.SitePermissionsRules.Action.ALLOWED
 import mozilla.components.feature.sitepermissions.SitePermissionsRules.Action.ASK_TO_ALLOW
@@ -17,15 +17,12 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mozilla.fenix.TestApplication
 import org.mozilla.fenix.ext.clearAndCommit
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.settings.PhoneFeature
 import org.mozilla.fenix.settings.deletebrowsingdata.DeleteBrowsingDataOnQuitType
-import org.robolectric.annotation.Config
 
-@RunWith(AndroidJUnit4::class)
-@Config(application = TestApplication::class)
+@RunWith(FenixRobolectricTestRunner::class)
 class SettingsTest {
 
     lateinit var settings: Settings
@@ -497,14 +494,7 @@ class SettingsTest {
         settings.setSitePermissionsPhoneFeatureAction(PhoneFeature.AUTOPLAY_INAUDIBLE, ALLOWED)
 
         assertEquals(
-            defaultPermissions(),
-            settings.getSitePermissionsCustomSettingsRules()
-        )
-
-        settings.setSitePermissionsPhoneFeatureAction(PhoneFeature.AUTOPLAY_INAUDIBLE, BLOCKED)
-
-        assertEquals(
-            defaultPermissions(),
+            defaultPermissions().copy(autoplayInaudible = ALLOWED),
             settings.getSitePermissionsCustomSettingsRules()
         )
     }
@@ -524,5 +514,5 @@ private fun defaultPermissions() = SitePermissionsRules(
     microphone = ASK_TO_ALLOW,
     notification = ASK_TO_ALLOW,
     autoplayAudible = AutoplayAction.BLOCKED,
-    autoplayInaudible = AutoplayAction.ALLOWED
+    autoplayInaudible = AutoplayAction.BLOCKED
 )

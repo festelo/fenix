@@ -9,11 +9,17 @@ import android.os.Build.VERSION.SDK_INT
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.onboarding_theme_picker.view.*
+import kotlinx.android.synthetic.main.onboarding_theme_picker.view.clickable_region_automatic
+import kotlinx.android.synthetic.main.onboarding_theme_picker.view.theme_automatic_radio_button
+import kotlinx.android.synthetic.main.onboarding_theme_picker.view.theme_dark_image
+import kotlinx.android.synthetic.main.onboarding_theme_picker.view.theme_dark_radio_button
+import kotlinx.android.synthetic.main.onboarding_theme_picker.view.theme_light_image
+import kotlinx.android.synthetic.main.onboarding_theme_picker.view.theme_light_radio_button
 import org.mozilla.fenix.R
 import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.settings
+import org.mozilla.fenix.onboarding.OnboardingRadioButton
 
 class OnboardingThemePickerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -29,10 +35,12 @@ class OnboardingThemePickerViewHolder(view: View) : RecyclerView.ViewHolder(view
         }
 
         radioLightTheme.addToRadioGroup(radioDarkTheme)
-        radioDarkTheme.addToRadioGroup(radioLightTheme)
-
         radioLightTheme.addToRadioGroup(radioFollowDeviceTheme)
+        radioLightTheme.addIllustration(view.theme_light_image)
+
+        radioDarkTheme.addToRadioGroup(radioLightTheme)
         radioDarkTheme.addToRadioGroup(radioFollowDeviceTheme)
+        radioDarkTheme.addIllustration(view.theme_dark_image)
 
         radioFollowDeviceTheme.addToRadioGroup(radioDarkTheme)
         radioFollowDeviceTheme.addToRadioGroup(radioLightTheme)
@@ -75,12 +83,18 @@ class OnboardingThemePickerViewHolder(view: View) : RecyclerView.ViewHolder(view
         }
 
         with(view.context.settings()) {
-            val radio = when {
-                this.shouldUseLightTheme -> radioLightTheme
-                this.shouldUseDarkTheme -> radioDarkTheme
-                else -> radioFollowDeviceTheme
+            val radio: OnboardingRadioButton = when {
+                shouldUseLightTheme -> {
+                    radioLightTheme
+                }
+                shouldUseDarkTheme -> {
+                    radioDarkTheme
+                }
+                else -> {
+                    radioFollowDeviceTheme
+                }
             }
-            radio.isChecked = true
+            radio.updateRadioValue(true)
         }
     }
 

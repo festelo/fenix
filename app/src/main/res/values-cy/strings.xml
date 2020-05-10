@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_2">Firefox Preview Preifat</string>
-    <!-- App name for private browsing mode, only the "Private" portion should be localized. -->
-    <string name="app_name_private_3">Firefox Preview (Preifat)</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_5">%s Preifat</string>
+    <!-- App name for private browsing mode. The first parameter is the name of the app defined in app_name (for example: Fenix)-->
+    <string name="app_name_private_4">%s (Preifat)</string>
     <!-- Home Fragment -->
     <!-- Content description (not visible, for screen readers etc.): "Three dot" menu button. -->
     <string name="content_description_menu">Rhagor o opsiynau</string>
@@ -18,14 +18,15 @@
     <!-- No Open Tabs Message Description -->
     <string name="no_open_tabs_description">Bydd eich tabiau agored i’w gweld yma.</string>
 
+    <!-- About content. The first parameter is the name of the application. (For example: Fenix) -->
+    <string name="about_content">Mae %1$s yn cael ei greu gan Mozilla.</string>
+
     <!-- Private Browsing -->
     <!-- Title for private session option -->
     <string name="private_browsing_title">Rydych mewn sesiwn breifat</string>
     <!-- Explanation for private browsing displayed to users on home view when they first enable private mode
         The first parameter is the name of the app defined in app_name (for example: Fenix) -->
-    <string name="private_browsing_placeholder_description">
-         Mae %1$s yn clirio eich hanes chwilio a phori pan fyddwch yn cau’r ap neu’n cau pob tab a ffenestr Pori Preifat. Er nad yw hyn yn eich gwneud yn anhysbys i wefannau neu i’ch darparwr gwasanaeth
-        rhyngrwyd, mae’n ei gwneud yn haws i chi gadw’r hyn rydych yn ei wneud ar-lein yn breifat rhag unrhyw un arall sy’n defnyddio’r ddyfais hon.</string>
+    <string name="private_browsing_placeholder_description_2">Mae %1$s yn clirio’ch hanes chwilio a phori o dabiau preifat pan fyddwch yn eu cau neu’n gadael yr ap. Er nad yw hyn yn eich gwneud chi’n anhysbys i wefannau neu’ch darparwr gwasanaeth rhyngrwyd, mae’n ei gwneud hi’n haws cadw’r hyn rydych chi’n ei wneud ar-lein yn breifat rhag unrhyw un arall sy’n defnyddio’r ddyfais hon.</string>
     <string name="private_browsing_common_myths">
        Mythau cyffredin am bori preifat
     </string>
@@ -46,6 +47,9 @@
     <!-- Shortcut action to open new private tab -->
     <string name="home_screen_shortcut_open_new_private_tab_2">Tab preifat newydd</string>
 
+    <!-- Heading for the Top Sites block -->
+    <string name="home_screen_top_sites_heading">Hoff wefannau</string>
+
     <!-- Browser Fragment -->
     <!-- Content description (not visible, for screen readers etc.): Navigate to open tabs -->
     <string name="browser_tabs_button">Tabiau Agored</string>
@@ -62,7 +66,7 @@
     <!-- Content description (not visible, for screen readers etc.): Un-bookmark the current page -->
     <string name="browser_menu_edit_bookmark">Golygu nod tudalen</string>
     <!-- Browser menu button that opens the addon manager -->
-    <string name="browser_menu_addon_manager">Rheolwr Ychwanegion</string>
+    <string name="browser_menu_add_ons">Ychwanegion</string>
     <!-- Text displayed when there are no add-ons to be shown -->
     <string name="no_add_ons">Dim ychwanegion yma</string>
     <!-- Browser menu button that sends a user to help articles -->
@@ -72,11 +76,11 @@
     <!-- Browser menu button that opens the settings menu -->
     <string name="browser_menu_settings">Gosodiadau</string>
     <!-- Browser menu button that opens a user's library -->
-    <string name="browser_menu_your_library">Eich Llyfrgell</string>
+    <string name="browser_menu_library">Llyfrgell</string>
     <!-- Browser menu toggle that requests a desktop site -->
     <string name="browser_menu_desktop_site">Gwefan bwrdd gwaith</string>
     <!-- Browser menu toggle that adds a shortcut to the site on the device home screen. -->
-    <string name="browser_menu_add_to_homescreen">Ychwanegu i’r sgrin Cartref</string>
+    <string name="browser_menu_add_to_homescreen">I’r sgrin Cartref</string>
     <!-- Browser menu toggle that installs a Progressive Web App shortcut to the site on the device home screen. -->
     <string name="browser_menu_install_on_homescreen">Gosod</string>
     <!-- Browser menu button that opens the find in page menu -->
@@ -86,9 +90,9 @@
     <!-- Browser menu button that creates a new tab -->
     <string name="browser_menu_new_tab">Tab newydd</string>
     <!-- Browser menu button that saves the current tab to a collection -->
-    <string name="browser_menu_save_to_collection">Cadw i’r Casgliad</string>
+    <string name="browser_menu_save_to_collection_2">Cadw i gasgliad</string>
     <!-- Browser menu button that opens a dialog to report issues with the current site -->
-    <string name="browser_menu_report_issue">Adrodd ar fater gwefan</string>
+    <string name="browser_menu_report_issue">Pryder am wefan</string>
     <!-- Browser menu button that open a share menu to share the current site -->
     <string name="browser_menu_share">Rhannu</string>
     <!-- Share menu title, displayed when a user is sharing their current site -->
@@ -108,6 +112,10 @@
     <string name="browser_menu_open_app_link">Agor yn yr Ap</string>
     <!-- Browser menu button to configure reader mode appearance e.g. the used font type and size -->
     <string name="browser_menu_read_appearance">Gwedd</string>
+
+    <!-- Error message to show when the user tries to access a scheme not
+        handled by the app (Ex: blob, tel etc) -->
+    <string name="unknown_scheme_error_message">Methu cysylltu. Cynllun URL anadnabyddadwy.</string>
 
     <!-- Locale Settings Fragment -->
     <!-- Content description for tick mark on selected language -->
@@ -148,6 +156,9 @@
     <string name="search_widget_text_short">Chwilio</string>
     <!-- Text preview for larger sized widgets -->
     <string name="search_widget_text_long">Chwilio’r we</string>
+
+    <!-- Content description (not visible, for screen readers etc.): Voice search -->
+    <string name="search_widget_voice">Chwilio llais</string>
 
     <!-- Preferences -->
     <!-- Title for the settings page-->
@@ -194,10 +205,18 @@
     <string name="preferences_private_browsing_options">Pori preifat</string>
     <!-- Preference for opening links in a private tab-->
     <string name="preferences_open_links_in_a_private_tab">Agor dolen mewn tab preifat</string>
+    <!-- Preference for allowing screenshots to be taken while in a private tab-->
+    <string name="preferences_allow_screenshots_in_private_mode">Caniatáu lluniau sgrin o fewn pori preifat</string>
     <!-- Preference for adding private browsing shortcut -->
     <string name="preferences_add_private_browsing_shortcut">Ychwanegu llwybr byr pori preifat</string>
     <!-- Preference for accessibility -->
     <string name="preferences_accessibility">Hygyrchedd</string>
+    <!-- Preference to override the Firefox Account server -->
+    <string name="preferences_override_fxa_server">Gweinydd Cyfrif Cyfaddas Firefox</string>
+    <!-- Preference to override the Sync token server -->
+    <string name="preferences_override_sync_tokenserver">Gweinydd Sync Cyfaddas</string>
+    <!-- Toast shown after updating the FxA/Sync server override preferences -->
+    <string name="toast_override_fxa_sync_server_done">Mae Cyfrif Firefox/gweinydd Sync wedi’i addasu. Yn gadael y rhaglen i osod y newidiadau...</string>
     <!-- Preference category for account information -->
     <string name="preferences_category_account">Cyfrif</string>
     <!-- Preference shown on banner to sign into account -->
@@ -274,10 +293,11 @@
     <string name="sync_last_synced_summary">Cydweddu diwethaf: %s</string>
     <!-- Label summary showing never synced -->
     <string name="sync_never_synced_summary">Cydweddu diwethaf: byth</string>
+
     <!-- Text for displaying the default device name.
         The first parameter is the application name, the second is the device manufacturer name
         and the third is the device model. -->
-    <string name="default_device_name">%s ar %s %s</string>
+    <string name="default_device_name_2">%1$s o %2$s %3$s</string>
 
     <!-- Send Tab -->
     <!-- Name of the "receive tabs" notification channel. Displayed in the "App notifications" system settings for the app -->
@@ -422,7 +442,7 @@
     <!-- Open tabs menu item to share all tabs -->
     <string name="tabs_menu_share_tabs">Rhannu tabiau</string>
     <!-- Open tabs menu item to save tabs to collection -->
-    <string name="tabs_menu_save_to_collection">Cadw i’r casgliad</string>
+    <string name="tabs_menu_save_to_collection">Cadw i gasgliad</string>
     <!-- Content description (not visible, for screen readers etc.): Opens the tab menu when pressed -->
     <string name="tab_menu">Dewislen tabiau</string>
     <!-- Tab menu item to share the tab -->
@@ -436,7 +456,7 @@
     <!-- Content description (not visible, for screen readers etc.): Title icon for current session menu -->
     <string name="current_session_image">Delwedd sesiwn gyfredol</string>
     <!-- Button to save the current set of tabs into a collection -->
-    <string name="save_to_collection">Cadw i’r casgliad</string>
+    <string name="save_to_collection">Cadw i gasgliad</string>
     <!-- Text for the menu button to delete a collection -->
     <string name="collection_delete">Dileu casgliad</string>
     <!-- Text for the menu button to rename a collection -->
@@ -447,13 +467,28 @@
     <!-- Text for the menu button to remove a top site -->
     <string name="remove_top_site">Tynnu</string>
 
+    <!-- Postfix for private WebApp titles, placeholder is replaced with app name -->
+    <string name="pwa_site_controls_title_private">%1$s (Modd Preifat)</string>
+
     <!-- History -->
     <!-- Text for the button to clear all history -->
     <string name="history_delete_all">Dileu hanes</string>
     <!-- Text for the dialog to confirm clearing all history -->
     <string name="history_delete_all_dialog">Ydych chi’n siŵr eich bod chi am glirio’ch hanes?</string>
+    <!-- Text for the snackbar to confirm that multiple browsing history items has been deleted -->
+    <string name="history_delete_multiple_items_snackbar">Hanes wedi’i Ddileu</string>
+    <!-- Text for the snackbar to confirm that a single browsing history item has been deleted. The first parameter is the shortened URL of the deleted history item. -->
+    <string name="history_delete_single_item_snackbar">Wedi dileu %1$s</string>
     <!-- Text for positive action to delete history in deleting history dialog -->
     <string name="history_clear_dialog">Clirio</string>
+    <!-- History overflow menu copy button -->
+    <string name="history_menu_copy_button">Copïo</string>
+    <!-- History overflow menu share button -->
+    <string name="history_menu_share_button">Rhannu</string>
+    <!-- History overflow menu open in new tab button -->
+    <string name="history_menu_open_in_new_tab_button">Agor mewn tab newydd</string>
+    <!-- History overflow menu open in private tab button -->
+    <string name="history_menu_open_in_private_tab_button">Agor mewn tab preifat</string>
     <!-- Text for the button to delete a single history item -->
     <string name="history_delete_item">Dileu</string>
     <!-- History multi select title in app bar
@@ -499,6 +534,10 @@
     <string name="bookmark_edit">Golygu nod tudalen</string>
     <!-- Screen title for selecting a bookmarks folder -->
     <string name="bookmark_select_folder">Dewis ffolder</string>
+    <!-- Confirmation message for a dialog confirming if the user wants to delete the selected folder -->
+    <string name="bookmark_delete_folder_confirmation_dialog">Ydych chi’n siŵr eich bod am ddileu’r ffolder yma?</string>
+    <!-- Snackbar title shown after a folder has been deleted. This first parameter is the name of the deleted folder -->
+    <string name="bookmark_delete_folder_snackbar">Wedi dileu %1$s</string>
     <!-- Screen title for adding a bookmarks folder -->
     <string name="bookmark_add_folder">Ychwanegu ffolder</string>
     <!-- deprecated: Snackbar title shown after a bookmark has been created. -->
@@ -551,9 +590,9 @@
     <!-- Bookmark snackbar message on deletion
      The first parameter is the host part of the URL of the bookmark deleted, if any -->
     <string name="bookmark_deletion_snackbar_message">Wedi dileu %1$s</string>
-    <!-- Bookmark snackbar message on deleting multiple bookmarks -->
-    <string name="bookmark_deletion_multiple_snackbar_message">Yn dileu’r nodau tudalen hyn</string>
 
+    <!-- Bookmark snackbar message on deleting multiple bookmarks -->
+    <string name="bookmark_deletion_multiple_snackbar_message_2">Wedi dileu Nodau Tudalen</string>
     <!-- Bookmark undo button for deletion snackbar action -->
     <string name="bookmark_undo_deletion">DADWNEUD</string>
 
@@ -600,18 +639,16 @@
     <string name="tracking_protection_on">Ymlaen</string>
     <!-- Summary of tracking protection preference if tracking protection is set to off -->
     <string name="tracking_protection_off">Diffodd</string>
-    <!-- DEPRECATED: Label that indicates video and audio autoplay is blocked -->
-    <string name="preference_option_autoplay_blocked">Fideo a sain wedi’u rhwystro</string>
-    <!-- DEPRECATED: Label that indicates video and audio autoplay is allowed -->
-    <string name="preference_option_autoplay_allowed">Fideo a sain wedi’u caniatáu</string>
     <!-- Label that indicates that all video and audio autoplay is allowed -->
     <string name="preference_option_autoplay_allowed2">Caniatáu sain a fideo</string>
-    <!-- Label that indicates that video and audio autoplay is only allowed over WIFI -->
-    <string name="preference_option_autoplay_allowed_wifi_only">Caniatáu sain a fideo ar ddiwifr yn unig</string>
+    <!-- Label that indicates that video and audio autoplay is only allowed over Wi-Fi -->
+    <string name="preference_option_autoplay_allowed_wifi_only2">Rhwystro sain a fideo ar ddata cellol yn unig</string>
+    <!-- Subtext that explains 'autoplay on Wi-Fi only' option -->
+    <string name="preference_option_autoplay_allowed_wifi_subtext">Bydd sain a fideo yn chwarae ar ddiwifr</string>
     <!-- Label that indicates that video autoplay is allowed, but audio autoplay is blocked -->
-    <string name="preference_option_autoplay_block_audio">Rhwystro sain</string>
+    <string name="preference_option_autoplay_block_audio2">Rhwystro sain yn unig</string>
     <!-- Label that indicates that all video and audio autoplay is blocked -->
-    <string name="preference_option_autoplay_blocked2">Rhwystro sain a fideo</string>
+    <string name="preference_option_autoplay_blocked3">Rhwystro sain a fideo</string>
     <!-- Summary of delete browsing data on quit preference if it is set to on -->
     <string name="delete_browsing_data_quit_on">Ymlaen</string>
     <!-- Summary of delete browsing data on quit preference if it is set to off -->
@@ -631,7 +668,7 @@
     <!-- Title for the "select tabs" step of the collection creator -->
     <string name="create_collection_select_tabs">Dewis Tabiau</string>
     <!-- Title for the "select collection" step of the collection creator -->
-    <string name="create_collection_select_collection">Dewis gasgliad</string>
+    <string name="create_collection_select_collection">Dewis casgliad</string>
     <!-- Title for the "name collection" step of the collection creator -->
     <string name="create_collection_name_collection">Enwi casgliad</string>
     <!-- Button to add new collection for the "select collection" step of the collection creator -->
@@ -647,11 +684,11 @@
     <string name="create_collection_save_to_collection_tabs_selected">%d tab wedi’u dewis</string>
     <!-- Text to show users they have one tab selected in the "select tabs" step of the collection creator.
     %d is a placeholder for the number of tabs selected. -->
-    <string name="create_collection_save_to_collection_tab_selected">%d tab wedi’u dewis</string>
+    <string name="create_collection_save_to_collection_tab_selected">%d tab wedi’i ddewis</string>
     <!-- Text shown in snackbar when multiple tabs have been saved in a collection -->
     <string name="create_collection_tabs_saved">Tabiau wedi’u cadw!</string>
     <!-- Text shown in snackbar when one tab has been saved in a collection -->
-    <string name="create_collection_tab_saved">Tabiau wedi’u cadw!</string>
+    <string name="create_collection_tab_saved">Tab wedi’i gadw!</string>
     <!-- Content description (not visible, for screen readers etc.): button to close the collection creator -->
     <string name="create_collection_close">Cau</string>
     <!-- Button to save currently selected tabs in the "select tabs" step of the collection creator-->
@@ -824,6 +861,32 @@
     <!-- Text for the snackbar to show the user that the deletion of browsing data is in progress -->
     <string name="deleting_browsing_data_in_progress">Dileu data pori…</string>
 
+    <!-- Tips -->
+    <!-- text for firefox preview moving tip header "Firefox Preview" and "Firefox Nightly" are intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header">Mae Firefox Preview bellach yn Firefox Nightly</string>
+
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description">Mae Firefox Nightly yn cael ei ddiweddaru bob nos ac mae ganddo nodweddion newydd arbrofol.
+        Fodd bynnag, gall fod yn llai sefydlog. Llwythwch ein porwr beta i gael profiad mwy sefydlog.</string>
+    <!-- text for firefox preview moving tip button. "Mozilla Firefox Browser" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_button">Estyn porwr Mozilla Firefox Browser</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_installed">Mae Firefox Nightly wedi symud</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_installed">Ni fydd yr ap hon yn derbyn diweddariadau diogelwch mwyach. Peidiwch a defnyddio’r ap hon a symud i’r Nightly newydd.
+        \n\nEr mwyn trosglwyddo’ch nodau tudalen, eich mewngofnodion a’ch hanes i ap arall, crëwch gyfrif Firefox.</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_installed">Newid i’r Nightly newydd</string>
+
+    <!-- text for firefox preview moving tip header. "Firefox Nightly" is intentionally hardcoded -->
+    <string name="tip_firefox_preview_moved_header_preview_not_installed">Mae Firefox Nightly wedi symud</string>
+    <!-- text for firefox preview moving tip description -->
+    <string name="tip_firefox_preview_moved_description_preview_not_installed">Ni fydd yr ap hon yn derbyn diweddariadau diogelwch bellach. Estynnwch y Nightly newydd a pheidio a defnyddio’r ap hon.
+        \n\nEr mwyn trosglwyddo’ch nodau tudalen, eich mewngofnodion a’ch hanes i ap arall, crëwch gyfrif Firefox.</string>
+    <!-- text for firefox preview moving tip button  -->
+    <string name="tip_firefox_preview_moved_button_preview_not_installed">Estyn y Nightly newydd</string>
+
     <!-- Onboarding -->
     <!-- Text for onboarding welcome message
     The first parameter is the name of the app (e.g. Firefox Preview) -->
@@ -898,6 +961,9 @@
     <!-- Text for the button to read the privacy notice -->
     <string name="onboarding_privacy_notice_read_button">Darllenwch ein hysbysiad preifatrwydd</string>
 
+    <!-- Content description (not visible, for screen readers etc.): Close onboarding screen -->
+    <string name="onboarding_close">Cau</string>
+
     <!-- text for the button to finish onboarding -->
     <string name="onboarding_finish">Cychwyn pori</string>
 
@@ -935,6 +1001,8 @@
     <string name="sign_in_with_email">Defnyddiwch e-bost yn lle hynny</string>
     <!-- Text shown in confirmation dialog to sign out of account -->
     <string name="sign_out_confirmation_message">Bydd Firefox yn peidio cydweddu eich cyfrif ond ni fydd yn dileu eich data pori ar y ddyfais hon.</string>
+    <!-- Text shown in confirmation dialog to sign out of account. The first parameter is the name of the app (e.g. Firefox Preview) -->
+    <string name="sign_out_confirmation_message_2">Bydd %s yn peidio â chydweddu eich cyfrif ond ni fydd yn dileu eich data pori ar y ddyfais hon.</string>
     <!-- Option to continue signing out of account shown in confirmation dialog to sign out of account -->
     <string name="sign_out_disconnect">Datgysylltu</string>
     <!-- Option to cancel signing out shown in confirmation dialog to sign out of account -->
@@ -1036,6 +1104,9 @@
     <string name="etp_panel_off">Mae diogelu I FFWRDD ar gyfer y wefan hon</string>
     <!-- Header for exceptions list for which sites enhanced tracking protection is always off -->
     <string name="enhanced_tracking_protection_exceptions">Mae Diogelwch Uwch rhag Tracio wedi ei ddiffodd ar gyfer y gwefannau hyn</string>
+    <!-- Content description (not visible, for screen readers etc.): Navigate
+    back from ETP details (Ex: Tracking content) -->
+    <string name="etp_back_button_content_description">Symud nôl</string>
     <!-- About page Your rights link text -->
     <string name="about_your_rights">Eich hawliau</string>
     <!-- About page link text to open open source licenses screen -->
@@ -1057,6 +1128,11 @@
     <!-- About page link text to open a screen with libraries that are used -->
     <string name="about_other_open_source_libraries">Llyfrgelloedd rydym yn eu defnyddio</string>
 
+    <!-- Toast shown to the user when they are activating the secret dev menu
+        The first parameter is number of long clicks left to enable the menu -->
+    <string name="about_debug_menu_toast_progress">Dewislen dadfygio: %1$d clic ar ôl i’w alluogi</string>
+    <string name="about_debug_menu_toast_done">Dewislen dadfygio wedi’i galluogi</string>
+
     <!-- Content description of the tab counter toolbar button when one tab is open -->
     <string name="tab_counter_content_description_one_tab">1 tab</string>
     <!-- Content description of the tab counter toolbar button when multiple tabs are open. First parameter will be replaced with the number of tabs (always more than one) -->
@@ -1073,24 +1149,29 @@
     <string name="browser_toolbar_url_copied_to_clipboard_snackbar">URL wedi ei gopïo i’r clipfwrdd</string>
 
     <!-- Title text for the Add To Homescreen dialog -->
-    <string name="add_to_homescreen_title">Ychwanegu i’r sgrin Cartref</string>
+    <string name="add_to_homescreen_title">I’r sgrin Cartref</string>
     <!-- Cancel button text for the Add to Homescreen dialog -->
     <string name="add_to_homescreen_cancel">Diddymu</string>
     <!-- Add button text for the Add to Homescreen dialog -->
     <string name="add_to_homescreen_add">Ychwanegu</string>
+    <!-- Continue to website button text for the first-time Add to Homescreen dialog -->
+    <string name="add_to_homescreen_continue">Ymlaen i’r wefan</string>
     <!-- Placeholder text for the TextView in the Add to Homescreen dialog -->
     <string name="add_to_homescreen_text_placeholder">Enw llwybr byr</string>
+
+    <!-- Describes the add to homescreen functionality -->
+    <string name="add_to_homescreen_description">Gallwch ychwanegu’r wefan hon yn hawdd i sgrin Cartref eich ffôn. Byddwch yn cael mynediad ar unwaith a phori’n gyflymach gyda phrofiad tebyg i ap.</string>
 
     <!-- Preference for managing the settings for logins and passwords in Fenix -->
     <string name="preferences_passwords_logins_and_passwords">Mewngofnodion a chyfrineiriau</string>
     <!-- Preference for managing the saving of logins and passwords in Fenix -->
-    <string name="preferences_passwords_save_logins">Cadw mewngofnodi a chyfrineiriau</string>
+    <string name="preferences_passwords_save_logins">Cadw mewngofnodion a chyfrineiriau</string>
     <!-- Preference option for asking to save passwords in Fenix -->
     <string name="preferences_passwords_save_logins_ask_to_save">Gofyn i gadw</string>
     <!-- Preference option for never saving passwords in Fenix -->
     <string name="preferences_passwords_save_logins_never_save">Byth cadw</string>
     <!-- Preference for autofilling saved logins in Fenix -->
-    <string name="preferences_passwords_autofill">Awto Lanw</string>
+    <string name="preferences_passwords_autofill">Awtolanw</string>
     <!-- Preference for syncing saved logins in Fenix -->
     <string name="preferences_passwords_sync_logins">Cydweddu mewngofnodion</string>
     <!-- Syncing saved logins in Fenix is on -->
@@ -1110,9 +1191,9 @@
     <!-- Preference to access list of login exceptions that we never save logins for -->
     <string name="preferences_passwords_exceptions">Eithriadau</string>
     <!-- Empty description of list of login exceptions that we never save logins for -->
-    <string name="preferences_passwords_exceptions_description_empty">Bydd mewngofnodi a chyfrineiriau sydd heb eu cadw i’w gweld yma.</string>
+    <string name="preferences_passwords_exceptions_description_empty">Bydd mewngofnodion a chyfrineiriau sydd heb eu cadw i’w gweld yma.</string>
     <!-- Description of list of login exceptions that we never save logins for -->
-    <string name="preferences_passwords_exceptions_description">Ni fydd mewngofnodi a chyfrineiriau’n cael eu cadw ar gyfer y gwefannau hyn.</string>
+    <string name="preferences_passwords_exceptions_description">Ni fydd mewngofnodion a chyfrineiriau’n cael eu cadw ar gyfer y gwefannau hyn.</string>
     <!-- Hint for search box in logins list -->
     <string name="preferences_passwords_saved_logins_search">Chwilio mewngofnodion</string>
     <!-- Option to sort logins list A-Z, alphabetically -->
@@ -1258,7 +1339,7 @@
     <!-- Bookmark deletion confirmation -->
     <string name="bookmark_deletion_confirmation">Ydych chi’n siŵr eich bod am ddileu’r nod tudalen yma?</string>
     <!-- Browser menu button that adds a top site to the home fragment -->
-    <string name="browser_menu_add_to_top_sites">Ychwanegu at y gwefannau gorau</string>
+    <string name="browser_menu_add_to_top_sites">I’m hoff wefannau</string>
     <!-- text shown before the issuer name to indicate who its verified by, parameter is the name of
      the certificate authority that verified the ticket-->
     <string name="certificate_info_verified_by">Dilyswyd gan: %1$s</string>

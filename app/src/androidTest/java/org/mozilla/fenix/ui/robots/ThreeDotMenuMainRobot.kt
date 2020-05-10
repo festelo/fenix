@@ -72,6 +72,10 @@ class ThreeDotMenuMainRobot {
             waitingTime
         )
         addBookmarkButton().click()
+        // wait for main menu to disappear
+        mDevice.waitNotNull(
+            Until.gone(By.res("mozac_browser_menu_recyclerView"))
+        )
     }
 
     fun verifyCollectionNameTextField() = assertCollectionNameTextField()
@@ -97,7 +101,7 @@ class ThreeDotMenuMainRobot {
         }
 
         fun openLibrary(interact: LibraryRobot.() -> Unit): LibraryRobot.Transition {
-            mDevice.waitNotNull(Until.findObject(By.text("Your Library")), waitingTime)
+            mDevice.waitNotNull(Until.findObject(By.text("Library")), waitingTime)
             libraryButton().click()
 
             LibraryRobot().interact()
@@ -253,7 +257,7 @@ private fun assertSettingsButton() = settingsButton()
     .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
     .check(matches(isCompletelyDisplayed()))
 
-private fun libraryButton() = onView(allOf(withText(R.string.browser_menu_your_library)))
+private fun libraryButton() = onView(allOf(withText(R.string.browser_menu_library)))
 private fun assertLibraryButton() = libraryButton()
     .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
 
@@ -299,7 +303,7 @@ private fun assertShareButton() = shareButton()
 
 private fun browserViewSaveCollectionButton() = onView(
     allOf(
-        withText("Save to Collection"),
+        withText("Save to collection"),
         withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)
     )
 )

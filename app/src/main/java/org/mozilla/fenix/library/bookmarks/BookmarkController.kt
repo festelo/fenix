@@ -17,10 +17,7 @@ import org.mozilla.fenix.BrowserDirection
 import org.mozilla.fenix.HomeActivity
 import org.mozilla.fenix.R
 import org.mozilla.fenix.browser.browsingmode.BrowsingMode
-import org.mozilla.fenix.components.FenixSnackbar
-import org.mozilla.fenix.components.Services
 import org.mozilla.fenix.components.metrics.Event
-import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.nav
 
 /**
@@ -38,22 +35,22 @@ interface BookmarkController {
     fun handleBookmarkSharing(item: BookmarkNode)
     fun handleOpeningBookmark(item: BookmarkNode, mode: BrowsingMode)
     fun handleBookmarkDeletion(nodes: Set<BookmarkNode>, eventType: Event)
+    fun handleBookmarkFolderDeletion(node: BookmarkNode)
     fun handleBackPressed()
-    fun handleSigningIn()
 }
 
 @SuppressWarnings("TooManyFunctions")
 class DefaultBookmarkController(
     private val context: Context,
     private val navController: NavController,
-    private val snackbar: FenixSnackbar,
+    private val showSnackbar: (String) -> Unit,
     private val deleteBookmarkNodes: (Set<BookmarkNode>, Event) -> Unit,
+    private val deleteBookmarkFolder: (BookmarkNode) -> Unit,
     private val invokePendingDeletion: () -> Unit
 ) : BookmarkController {
 
     private val activity: HomeActivity = context as HomeActivity
     private val resources: Resources = context.resources
-    private val services: Services = activity.components.services
 
     override fun handleBookmarkTapped(item: BookmarkNode) {
         openInNewTab(item.url!!, true, BrowserDirection.FromBookmarks, activity.browsingModeManager.mode)
@@ -72,20 +69,18 @@ class DefaultBookmarkController(
     }
 
     override fun handleBookmarkSelected(node: BookmarkNode) {
-        snackbar.setText(resources.getString(R.string.bookmark_cannot_edit_root))
-        snackbar.show()
+        showSnackbar(resources.getString(R.string.bookmark_cannot_edit_root))
     }
 
     override fun handleCopyUrl(item: BookmarkNode) {
         val urlClipData = ClipData.newPlainText(item.url, item.url)
         context.getSystemService<ClipboardManager>()?.primaryClip = urlClipData
-        snackbar.setText(resources.getString(R.string.url_copied))
-        snackbar.show()
+        showSnackbar(resources.getString(R.string.url_copied))
     }
 
     override fun handleBookmarkSharing(item: BookmarkNode) {
         navigate(
-            BookmarkFragmentDirections.actionBookmarkFragmentToShareFragment(
+            BookmarkFragmentDirections.actionGlobalShareFragment(
                 data = arrayOf(ShareData(url = item.url, title = item.title))
             )
         )
@@ -99,14 +94,13 @@ class DefaultBookmarkController(
         deleteBookmarkNodes(nodes, eventType)
     }
 
+    override fun handleBookmarkFolderDeletion(node: BookmarkNode) {
+        deleteBookmarkFolder(node)
+    }
+
     override fun handleBackPressed() {
         invokePendingDeletion.invoke()
         navController.popBackStack()
-    }
-
-    override fun handleSigningIn() {
-        invokePendingDeletion.invoke()
-        services.launchPairingSignIn(context, navController)
     }
 
     private fun openInNewTab(
